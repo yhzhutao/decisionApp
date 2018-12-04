@@ -10,58 +10,6 @@ export default {
   name: 'App'
 }
 </script>
-<style lang="sass">
-#app
-  font-family: 'Avenir', Helvetica, Arial, sans-serif
-  -webkit-font-smoothing: antialiased
-  -moz-osx-font-smoothing: grayscale
-  text-align: center
-  color: #2c3e50
-  margin-top: 60px
-
-.border
-  border: 1px solid #e3e3e3
-
-
-@media screen and (-webkit-min-device-pixel-ratio: 2)
-  .border
-    border: 0.5px solid #e3e3e3
-
-
-@media screen and (-webkit-min-device-pixel-ratio: 3)
-  .border
-    border: 0.333333px solid #e3e3e3
-
-
-.border_bottom
-  border-bottom: 1px solid #e3e3e3
-
-
-@media screen and (-webkit-min-device-pixel-ratio: 2)
-  .border_bottom
-    border-bottom: 0.5px solid #e3e3e3
-
-
-
-@media screen and (-webkit-min-device-pixel-ratio: 3)
-  .border_bottom
-    border-bottom: 0.333333px solid #e3e3e3
-
-
-
-.border_top
-  border-bottom: 1px solid #e3e3e3
-
-
-@media screen and (-webkit-min-device-pixel-ratio: 2)
-  .border_top
-    border-bottom: 0.5px solid #e3e3e3
-
-
-
-@media screen and (-webkit-min-device-pixel-ratio: 3)
-  .border_top
-    border-bottom: 0.333333px solid #e3e3e3
-
+<style lang="scss">
 
 </style>
