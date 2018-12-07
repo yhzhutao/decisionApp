@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="13px" height="22px" viewBox="0 0 13 22" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 52.2 (67145) - http://www.bohemiancoding.com/sketch -->
+    <title>back_icon</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="各品牌情况" transform="translate(-16.000000, -33.000000)">
+            <g id="back_icon" transform="translate(9.000000, 33.000000)">
+                <rect id="Rectangle" fill="#000000" opacity="0" x="0" y="0" width="22" height="22"></rect>
+                <path d="M7.83505078,11.6692383 L18.4011953,21.2981914 C18.7479316,21.643166 19.3102637,21.643166 19.656957,21.2981914 C20.0036504,20.9532168 20.0036719,20.3935488 19.656957,20.0486172 L9.72793164,11.0004297 L19.656957,1.9514043 C20.0036719,1.60645117 20.0036719,1.04676172 19.656957,0.701808594 C19.3093613,0.356855469 18.7479102,0.356855469 18.4011953,0.701808594 L7.83593164,10.3307617 C7.65110156,10.5146895 7.57193164,10.7593105 7.58424219,10.9995703 C7.57193164,11.2415703 7.65112305,11.485332 7.83505078,11.6692383 Z" id="Path" fill="#FFFFFF"></path>
+            </g>
+        </g>
+    </g>
+</svg>
