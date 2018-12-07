@@ -26,7 +26,9 @@ export default {
   }
 }
 </script>
-<style lang="sass">
-  .topArea
-     background-image:url("./image/home_header_back.svg")
+<style lang="scss">
+  @import url('./common/css/reset.scss');
+  .topArea{
+    background-image:url("./image/home_header_back.svg")
+  }
 </style>
