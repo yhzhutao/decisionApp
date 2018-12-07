@@ -1,16 +1,21 @@
 <template>
   <div id="app" class="border">
-    <m-header></m-header>
+    <div class="topArea">
+      <m-header></m-header>
+      <tab></tab>
+    </div>
     <router-view/>
   </div>
 </template>
 
 <script>
   import mHeader from './components/header/m-header.vue'
+  import tab from './components/tab/tab'
 export default {
   name: 'App',
   components:{
-    mHeader
+    mHeader,
+    tab
   },
   data(){
     return{
@@ -21,6 +26,7 @@ export default {
   }
 }
 </script>
-<style lang="scss">
-
+<style lang="sass">
+  .topArea
+     background-image:url("./image/home_header_back.svg")
 </style>
