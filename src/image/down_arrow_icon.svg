@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="8px" height="8px" viewBox="0 0 8 8" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 52.2 (67145) - http://www.bohemiancoding.com/sketch -->
+    <title>down_arrow_icon</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="资产规模" transform="translate(-52.000000, -110.000000)" fill="#6E5AC8" fill-rule="nonzero">
+            <path d="M57.7888544,113.577709 L59.5527864,117.105573 C60.0467649,118.09353 59.6463162,119.294876 58.6583592,119.788854 C58.3806483,119.92771 58.0744222,120 57.763932,120 L54.236068,120 C53.1314985,120 52.236068,119.104569 52.236068,118 C52.236068,117.68951 52.3083582,117.383284 52.4472136,117.105573 L54.2111456,113.577709 C54.7051241,112.589752 55.9064702,112.189303 56.8944272,112.683282 C57.281482,112.876809 57.595327,113.190654 57.7888544,113.577709 Z" id="down_arrow_icon" transform="translate(56.000000, 115.000000) scale(1, -1) translate(-56.000000, -115.000000) "></path>
+        </g>
+    </g>
+</svg>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="150px" height="120px" viewBox="0 0 150 120" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 52.2 (67145) - http://www.bohemiancoding.com/sketch -->
+    <title>Group 6</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-1">
+            <stop stop-color="#5981C6" offset="0%"></stop>
+            <stop stop-color="#FFFFFF" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="50%" y1="23.1956341%" x2="50%" y2="100%" id="linearGradient-2">
+            <stop stop-color="#5981C6" offset="0%"></stop>
+            <stop stop-color="#FFFFFF" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="信贷投放" transform="translate(-33.000000, -209.000000)" fill-rule="nonzero">
+            <g id="Group-6" transform="translate(33.000000, 209.000000)">
+                <rect id="Rectangle" fill="url(#linearGradient-1)" x="0" y="0" width="150" height="120"></rect>
+                <path d="M1.11694562e-13,70 C8,51.3333333 15,42 21,42 C32.6438116,42 32.365446,77 47,77 C56.0930381,77 68.2366447,63 80,63 C94,63 111.159638,89.8002013 127,81 C131.649083,78.4171761 128.045462,43.5421509 133,25 C135.218683,16.6966723 140.885349,8.36333899 150,0 L150,120 L5.68434189e-14,120 L1.11694562e-13,70 Z" id="Rectangle" fill="url(#linearGradient-2)"></path>
+            </g>
+        </g>
+    </g>
+</svg>
