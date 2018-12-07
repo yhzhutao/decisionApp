@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="16px" height="16px" viewBox="0 0 16 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 52.2 (67145) - http://www.bohemiancoding.com/sketch -->
+    <title>credit_icon</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="信贷投放" transform="translate(-182.000000, -147.000000)" fill-rule="nonzero">
+            <g id="credit_icon" transform="translate(182.000000, 147.000000)">
+                <circle id="Oval" fill="#5981C6" cx="8" cy="8" r="8"></circle>
+                <polyline id="Path-4" stroke="#FFFFFF" points="3 8 4 10 6 7 7 10 9 6 10 10 12 5 13 7"></polyline>
+            </g>
+        </g>
+    </g>
+</svg>
