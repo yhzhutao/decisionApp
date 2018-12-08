@@ -1,7 +1,37 @@
 <template>
-    <div class="variousIndicators">
-      各项指标界面
-      <v-indicator :fontcolor="'red'" :percent="53.75" :index="'不良率'"></v-indicator>
+    <div id="variousIndicators">
+      <div class="variousIndicators">
+        <div class="indicators-head clearfix">
+          <div class="left">
+            <span>各项指标</span><img src="../../image/target_icon@2x.png">
+          </div>
+          <div class="right">
+            <span>更多</span>
+          </div>
+        </div>
+        <div class="content">
+          <ul>
+            <li>
+              <v-indicator :fontcolor="'#3ac5b2'" :percent="53.72" :index="'资产负率'"></v-indicator>
+            </li>
+            <li>
+              <v-indicator :fontcolor="'#3ac5b2'" :percent="53.72" :index="'不良率'"></v-indicator>
+            </li>
+            <li>
+              <v-indicator :fontcolor="'#3ac5b2'" :percent="53.72" :index="'市占率'"></v-indicator>
+            </li>
+            <li>
+              <v-indicator :fontcolor="'#3ac5b2'" :percent="53.72" :index="'渗透率'"></v-indicator>
+            </li>
+            <li>
+              <v-indicator :fontcolor="'#3ac5b2'" :percent="53.72" :index="'核准率'"></v-indicator>
+            </li>
+            <li>
+              <v-indicator :fontcolor="'#3ac5b2'" :percent="53.72" :index="'自动审批率'"></v-indicator>
+            </li>
+          </ul>
+        </div>
+      </div>
     </div>
 </template>
 
@@ -15,6 +45,66 @@
     }
 </script>
 
-<style scoped>
-
+<style lang="scss" scoped>
+#variousIndicators{
+  padding: 0 32px;
+  .variousIndicators{
+    margin-top: -80px;
+    padding: 32px;
+    border-radius: 4px;
+    background: #fff;
+    .indicators-head{
+      .left{
+        float: left;
+        margin-bottom: 32px;
+        span{
+          margin-right: 16px;
+          vertical-align: middle;
+          font-size: 32px;
+          color: #b2b2b2;
+        }
+        img{
+          width: 32px;
+          height: 18px;
+          vertical-align: middle;
+        }
+        &:before{
+          content: '';
+          display: inline-block;
+          width: 8px;
+          height: 32px;
+          background: #30c2ae;
+          margin-right: 16px;
+          vertical-align: middle;
+        }
+      }
+      .right{
+        float: right;
+        span{
+          font-size: 32px;
+          color:#acacac;
+        };
+        &:after{
+          display: inline-block;
+          content: '';
+          width: 16px;
+          height: 16px;
+          border-top: 2px solid #b0b0b0;
+          border-right: 2px solid #b0b0b0;
+          transform: rotate(45deg);
+        }
+      }
+    }
+    .content{
+      ul{
+        display: flex;
+        flex-wrap: wrap;
+        li:nth-child(odd){
+          margin-right: 88px;
+          margin-bottom: 40px;
+        }
+      }
+    }
+  }
+}
 </style>

@@ -28,6 +28,7 @@ export default {
 </script>
 <style lang="scss">
   @import url('./common/css/reset.scss');
+  @import url('./common/css/base.scss');
   .topArea{
     background-image:url("./image/home_header_back.svg")
   }
