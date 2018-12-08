@@ -52,6 +52,7 @@
     margin-top: -80px;
     padding: 32px;
     border-radius: 4px;
+    height: 1036px;
     background: #fff;
     .indicators-head{
       .left{
