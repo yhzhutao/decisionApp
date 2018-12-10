@@ -2,13 +2,13 @@
   <div id="creditAvailability">
     <ul>
       <li>
-        <v-creditCart :code="0"></v-creditCart>
+        <v-creditCart :titleCode="0"></v-creditCart>
       </li>
       <li>
-        <v-creditCart :code="1"></v-creditCart>
+        <v-creditCart :titleCode="1"></v-creditCart>
       </li>
       <li>
-        <v-creditCart :code="2"></v-creditCart>
+        <v-creditCart :titleCode="2"></v-creditCart>
       </li>
     </ul>
   </div>

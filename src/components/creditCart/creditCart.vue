@@ -35,20 +35,20 @@
       }
     },
     props:{
-      code:Number
+      titleCode:Number
     },
     mounted(){
-      this.getTitle(this.code);
+      this.getTitle(this.titleCode);
     },
     methods:{
-      getTitle(code){
-        if(code==0){
+      getTitle(titleCode){
+        if(titleCode==0){
           this.title='信贷投放总体情况';
           this.url=require('../../image/credit_icon@2x.png');
-        }else if(code==1){
+        }else if(titleCode==1){
           this.title='批售';
           this.url=require('../../image/wholesaler_icon@2x.png');
-        }else if(code==2){
+        }else if(titleCode==2){
           this.title='零售';
           this.url=require('../../image/retail_icon@2x.png');
         }else{
