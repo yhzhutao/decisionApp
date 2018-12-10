@@ -15,7 +15,6 @@ module.exports = {
       minPixelValue: 1,
       mediaQuery: false
     },
-    "postcss-viewport-units":{},
     "cssnano": { preset: "advanced", autoprefixer: false, "postcss-zindex": false }
   }
 }

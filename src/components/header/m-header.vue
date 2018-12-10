@@ -3,8 +3,13 @@
     <div class="header-top">
       <div v-show ="backGlag === true"><img class="login_logo" src="../../image/login_logo.svg" alt=""></div>
       <div v-show = "backGlag === false"><img class="back" src="../../image/back_icon.svg" alt=""></div>
-      <div>{{date}} <img class="date-choose" src="../../image/date_choose_icon.svg" alt=""></div>
-      <div></div>
+      <el-date-picker class="date"
+        type="dates"
+        v-model="value14"
+        placeholder="">
+      </el-date-picker>
+      <div class="date">{{date}} <img class="date-choose" src="../../image/date_choose_icon.svg" alt=""></div>
+      <div class="my-icon"><img src="../../image/my_icon@2x.png" alt=""></div>
     </div>
   </div>
 </template>
@@ -16,7 +21,8 @@
     data() {
       return {
         date: this.formatDate(new Date()),
-        backGlag:true
+        backGlag:true,
+        value14:''
       }
     },
     components: {
@@ -54,17 +60,35 @@
 
 <style lang="sass" scoped>
   .header
-    height: 40px
+    position: relative
+    height: 80px
     width: 100%
     .header-top
-      display: flex
+      /*display: flex*/
     .login_logo
-      width: 68px
-      height: 27px
+      width: 136px
+      height: 54px
+      margin-top: 20px
+      margin-left: 32px
+      float: left
+    .date
+       text-align: center
+       position: absolute
+       left: 50%
+       top: 50%
+       transform: translate(-50%,-50%)
+       color: #ffffff
     .back
       height: 22px
       width: 22px
     .date-choose
       height: 32px
       width: 28px
+    .my-icon
+      float: right
+      img
+        width: 48px
+        height: 48px
+        margin-top: 13px
+        margin-right: 16px
 </style>
