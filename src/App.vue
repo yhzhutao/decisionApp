@@ -2,7 +2,7 @@
   <div id="app" class="border">
     <div class="topArea">
       <m-header></m-header>
-      <tab></tab>
+      <tab v-if="false"></tab>
     </div>
     <router-view/>
   </div>

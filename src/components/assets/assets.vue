@@ -10,7 +10,9 @@
           <p class="num">888.88</p>
           <div class="line"></div>
           <div class="content-bottom clearfix">
-            <div id="container" class="chart-container" style="width: 100px;height: 100px"></div>
+            <div class="chart-container">
+              <v-highchart :options="options" :styles="styles"></v-highchart>
+            </div>
             <div class="container-right">
               <div class="right-top">
                 <span>222.22</span>
@@ -43,31 +45,13 @@
 
 <script>
     import Asset from '@/components/assetCard/assetCard';
-    import Highcharts from 'highcharts/highstock';
-    import HighchartsMore from 'highcharts/highcharts-more';
-    import HighchartsDrilldown from 'highcharts/modules/drilldown';
-    import Highcharts3D from 'highcharts/highcharts-3d';
-    import Highmaps from 'highcharts/modules/map';
-    HighchartsMore(Highcharts)
-    HighchartsDrilldown(Highcharts);
-    Highcharts3D(Highcharts);
-    Highmaps(Highcharts);
+    import HighchartsComponent from '@/components/highchartsComponent/HighchartsComponent'
     export default {
         name: "assets",
       data(){
         return{
-          chart:null
-        }
-      },
-      components:{
-          'v-asset':Asset
-      },
-      mounted(){
-        this.moreChart();
-      },
-      methods:{
-        moreChart() {
-          this.chart = new Highcharts.Chart( 'container', {
+          chart:null,
+          options:{
             chart: {
               plotBackgroundColor: null,
               plotBorderWidth: null,
@@ -86,10 +70,7 @@
                 cursor: 'pointer',
                 dataLabels: {
                   enabled: true,
-                  format: '<b>{point.name}</b>: {point.percentage:.1f} %',
-                  style: {
-                    color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
-                  }
+                  format: '<b>{point.name}</b>: {point.percentage:.1f} %'
                 }
               }
             },
@@ -106,7 +87,22 @@
                 y: 25
               }]
             }]
-          });
+          },
+          styles:{
+            width:100,
+            height:100
+          }
+        }
+      },
+      components:{
+          'v-asset':Asset,
+          'v-highchart':HighchartsComponent
+      },
+      mounted(){
+        this.moreChart();
+      },
+      methods:{
+        moreChart() {
         }
       }
     }

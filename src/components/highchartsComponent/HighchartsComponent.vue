@@ -21,13 +21,13 @@
       }
     },
     mounted() {
+      console.log(1);
       this.initChart();
     },
     methods: {
       initChart() {
-        console.log(this.$el);
-        this.$el.style.width = (this.styles.width || 800) + 'px';
-        this.$el.style.height = (this.styles.height || 400) + 'px';
+        this.$el.style.width = (this.styles.width || 100) + 'px';
+        this.$el.style.height = (this.styles.height || 100) + 'px';
         this.chart = new Highcharts.Chart(this.$el, this.options);
       }
     }
@@ -36,7 +36,7 @@
 
 <style lang="scss">
   .highcharts-container {
-    width: 800px;
-    height: 400px;
+    width: 200px;
+    height: 200px;
   }
 </style>

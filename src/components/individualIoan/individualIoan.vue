@@ -1,3 +1,4 @@
+<!--个贷情况界面-->
 <template>
     <div class="individualIoan">
       <div class="target-card">
@@ -5,9 +6,11 @@
           <div class="target-head-left">
             <span>目标达成率</span><img src="../../image/aim_icon@2x.png" alt="">
           </div>
-          <div class="target-head-right">
-            <span>更多</span>
-          </div>
+          <router-link to="/brand">
+            <div class="target-head-right">
+              <span>更多</span>
+            </div>
+          </router-link>
         </div>
         <div class="target-content">
           <ul>
