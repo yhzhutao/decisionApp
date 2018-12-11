@@ -1,3 +1,4 @@
+<!--各项指标界面-->
 <template>
   <div id="variousIndicators">
     <div class="indicators-head clearfix">

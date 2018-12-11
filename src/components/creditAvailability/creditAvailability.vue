@@ -1,3 +1,4 @@
+<!--信贷投放界面-->
 <template>
   <div id="creditAvailability">
     <ul>

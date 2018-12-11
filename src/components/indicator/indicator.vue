@@ -1,3 +1,4 @@
+<!--各项指标界面卡片-->
 <template>
   <div class="indicator">
     <div class="content">
@@ -21,6 +22,7 @@
 
 <style lang="scss" scoped>
   .indicator {
+    margin: 0 auto;
     position: relative;
     width: 260px;
     height: 260px;
