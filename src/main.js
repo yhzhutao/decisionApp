@@ -18,7 +18,6 @@ Highcharts3D(Highcharts);
 Highmaps(Highcharts);
 
 Vue.config.productionTip = false
-Vue.use(DatePicker)
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

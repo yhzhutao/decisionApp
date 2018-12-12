@@ -37,6 +37,7 @@
         text-decoration: none
         color: #FFFFFF
         text-align: center
+        font-size: 32px
         &.router-link-active
 
 </style>

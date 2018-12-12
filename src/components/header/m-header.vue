@@ -3,28 +3,33 @@
     <div class="header-top">
       <div v-show ="backGlag === true"><img class="login_logo" src="../../image/login_logo.svg" alt=""></div>
       <div v-show = "backGlag === false"><img class="back" src="../../image/back_icon.svg" alt=""></div>
-      <div class="date"><el-date-picker
-        v-model="date"
-        align="right"
-        type="date"
-        :editable="false"
-        :clearable="false"
-        placeholder="选择日期">
-      </el-date-picker> <img class="date-choose" src="../../image/date_choose_icon.svg" alt=""></div>
+      <div @click="openPicker" class="date"><span >{{ selectDate }}</span>
+        <img src="../../image/date_choose_icon.svg" alt=""></div>
       <div class="my-icon"><img src="../../image/my_icon@2x.png" alt=""></div>
     </div>
+      <mt-datetime-picker
+        ref="picker"
+        type="date"
+        v-model="date"
+        @confirm="handleConfirm"
+      >
+      </mt-datetime-picker>
   </div>
 </template>
 
 <script>
   import bus from '../base/bus'
+  import { DatetimePicker } from 'mint-ui';
+  import Vue from 'vue'
+  Vue.component(DatetimePicker.name, DatetimePicker);
   export default {
     name: "m-header",
     data() {
       return {
-        date: this.formatDate(new Date()),
+        date: new Date(),
         backGlag:true,
-        value14:''
+        dateValue:'',
+        selectDate:this.formatDate(new Date())
       }
     },
     components: {
@@ -48,10 +53,16 @@
       formatDate(date) {
         var o = {
           y: date.getFullYear(),
-          m: date.getMonth() + 1 < 10 ? '0' + date.getMonth() + 1 : date.getMonth() + 1,
+          m: date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1,
           d: date.getDate()
         }
         return o.y + '\/' + o.m + '\/' + o.d
+      },
+      openPicker() {
+        this.$refs.picker.open();
+      },
+      handleConfirm(date){
+        this.selectDate = this.formatDate(date)
       },
       dateUp() {
         bus.$emit('date', '222')
@@ -73,6 +84,7 @@
       margin-left: 32px
       float: left
     .date
+       font-size: 32px
        text-align: center
        position: absolute
        left: 50%
@@ -96,19 +108,10 @@
 
 </style>
 <style lang="sass">
-  .el-input__prefix
-    display: none
-  .date
-    img
-      position: absolute
-      right: 0
-      top: 0
-    .el-date-editor
-      input
-        background: rgba(255,255,255,0)
-        color: #ffffff
-        outline: none
-        border: none
-        font-size: 16px
-        text-align: right
+  .picker-toolbar
+    height: 70px
+    span
+     line-height: 75px
+  .picker-items
+   width: 100%
 </style>
