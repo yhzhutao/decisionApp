@@ -35,14 +35,77 @@
         </ul>
       </div>
       <div class="brand-content">
-
+        <v-highchart :options="optionsYear" :styles="stylesYear"></v-highchart>
+        <hr>
+        <v-highchart :options="optionsYear" :styles="stylesYear"></v-highchart>
+        <hr>
+        <v-highchart :options="optionsYear" :styles="stylesYear"></v-highchart>
+        <hr>
+        <v-highchart :options="optionsYear" :styles="stylesYear"></v-highchart>
       </div>
     </div>
 </template>
 
 <script>
+  import Highchart from '@/components/highchartsComponent/HighchartsComponent'
     export default {
-        name: "brand"
+        name: "brand",
+      data(){
+          return{
+            optionsYear:{
+              chart: {
+                type: 'column'
+              },
+              title: {
+                text: '全年达成率',
+                align:'left',
+                style: {
+                  fontWeight: 'bold'
+                }
+              },
+              xAxis: {
+                categories: [
+                  '长安','长安','长安','长安','长安','长安'
+                ]
+              },
+              yAxis: {
+                min: 0,
+                title: {
+                  text: ''
+                },
+                gridLineWidth:0
+              },
+              credits:{enabled:false},
+              legend:{enabled:false},
+              exporting:{enabled:false},
+              plotOptions: {
+                column: {
+                  borderWidth: 0
+                },
+                series: {
+                  events: {
+                    click: function (event) {
+                      console.log(event);
+                      event.target.setAttribute('fill','rgb(241,155,58)');
+                    }
+                  }
+                }
+              },
+              series: [{
+                data: [{'color':'rgb(218,223,236)','y':11},
+                  {'color':'rgb(218,223,236)','y':12},
+                  {'color':'rgb(218,223,236)','y':13},
+                  {'color':'rgb(218,223,236)','y':14},
+                  {'color':'rgb(218,223,236)','y':15},
+                  {'color':'rgb(218,223,236)','y':16}]
+              }]
+            },
+            stylesYear:{width: 100,height:250}
+          }
+      },
+      components:{
+          'v-highchart':Highchart
+      }
     }
 </script>
 
@@ -64,6 +127,11 @@
           }
         }
       }
+    }
+  }
+  .brand-content{
+    hr{
+      margin: 0;
     }
   }
 }
