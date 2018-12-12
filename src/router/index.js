@@ -5,6 +5,7 @@ import IndividualIoanSituation from '@/components/individualIoan/individualIoan'
 import VariousIndicators from '@/components/variousIndicators/variousIndicators'
 import CreditAvailability from '@/components/creditAvailability/creditAvailability'
 import Brand from '@/components/brand/brand'
+import IndicatorsTrend from '@/components/indicatorsTrend/indicatorsTrend'
 
 Vue.use(Router)
 
@@ -18,6 +19,7 @@ export default new Router({
     {path: '/variousIndicators',component: VariousIndicators},
     {path: '/creditAvailability',component: CreditAvailability},
     {path:'/brand',component:Brand},
+    {path:'/indicatorsTrend',component:IndicatorsTrend},
     {path:'*',redirect:'/assetsSituation'}
   ]
 })

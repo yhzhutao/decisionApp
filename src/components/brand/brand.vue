@@ -47,7 +47,7 @@
 </template>
 
 <script>
-  import Highchart from '@/components/highchartsComponent/HighchartsComponent'
+  import Highchart from '@/components/highchartsComponent/HighchartsComponent';
     export default {
         name: "brand",
       data(){
@@ -78,21 +78,25 @@
               credits:{enabled:false},
               legend:{enabled:false},
               exporting:{enabled:false},
+              tooltip:false,
               plotOptions: {
                 column: {
-                  borderWidth: 0
+                  borderWidth: 0,
+                  dataLabels:{
+                    enabled:true,
+                  }
                 },
                 series: {
                   events: {
                     click: function (event) {
-                      console.log(event);
+                      // console.log(event);
                       event.target.setAttribute('fill','rgb(241,155,58)');
                     }
                   }
                 }
               },
               series: [{
-                data: [{'color':'rgb(218,223,236)','y':11},
+                data: [{'color':'rgb(218,223,236)','y':70},
                   {'color':'rgb(218,223,236)','y':12},
                   {'color':'rgb(218,223,236)','y':13},
                   {'color':'rgb(218,223,236)','y':14},

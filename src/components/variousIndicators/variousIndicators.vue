@@ -5,9 +5,11 @@
       <div class="left">
         <span>各项指标</span><img src="../../image/target_icon@2x.png">
       </div>
-      <div class="right">
-        <span>更多</span>
-      </div>
+      <router-link to="/indicatorsTrend">
+        <div class="right">
+          <span>更多</span>
+        </div>
+      </router-link>
     </div>
     <div class="content">
       <ul>

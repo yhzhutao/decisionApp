@@ -182,6 +182,7 @@
           width: 50%;
           box-sizing: border-box;
           text-align: center;
+          line-height: 44px;
           p{
             font-size: 32px;
             color: rgb(0,0,0);
@@ -233,7 +234,6 @@
       }
     }
     .examine-content{
-
       ul{
         display: flex;
         flex-wrap: wrap;
@@ -251,9 +251,13 @@
             }
             p:first-child{
               margin-top: 44px;
+              line-height: 56px;
+              font-size: 40px;
             }
             p:nth-child(2){
               margin-top: 16px;
+              line-height: 44px;
+              font-size: 32px;
             }
           }
         }

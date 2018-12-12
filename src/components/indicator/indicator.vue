@@ -46,6 +46,9 @@
         width: 100%;
         margin: 16px 0;
       }
+      .bottom{
+        font-size: 32px;
+      }
     }
   }
 </style>
