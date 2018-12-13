@@ -1,11 +1,11 @@
 <!--各项指标趋势界面-->
 <template>
-    <div class="indicatorsTrend" ref="indicatorsTrend-wrapper">
-      <div class="content">
+    <div class="indicatorsTrend">
         <div class="indicatorsTrend-head clearfix">
           <div class="rejection-rate" @click="selectIndicators(0)">不良率</div>
           <div class="market-share" @click="selectIndicators(1)">市占率</div>
         </div>
+      <div class="content" ref="indicatorsTrend-content-wrapper">
         <div class="indicatorsTrend-content">
           <div class="rejection-rate-content" ref="rejection-rate-content">
             <div class="title clearfix">
@@ -205,7 +205,7 @@
       },
       methods:{
         _initScorll(){
-          this.Scroll = new BScroll(this.$refs['indicatorsTrend-wrapper'],{click:true});
+          this.Scroll = new BScroll(this.$refs['indicatorsTrend-content-wrapper'],{click:true});
         },
         selectIndicators(index){
           if(index==0){
@@ -225,14 +225,7 @@
 
 <style lang="scss" scoped>
 .indicatorsTrend{
-  background-color: #fff;
-  position: absolute;
-  width: 100%;
-  top: 80px;
-  bottom: 0;
-  overflow: hidden;
-  .content{
-    .indicatorsTrend-head{
+  .indicatorsTrend-head{
       background-color: rgb(238,238,238);
       padding: 32px 0;
       .rejection-rate,.market-share{
@@ -248,6 +241,13 @@
         border-radius: 8px;
       }
     }
+  .content{
+    background-color: #fff;
+    position: absolute;
+    width: 100%;
+    top: 208px;
+    bottom: 0;
+    overflow: hidden;
     .indicatorsTrend-content{
       .rejection-rate-content{
         border-bottom: 2px solid rgb(218,223,236);

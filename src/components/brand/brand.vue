@@ -1,54 +1,57 @@
 <template>
     <div class="brand">
-      <div class="brand-head">
-        <ul>
-          <li>
-            <div class="img">
-              <img src="../../image/changan_logo@2x.png" alt="">
-            </div>
-          </li>
-          <li>
-            <div class="img">
-              <img src="../../image/ford_logo@2x.png" alt="">
-            </div>
-          </li>
-          <li>
-            <div class="img">
-              <img src="../../image/suzuki_logo@2x.png" alt="">
-            </div>
-          </li>
-          <li>
-            <div class="img">
-              <img src="../../image/mazda_logo@2x.png" alt="">
-            </div>
-          </li>
-          <li>
-            <div class="img">
-              <img src="../../image/oushang_logo@2x.png" alt="">
-            </div>
-          </li>
-          <li>
-            <div class="img">
-              <img src="../../image/ds_logo@2x.png" alt="">
-            </div>
-          </li>
-        </ul>
-      </div>
-      <div class="brand-content">
-        <v-highchart :options="optionsYear" :styles="stylesYear"></v-highchart>
-        <hr>
-        <v-highchart :options="optionsYear" :styles="stylesYear"></v-highchart>
-        <hr>
-        <v-highchart :options="optionsYear" :styles="stylesYear"></v-highchart>
-        <hr>
-        <v-highchart :options="optionsYear" :styles="stylesYear"></v-highchart>
-      </div>
+        <div class="brand-head">
+          <ul>
+            <li>
+              <div class="img">
+                <img src="../../image/changan_logo@2x.png" alt="">
+              </div>
+            </li>
+            <li>
+              <div class="img">
+                <img src="../../image/ford_logo@2x.png" alt="">
+              </div>
+            </li>
+            <li>
+              <div class="img">
+                <img src="../../image/suzuki_logo@2x.png" alt="">
+              </div>
+            </li>
+            <li>
+              <div class="img">
+                <img src="../../image/mazda_logo@2x.png" alt="">
+              </div>
+            </li>
+            <li>
+              <div class="img">
+                <img src="../../image/oushang_logo@2x.png" alt="">
+              </div>
+            </li>
+            <li>
+              <div class="img">
+                <img src="../../image/ds_logo@2x.png" alt="">
+              </div>
+            </li>
+          </ul>
+        </div>
+        <div class="content" ref="brand-content-wrapper">
+          <div class="brand-content">
+          <v-highchart :options="optionsYear" :styles="stylesYear"></v-highchart>
+          <hr>
+          <v-highchart :options="optionsYear" :styles="stylesYear"></v-highchart>
+          <hr>
+          <v-highchart :options="optionsYear" :styles="stylesYear"></v-highchart>
+          <hr>
+          <v-highchart :options="optionsYear" :styles="stylesYear"></v-highchart>
+        </div>
+        </div>
     </div>
 </template>
 
 <script>
   import Highchart from '@/components/highchartsComponent/HighchartsComponent';
-    export default {
+  import BScroll from 'better-scroll';
+  export default {
         name: "brand",
       data(){
           return{
@@ -109,34 +112,49 @@
       },
       components:{
           'v-highchart':Highchart
-      }
+      },
+      mounted(){
+          this._initScorll();
+      },
+    methods:{
+          _initScorll(){
+            new BScroll(this.$refs['brand-content-wrapper'],{click:true});
+          }
+    }
     }
 </script>
 
 <style lang="scss" scoped>
 .brand{
-  .brand-head{
-    ul{
-      display: flex;
-      justify-content: space-around;
-      margin: 26px 0;
-      li{
-        .img{
-          display: inline-block;
-          width: 104px;
-          height: 104px;
-          img{
-            width: 100%;
-            height: 100%;
+  .brand-head {
+      ul {
+        display: flex;
+        justify-content: space-around;
+        padding: 26px 0;
+        li {
+          .img {
+            display: inline-block;
+            width: 104px;
+            height: 104px;
+            img {
+              width: 100%;
+              height: 100%;
+            }
           }
         }
       }
     }
-  }
-  .brand-content{
-    hr{
-      margin: 0;
-    }
+  .content{
+    position: absolute;
+    width: 100%;
+    top: 236px;
+    bottom: 0;
+    overflow: hidden;
+    .brand-content {
+       hr {
+         margin: 0;
+       }
+     }
   }
 }
 </style>
