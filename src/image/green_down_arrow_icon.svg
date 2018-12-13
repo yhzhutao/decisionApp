@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="8px" height="8px" viewBox="0 0 8 8" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 52.2 (67145) - http://www.bohemiancoding.com/sketch -->
+    <title>green_down_arrow_icon</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="各项指标" transform="translate(-227.000000, -110.000000)" fill="#30C2AE" fill-rule="nonzero">
+            <path d="M232.788854,113.577709 L234.552786,117.105573 C235.046765,118.09353 234.646316,119.294876 233.658359,119.788854 C233.380648,119.92771 233.074422,120 232.763932,120 L229.236068,120 C228.131498,120 227.236068,119.104569 227.236068,118 C227.236068,117.68951 227.308358,117.383284 227.447214,117.105573 L229.211146,113.577709 C229.705124,112.589752 230.90647,112.189303 231.894427,112.683282 C232.281482,112.876809 232.595327,113.190654 232.788854,113.577709 Z" id="green_down_arrow_icon" transform="translate(231.000000, 115.000000) scale(1, -1) translate(-231.000000, -115.000000) "></path>
+        </g>
+    </g>
+</svg>

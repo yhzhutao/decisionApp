@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="8px" height="8px" viewBox="0 0 8 8" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 52.2 (67145) - http://www.bohemiancoding.com/sketch -->
+    <title>blue_down_arrow_icon</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="信贷投放" transform="translate(-315.000000, -110.000000)" fill="#5981C6" fill-rule="nonzero">
+            <path d="M320.788854,113.577709 L322.552786,117.105573 C323.046765,118.09353 322.646316,119.294876 321.658359,119.788854 C321.380648,119.92771 321.074422,120 320.763932,120 L317.236068,120 C316.131498,120 315.236068,119.104569 315.236068,118 C315.236068,117.68951 315.308358,117.383284 315.447214,117.105573 L317.211146,113.577709 C317.705124,112.589752 318.90647,112.189303 319.894427,112.683282 C320.281482,112.876809 320.595327,113.190654 320.788854,113.577709 Z" id="blue_down_arrow_icon" transform="translate(319.000000, 115.000000) scale(1, -1) translate(-319.000000, -115.000000) "></path>
+        </g>
+    </g>
+</svg>
