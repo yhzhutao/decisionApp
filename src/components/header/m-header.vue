@@ -2,7 +2,7 @@
   <div class="header">
     <div class="header-top">
       <div v-show ="backGlag === true"><img class="login_logo" src="../../image/login_logo.svg" alt=""></div>
-      <div v-show = "backGlag === false"><img class="back" src="../../image/back_icon.svg" alt=""></div>
+      <div @click="goBack" v-show = "backGlag === false"><img class="back" src="../../image/back_icon.svg" alt=""></div>
       <div @click="openPicker" class="date"><span >{{ selectDate }}</span>
         <img src="../../image/date_choose_icon.svg" alt=""></div>
       <div class="my-icon"><img src="../../image/my_icon@2x.png" alt=""></div>
@@ -24,10 +24,14 @@
   Vue.component(DatetimePicker.name, DatetimePicker);
   export default {
     name: "m-header",
+    props:{
+      backGlag:{
+
+      }
+    },
     data() {
       return {
         date: new Date(),
-        backGlag:true,
         dateValue:'',
         selectDate:this.formatDate(new Date())
       }
@@ -38,7 +42,7 @@
 
     },
     mounted() {
-
+     console.log(this)
     },
     watch:{
       $route(to,from){
@@ -57,6 +61,9 @@
           d: date.getDate()
         }
         return o.y + '\/' + o.m + '\/' + o.d
+      },
+      goBack(){
+        this.$router.go(-1)
       },
       openPicker() {
         this.$refs.picker.open();
@@ -92,8 +99,11 @@
        transform: translate(-50%,-50%)
        color: #ffffff
     .back
-      height: 22px
-      width: 22px
+      height: 42px
+      width: 24px
+      margin-left: 32px
+      margin-top: 20px
+      float: left
     .date-choose
       height: 32px
       width: 28px

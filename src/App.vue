@@ -1,8 +1,8 @@
 <template>
   <div id="app" class="border">
     <div class="topArea">
-      <m-header></m-header>
-      <tab></tab>
+      <m-header :backGlag="backGlag"></m-header>
+      <tab v-show="tabGlag"></tab>
     </div>
     <router-view/>
   </div>
@@ -19,11 +19,35 @@ export default {
   },
   data(){
     return{
-      message:''
+      message:'',
+      tabGlag:true,
+      backGlag:true
+    }
+  },
+  created(){
+    let path = this.$router.currentRoute.path
+    if(path === '/assetsSituation'||path === '/individualIoanSituation'||path === '/variousIndicators'||path === '/creditAvailability'){
+      this.tabGlag = true
+      this.backGlag = true
+    }else{
+      this.tabGlag = false
+      this.backGlag = false
     }
   },
   mounted(){
-  }
+
+  },
+  watch:{
+    $route(to,from){
+      if(to.path === '/assetsSituation'||to.path === '/individualIoanSituation'||to.path === '/variousIndicators'||to.path === '/creditAvailability'){
+        this.tabGlag = true
+        this.backGlag = true
+      }else{
+        this.tabGlag = false
+        this.backGlag = false
+      }
+    }
+  },
 }
 </script>
 <style lang="scss">
