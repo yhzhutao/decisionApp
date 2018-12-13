@@ -119,6 +119,7 @@
         color: rgb(151, 151, 151);
         font-size: 24px;
         .explain{
+          text-align: right;
           .current {
             margin-right: 12px;
             line-height: 34px;
