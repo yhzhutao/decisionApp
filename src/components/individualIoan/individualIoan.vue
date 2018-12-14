@@ -199,7 +199,7 @@
             width: 50%;
             box-sizing: border-box;
             text-align: center;
-            line-height: 44px;
+            line-height: 48px;
             p{
               font-size: 32px;
               color: rgb(0,0,0);

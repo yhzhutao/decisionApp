@@ -115,7 +115,10 @@
         }
       }
       .content-right {
+        position: relative;
         float: right;
+        height: 360px;
+        width: 220px;
         color: rgb(151, 151, 151);
         font-size: 24px;
         .explain{
@@ -149,12 +152,18 @@
           }
         }
         .histogram {
-          margin-top: 80px;
+          position: absolute;
+          bottom: 0px;
           .histogram-one {
             display: inline-block;
             width: 80px;
             height: 180px;
             background: rgb(89, 129, 198);
+            animation:mymove 0.8s;
+          }
+          @keyframes mymove {
+            0%{height: 0}
+            100%{height:180px}
           }
           .histogram-two {
             display: inline-block;
