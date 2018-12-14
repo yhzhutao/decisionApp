@@ -1,74 +1,76 @@
 <template>
- <div class="defectiveRatio">
-   <div class="Wholesale">
-     <div class="title">
-       <div class="title-left">
-         <span class="icon"></span>
-         <span class="t-l-text">批售</span>
+ <div class="defectiveRatio" ref="content-wrapper">
+   <div>
+     <div class="Wholesale">
+       <div class="title">
+         <div class="title-left">
+           <span class="icon"></span>
+           <span class="t-l-text">批售</span>
+         </div>
+         <div class="title-right">
+           <span>更多</span>
+         </div>
        </div>
-       <div class="title-right">
-        <span>更多</span>
+       <div class="chartIcon">
+         <div class="Icon-right">
+           <span class="icon-f"></span>
+           <span>当前</span>
+           <span class="icon-t"></span>
+           <span>同期</span>
+         </div>
        </div>
-     </div>
-     <div class="chartIcon">
-       <div class="Icon-right">
-         <span class="icon-f"></span>
-         <span>当前</span>
-         <span class="icon-t"></span>
-         <span>同期</span>
+       <div class="charts">
+         <monthsCharts :options="optionsYear" :styles="stylesYear"></monthsCharts>
        </div>
-     </div>
-     <div class="charts">
-       <monthsCharts :options="optionsYear" :styles="stylesYear"></monthsCharts>
-     </div>
-     <div class="ratio">
-       <div>
-          <div class="itemColor1">10%</div>
-          <div>当月不良率</div>
-       </div>
-       <div class="rlborder itemColor2">
-         <div>-10%</div>
-         <div>同比变动</div>
-       </div>
-       <div>
-         <div class="itemColor3">-10%</div>
-         <div>环比变动</div>
-       </div>
-     </div>
-   </div>
-   <div class="retail">
-     <div class="title">
-       <div class="title-left">
-         <span class="icon"></span>
-         <span class="t-l-text">零售</span>
-       </div>
-       <div class="title-right">
-         <span>更多</span>
+       <div class="ratio">
+         <div>
+           <div class="itemColor1">10%</div>
+           <div>当月不良率</div>
+         </div>
+         <div class="rlborder itemColor2">
+           <div>-10%</div>
+           <div>同比变动</div>
+         </div>
+         <div>
+           <div class="itemColor3">-10%</div>
+           <div>环比变动</div>
+         </div>
        </div>
      </div>
-     <div class="chartIcon">
-       <div class="Icon-right">
-         <span class="icon-f"></span>
-         <span>当前</span>
-         <span class="icon-t"></span>
-         <span>同期</span>
+     <div class="retail">
+       <div class="title">
+         <div class="title-left">
+           <span class="icon"></span>
+           <span class="t-l-text">零售</span>
+         </div>
+         <div class="title-right">
+           <span>更多</span>
+         </div>
        </div>
-     </div>
-     <div class="charts">
-       <monthsCharts :options="optionsYear" :styles="stylesYear"></monthsCharts>
-     </div>
-     <div class="ratio">
-       <div>
-         <div class="itemColor1">10%</div>
-         <div>当月不良率</div>
+       <div class="chartIcon">
+         <div class="Icon-right">
+           <span class="icon-f"></span>
+           <span>当前</span>
+           <span class="icon-t"></span>
+           <span>同期</span>
+         </div>
        </div>
-       <div class="rlborder itemColor2">
-         <div>-10%</div>
-         <div>同比变动</div>
+       <div class="charts">
+         <monthsCharts :options="optionsYear" :styles="stylesYear"></monthsCharts>
        </div>
-       <div>
-         <div class="itemColor3">-10%</div>
-         <div>环比变动</div>
+       <div class="ratio">
+         <div>
+           <div class="itemColor1">10%</div>
+           <div>当月不良率</div>
+         </div>
+         <div class="rlborder itemColor2">
+           <div>-10%</div>
+           <div>同比变动</div>
+         </div>
+         <div>
+           <div class="itemColor3">-10%</div>
+           <div>环比变动</div>
+         </div>
        </div>
      </div>
    </div>
@@ -77,7 +79,8 @@
 
 <script>
   import monthsCharts from '@/components/highchartsComponent/HighchartsComponent'
-    export default {
+  import BScroll from 'better-scroll';
+  export default {
         name: "defectiveRatio",
       data(){
         return{
@@ -210,6 +213,14 @@
           stylesYear:{width: 95,height:180}
         }
       },
+      mounted(){
+        this._initScorll();
+      },
+      methods:{
+        _initScorll(){
+          new BScroll(this.$refs['content-wrapper'],{click:true});
+        }
+      },
       components:{
         monthsCharts
       }
@@ -217,6 +228,14 @@
 </script>
 
 <style lang="scss" scoped>
+  .defectiveRatio{
+    position: absolute;
+    top: 80px;
+    bottom: 0px;
+    width: 100%;
+    overflow: hidden;
+    background-color: #2F3543;
+  }
   .Wholesale,.retail{
     height: 770px;
     background-color: #2F3543;
