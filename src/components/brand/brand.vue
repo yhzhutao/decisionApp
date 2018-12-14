@@ -36,14 +36,14 @@
         </div>
         <div class="content" ref="brand-content-wrapper">
           <div class="brand-content">
-          <v-highchart :options="optionsYear" :styles="stylesYear"></v-highchart>
-          <hr>
-          <v-highchart :options="optionsYear" :styles="stylesYear"></v-highchart>
-          <hr>
-          <v-highchart :options="optionsYear" :styles="stylesYear"></v-highchart>
-          <hr>
-          <v-highchart :options="optionsYear" :styles="stylesYear"></v-highchart>
-        </div>
+            <v-highchart :options="optionsYear" :styles="stylesYear"></v-highchart>
+            <hr>
+            <v-highchart :options="optionsYear" :styles="stylesYear"></v-highchart>
+            <hr>
+            <v-highchart :options="optionsYear" :styles="stylesYear"></v-highchart>
+            <hr>
+            <v-highchart :options="optionsYear" :styles="stylesYear"></v-highchart>
+          </div>
         </div>
     </div>
 </template>
@@ -68,7 +68,7 @@
               },
               xAxis: {
                 categories: [
-                  '长安','长安','长安','长安','长安','长安'
+                  '长安轿车','长安福特','长安铃木','长安马自达','长安欧尚','长安DS'
                 ]
               },
               yAxis: {

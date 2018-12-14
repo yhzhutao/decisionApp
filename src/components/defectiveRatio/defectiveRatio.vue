@@ -119,7 +119,7 @@
               tickmarkPlacement:'on',
               startOnTick:true,
               gridLineWidth:1,
-              gridLineDashStyle:'Dash',
+              gridLineDashStyle:'Dash'
             },
             yAxis: {
               title: {
@@ -128,7 +128,6 @@
               visible:false,
               gridLineWidth:0
             },
-
             credits:{enabled:false},
             legend:{enabled:false},
             exporting:{enabled:false},
