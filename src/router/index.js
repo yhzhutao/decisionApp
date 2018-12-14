@@ -6,7 +6,7 @@ import VariousIndicators from '@/components/variousIndicators/variousIndicators'
 import CreditAvailability from '@/components/creditAvailability/creditAvailability'
 import Brand from '@/components/brand/brand'
 import IndicatorsTrend from '@/components/indicatorsTrend/indicatorsTrend'
-
+import DefectiveRatio from '@/components/defectiveRatio/defectiveRatio'
 Vue.use(Router)
 
 export default new Router({
@@ -20,6 +20,7 @@ export default new Router({
     {path: '/creditAvailability',component: CreditAvailability},
     {path:'/brand',component:Brand},
     {path:'/indicatorsTrend',component:IndicatorsTrend},
+    {path:'/defectiveRatio',component:DefectiveRatio},
     {path:'*',redirect:'/assetsSituation'}
   ]
 })

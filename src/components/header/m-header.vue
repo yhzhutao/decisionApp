@@ -18,7 +18,7 @@
 </template>
 
 <script>
-  import bus from '../base/bus'
+  import bus from '@/components/base/bus'
   import { DatetimePicker } from 'mint-ui';
   import Vue from 'vue'
   Vue.component(DatetimePicker.name, DatetimePicker);
@@ -71,9 +71,6 @@
       handleConfirm(date){
         this.selectDate = this.formatDate(date)
       },
-      dateUp() {
-        bus.$emit('date', '222')
-      }
     }
   }
 </script>
