@@ -430,8 +430,7 @@
                     left: 50%;
                     transform: translate(-50%, -50%);
                     .top {
-                      line-height: 66px;
-                      font-size: 48px;
+                      font-size: 40px;
                     }
                     .line {
                       border-top: 1px solid rgb(151, 151, 151);

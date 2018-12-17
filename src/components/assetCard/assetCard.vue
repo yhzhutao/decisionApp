@@ -8,6 +8,13 @@
         <p class="unit">单位：亿元</p>
         <div class="current">
           <span>当前</span>
+          <div class="progress">
+            <div class="progress_bg">
+              <div class="progress_bar"></div>
+            </div>
+            <div class="progress_btn"></div>
+            <!--<div class="text">0%</div>-->
+          </div>
         </div>
         <div class="synchronism">
           <span>同期</span>
@@ -36,7 +43,8 @@
       data(){
         return{
           title:'',
-          url:''
+          url:'',
+          percent:50
         }
       },
       props:{
@@ -101,30 +109,63 @@
     .current{
       margin-top: 44px;
       span{
+        display: inline-block;
         line-height: 40px;
         font-size: 24px;
         color: rgb(155,155,155);
         margin-right: 10px;
-      }
-      &:after{
-        display: inline-block;
-        content: '';
-        width: 90%;
-        border-top: 2px solid rgb(218,223,236);
         vertical-align: middle;
       }
+      .progress {
+        display: inline-block;
+        position: relative;
+        width: 85%;
+        .progress_bg {
+          height: 8px;
+          border-radius: 5px;
+          overflow: hidden;
+          background-color: rgb(218,223,236);
+          .progress_bar {
+            background: rgb(110,90,200);
+            width: 50%;
+            height: 8px;
+            border-radius: 8px;
+            position: relative;
+            right: 0;
+          }
+        }
+        .progress_btn {
+          width: 40px;
+          height: 40px;
+          border-radius: 50%;
+          background: rgb(110,90,200);
+          position: absolute;
+          left: 46%;
+          top: -18px;
+          cursor: pointer;
+          border: 2px #bbbbbb solid;
+          box-sizing: border-box;
+        }
+      }
+      /*&:after{*/
+        /*display: inline-block;*/
+        /*content: '';*/
+        /*width: 90%;*/
+        /*border-top: 2px solid rgb(218,223,236);*/
+        /*vertical-align: middle;*/
+      /*}*/
     }
     .synchronism{
       span{
         line-height: 40px;
         font-size: 24px;
         color: rgb(155,155,155);
-        margin-right: 10px;
+        margin-right: 21px;
       }
       &:after{
         display: inline-block;
         content: '';
-        width: 45%;
+        width: 85%;
         border-top: 2px dashed rgb(110,90,200);
         vertical-align: middle;
       }
