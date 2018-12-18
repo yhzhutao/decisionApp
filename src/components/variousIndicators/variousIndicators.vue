@@ -68,13 +68,13 @@
       margin: 0px 32px;
       padding: 32px;
       border-radius: 4px;
-      height: 1036px;
       background: #fff;
       box-shadow: 0 2px 4px rgba(0,0,0,0.5);
       .indicators-head {
         .left {
           float: left;
-          margin-bottom: 32px;
+          /*margin-bottom: 32px;*/
+          margin-bottom: 10%;
           span {
             margin-right: 16px;
             vertical-align: middle;
@@ -118,9 +118,11 @@
         ul {
           display: flex;
           flex-wrap: wrap;
+          align-items: stretch;
           li:nth-child(odd) {
             margin-right: 88px;
-            margin-bottom: 40px;
+            /*margin-bottom: 40px;*/
+            margin-bottom: 10%;
           }
         }
       }

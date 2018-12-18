@@ -161,16 +161,6 @@
             color: rgb(110, 90, 200);
             line-height: 124px;
             vertical-align: middle;
-            &:after {
-              display: inline-block;
-              content: '';
-              width: 0;
-              height: 0;
-              border-width: 20px 20px 20px 0;
-              border-style: solid;
-              border-color: transparent rgb(245, 166, 35) transparent transparent;
-              vertical-align: middle;
-            }
           }
           .line {
             width: 100%;
