@@ -1,10 +1,16 @@
 <!--各项指标界面卡片-->
 <template>
-  <div class="indicator">
+  <div class="indicator circleProgress_wrapper">
+    <div class="wrapper right">
+      <div class="circleProgress rightcircle"></div>
+    </div>
+    <div class="wrapper left">
+      <div class="circleProgress leftcircle"></div>
+    </div>
     <div class="content">
-      <span class="top">{{percent}}%</span>
-      <div class="line"></div>
-      <span class="bottom" :style="{color:fontcolor}">{{index}}</span>
+      <!--<span class="top">{{percent}}%</span>-->
+      <!--<div class="line"></div>-->
+      <!--<span class="bottom" :style="{color:fontcolor}">{{index}}</span>-->
     </div>
   </div>
 </template>
@@ -16,12 +22,49 @@
       fontcolor: String,
       percent: Number,
       index: String
+    },
+    mounted(){
+
     }
   }
 </script>
-
 <style lang="scss" scoped>
-  .indicator {
+  .circleProgress_wrapper{
+    width: 260px;
+    height: 260px;
+    margin: 50px auto;
+    position: relative;
+    border:1px solid #ddd;
+    .wrapper{
+      width: 130px;
+      height: 260px;
+      position: absolute;
+      top:0;
+      /*overflow: hidden;*/
+    }
+    .right{
+      right:0;
+    }
+    .left{
+      left:0;
+    }
+    .circleProgress{
+      width: 220px;
+      height: 220px;
+      border:20px solid transparent;
+      border-radius: 50%;
+      position: absolute;
+      top:0;
+    }
+    .rightcircle{
+      border-top:20px solid green;
+      border-right:20px solid green;
+      right:0;
+    }
+  }
+</style>
+<style lang="scss" scoped>
+  /*.indicator {
     margin: 0 auto;
     position: relative;
     width: 260px;
@@ -51,4 +94,5 @@
       }
     }
   }
+  */
 </style>

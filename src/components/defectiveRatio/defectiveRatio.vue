@@ -7,9 +7,9 @@
            <span class="icon"></span>
            <span class="t-l-text">批售</span>
          </div>
-         <div class="title-right">
-           <span>更多</span>
-         </div>
+         <!--<div class="title-right">-->
+           <!--<span>更多</span>-->
+         <!--</div>-->
        </div>
        <div class="chartIcon">
          <div class="Icon-right">
@@ -43,9 +43,9 @@
            <span class="icon"></span>
            <span class="t-l-text">零售</span>
          </div>
-         <div class="title-right">
-           <span>更多</span>
-         </div>
+         <!--<div class="title-right">-->
+           <!--<span>更多</span>-->
+         <!--</div>-->
        </div>
        <div class="chartIcon">
          <div class="Icon-right">
@@ -102,7 +102,7 @@
             },
             xAxis: {
               categories: [
-                '01','02','03','04','05','06','07','08','09','10','11','12月'
+                '01','02','03','04','05','06','07','08','09','10','11','12'
               ],
               labels : {
                 rotation:0,
@@ -257,25 +257,25 @@
           font-size: 32px;
         }
       }
-      .title-right{
-        float: right;
-        &:after{
-          display: inline-block;
-          content: '';
-          width: 16px;
-          height: 16px;
-          margin-right: 32px;
-          border-top: 1px solid rgb(155,155,155);
-          border-right: 1px solid rgb(155,155,155);
-          transform: rotate(45deg);
-        }
-        span{
-          display: inline-block;
-          margin-top: 32px;
-          font-size: 32px;
-          color: rgb(155,155,155);
-        }
-      }
+      /*.title-right{*/
+        /*float: right;*/
+        /*&:after{*/
+          /*display: inline-block;*/
+          /*content: '';*/
+          /*width: 16px;*/
+          /*height: 16px;*/
+          /*margin-right: 32px;*/
+          /*border-top: 1px solid rgb(155,155,155);*/
+          /*border-right: 1px solid rgb(155,155,155);*/
+          /*transform: rotate(45deg);*/
+        /*}*/
+        /*span{*/
+          /*display: inline-block;*/
+          /*margin-top: 32px;*/
+          /*font-size: 32px;*/
+          /*color: rgb(155,155,155);*/
+        /*}*/
+      /*}*/
     }
     .chartIcon{
       height: 34px;
@@ -322,6 +322,7 @@
         :last-child{
           font-size: 32px;
           color: #FFFFFF;
+          margin-top: 16px;
         }
       }
      .itemColor1{

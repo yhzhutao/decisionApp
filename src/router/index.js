@@ -7,6 +7,7 @@ import CreditAvailability from '@/components/creditAvailability/creditAvailabili
 import Brand from '@/components/brand/brand'
 import IndicatorsTrend from '@/components/indicatorsTrend/indicatorsTrend'
 import DefectiveRatio from '@/components/defectiveRatio/defectiveRatio'
+import MarketShare from '@/components/marketShare/marketShare'
 Vue.use(Router)
 
 export default new Router({
@@ -21,6 +22,7 @@ export default new Router({
     {path:'/brand',component:Brand},
     {path:'/indicatorsTrend',component:IndicatorsTrend},
     {path:'/defectiveRatio',component:DefectiveRatio},
+    {path:'/marketShare',component:MarketShare},
     {path:'*',redirect:'/assetsSituation'}
   ]
 })
