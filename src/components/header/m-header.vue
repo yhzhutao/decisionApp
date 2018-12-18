@@ -1,8 +1,8 @@
 <template>
   <div class="header">
     <div class="header-top">
-      <div v-show ="backGlag === true"><img class="login_logo" src="../../image/login_logo.svg" alt=""></div>
-      <div @click="goBack" v-show = "backGlag === false"><img class="back" src="../../image/back_icon.svg" alt=""></div>
+      <div v-show ="backFlag === true"><img class="login_logo" src="../../image/login_logo.svg" alt=""></div>
+      <div @click="goBack" v-show = "backFlag === false"><img class="back" src="../../image/back_icon.svg" alt=""></div>
       <div @click="openPicker" class="date"><span >{{ selectDate }}</span>
         <img src="../../image/date_choose_icon.svg" alt=""></div>
       <div class="my-icon"><img src="../../image/my_icon@2x.png" alt=""></div>
@@ -25,7 +25,7 @@
   export default {
     name: "m-header",
     props:{
-      backGlag:{
+      backFlag:{
 
       }
     },
@@ -47,9 +47,9 @@
     watch:{
       $route(to,from){
        if(to.path === '/assetsSituation'||to.path === '/individualIoanSituation'||to.path === '/variousIndicators'||to.path === '/creditAvailability'){
-         this.backGlag = true
+         this.backFlag = true
        }else{
-         this.backGlag = false
+         this.backFlag = false
        }
       }
     },

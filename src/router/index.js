@@ -8,6 +8,7 @@ import Brand from '@/components/brand/brand'
 import IndicatorsTrend from '@/components/indicatorsTrend/indicatorsTrend'
 import DefectiveRatio from '@/components/defectiveRatio/defectiveRatio'
 import MarketShare from '@/components/marketShare/marketShare'
+import ConditionIndividualLoanSituation from '@/components/conditionIndividualLoanSituation/conditionIndividualLoanSituation'
 Vue.use(Router)
 
 export default new Router({
@@ -23,6 +24,7 @@ export default new Router({
     {path:'/indicatorsTrend',component:IndicatorsTrend},
     {path:'/defectiveRatio',component:DefectiveRatio},
     {path:'/marketShare',component:MarketShare},
+    {path:'/conditionIndividualLoanSituation',component:ConditionIndividualLoanSituation},
     {path:'*',redirect:'/assetsSituation'}
   ]
 })
