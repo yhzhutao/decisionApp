@@ -34,9 +34,11 @@
           this.visible ? this.hide() : this.show()
         },
         show () {
-          this.visible = true
-          console.log(this.visible)
-          document.addEventListener('click', this.hidePanel, false)
+          setTimeout(()=>{
+            this.visible = true;
+            console.log(this.visible)
+            document.addEventListener('click', this.hidePanel, false);
+          },0)
         },
 
         hide () {
