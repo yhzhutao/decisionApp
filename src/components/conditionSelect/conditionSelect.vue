@@ -44,6 +44,12 @@
         region: '全区域'
       }
     },
+    created(){
+      let routerStr = this.$router.currentRoute.path
+      let index = routerStr.substr(routerStr.length-1,1)
+      let brandName = ['长安轿车','长安福特','长安欧尚','长安马自达','长安DS','长安铃木']
+      this.brandName = brandName[index]
+    },
     methods: {
       selectRegion(event) {
         this.region = event.target.innerText
@@ -101,10 +107,12 @@
 
 <style lang="scss" scoped>
   .conditionSelect {
+    position: relative;
     display: flex;
     height: 88px;
     flex-direction: row;
     line-height: 88px;
+    z-index: 999;
     & > div:first-child {
       color: #F4A100;
       font-size: 32px;
@@ -144,20 +152,26 @@
       .brandName {
         background-color: #2F3543;
         width: 60%;
-        ul li {
-          height: 50px;
-          line-height: 50px;
-          font-size: 30px;
-          text-align: center;
-          color: #FFFFFF;
-          border-bottom: 0.5px solid #ccc;
+        ul{
+          border-left:1px solid #ccc;
+          border-right:1px solid #ccc;
+          border-bottom:1px solid #ccc;
+          li {
+            height: 50px;
+            line-height: 50px;
+            font-size: 30px;
+            text-align: center;
+            color: #FFFFFF;
+            border-bottom: 0.5px solid #ccc;
+          }
+          li:hover {
+            background-color: orange;
+          }
+          li:last-child {
+            border-bottom: none;
+          }
         }
-        ul li:hover {
-          background-color: orange;
-        }
-        ul li:last-child {
-          border-bottom: none;
-        }
+
       }
     }
     .region:after{

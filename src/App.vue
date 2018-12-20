@@ -3,7 +3,7 @@
     <div class="topArea">
       <m-header :backFlag="backFlag"></m-header>
       <tab v-show="tabFlag"></tab>
-      <conditionSelect v-show="selecetFlag"></conditionSelect>
+      <conditionSelect v-if="selecetFlag"></conditionSelect>
     </div>
     <router-view/>
   </div>
@@ -37,7 +37,7 @@ export default {
       this.tabFlag = false
       this.backFlag = false
     }
-    if(path === '/conditionIndividualLoanSituation'){
+    if(path.indexOf('/conditionIndividualLoanSituation')!== -1){
       this.selecetFlag = true
     }else{
       this.selecetFlag = false
@@ -55,7 +55,7 @@ export default {
         this.tabFlag = false
         this.backFlag = false
       }
-      if(to.path === '/conditionIndividualLoanSituation'){
+      if(to.path.indexOf('/conditionIndividualLoanSituation')!== -1){
         this.selecetFlag = true
       }else{
         this.selecetFlag = false
