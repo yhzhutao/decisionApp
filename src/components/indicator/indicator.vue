@@ -1,7 +1,7 @@
 <template>
   <div class="indicator">
     <div class="content">
-      <span class="top">{{percent}}%</span>
+      <span class="top" :style="{color:numcolor}">{{percent}}%</span>
       <div class="line"></div>
       <span class="bottom" :style="{color:fontcolor}">{{index}}</span>
     </div>
@@ -12,6 +12,7 @@
   export default {
     name: "indicator",
     props: {
+      numcolor:String,
       fontcolor: String,
       percent: Number,
       index: String
