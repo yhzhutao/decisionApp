@@ -187,6 +187,9 @@
           display: flex;
           li{
             width: 50%;
+            .indicator{
+              margin: 0 auto;
+            }
           }
         }
         .target-num{
