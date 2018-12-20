@@ -10,7 +10,6 @@ import DefectiveRatio from '@/components/defectiveRatio/defectiveRatio'
 import MarketShare from '@/components/marketShare/marketShare'
 import ConditionIndividualLoanSituation from '@/components/conditionIndividualLoanSituation/conditionIndividualLoanSituation'
 Vue.use(Router)
-
 export default new Router({
   routes: [
     {path: '/assetsSituation',component: AssetsSituation},

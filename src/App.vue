@@ -55,6 +55,11 @@ export default {
         this.tabFlag = false
         this.backFlag = false
       }
+      if(to.path === '/conditionIndividualLoanSituation'){
+        this.selecetFlag = true
+      }else{
+        this.selecetFlag = false
+      }
     }
   },
 }
