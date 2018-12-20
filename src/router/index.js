@@ -23,7 +23,7 @@ export default new Router({
     {path:'/indicatorsTrend',component:IndicatorsTrend},
     {path:'/defectiveRatio',component:DefectiveRatio},
     {path:'/marketShare',component:MarketShare},
-    {path:'/conditionIndividualLoanSituation',component:ConditionIndividualLoanSituation},
+    {path:'/conditionIndividualLoanSituation/:brandId',component:ConditionIndividualLoanSituation},
     {path:'*',redirect:'/assetsSituation'}
   ]
 })

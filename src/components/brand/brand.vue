@@ -2,41 +2,13 @@
   <div class="brand">
     <div class="brand-head">
       <ul>
-        <li>
-          <div class="img">
-            <img src="../../image/changan_logo@2x.png" alt="">
-          </div>
-          <p>长安汽车</p>
-        </li>
-        <li>
-          <div class="img">
-            <img src="../../image/ford_logo@2x.png" alt="">
-          </div>
-          <p>长安福特</p>
-        </li>
-        <li>
-          <div class="img">
-            <img src="../../image/suzuki_logo@2x.png" alt="">
-          </div>
-          <p>长安铃木</p>
-        </li>
-        <li>
-          <div class="img">
-            <img src="../../image/mazda_logo@2x.png" alt="">
-          </div>
-          <p>长安马自达</p>
-        </li>
-        <li>
-          <div class="img">
-            <img src="../../image/oushang_logo@2x.png" alt="">
-          </div>
-          <p>长安欧尚</p>
-        </li>
-        <li>
-          <div class="img">
-            <img src="../../image/ds_logo@2x.png" alt="">
-          </div>
-          <p>长安DS</p>
+          <li v-for="(item,index) in brandList">
+            <router-link :to="'/conditionIndividualLoanSituation/'+index">
+              <div class="img">
+                <img :src="require('../../image/'+logoImgUrl[index]+'@2x.png')">
+              </div>
+            </router-link>
+            <p>{{item}}</p>
         </li>
       </ul>
     </div>
@@ -71,6 +43,8 @@
     name: "brand",
     data() {
       return {
+        brandList:['长安轿车', '长安福特', '长安欧尚', '长安马自达', '长安DS', '长安铃木'],
+        logoImgUrl:['changan_logo','ford_logo','oushang_logo','mazda_logo','ds_logo','suzuki_logo'],
         list: ['全年达成率', '当月达成率', '当月申请件', '当月放款件'],
         optionsYear: {
           chart: {
@@ -81,7 +55,7 @@
           },
           xAxis: {
             categories: [
-              '长安轿车', '长安福特', '长安铃木', '长安马自达', '长安欧尚', '长安DS'
+              '长安轿车', '长安福特', '长安欧尚', '长安马自达', '长安DS', '长安铃木'
             ],
             tickLength: 0,
             labels: {
@@ -165,7 +139,7 @@
           },
           xAxis: {
             categories: [
-              '长安轿车', '长安福特', '长安铃木', '长安马自达', '长安欧尚', '长安DS'
+              '长安轿车', '长安福特', '长安欧尚', '长安马自达', '长安DS', '长安铃木'
             ],
             tickLength: 0,
             labels: {
@@ -222,7 +196,7 @@
           },
           xAxis: {
             categories: [
-              '长安轿车', '长安福特', '长安铃木', '长安马自达', '长安欧尚', '长安DS'
+              '长安轿车', '长安福特', '长安欧尚', '长安马自达', '长安DS', '长安铃木'
             ],
             tickLength: 0,
             labels: {
@@ -279,7 +253,7 @@
           },
           xAxis: {
             categories: [
-              '长安轿车', '长安福特', '长安铃木', '长安马自达', '长安欧尚', '长安DS'
+              '长安轿车', '长安福特', '长安欧尚', '长安马自达', '长安DS', '长安铃木'
             ],
             tickLength: 0,
             labels: {
