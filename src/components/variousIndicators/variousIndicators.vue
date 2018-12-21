@@ -15,22 +15,22 @@
       <div class="content">
         <ul>
           <li>
-            <v-indicator :fontcolor="'#3ac5b2'" :percent="53.72" :index="'资产负率'"></v-indicator>
+            <v-indicator :fontcolor="'#3ac5b2'" :percent="53.72" :index="'资产负率'" :lineFirstColor="'#008572'" :lineEndColor="'#57C2B3'"></v-indicator>
           </li>
           <li>
-            <v-indicator :fontcolor="'#3ac5b2'" :percent="53.72" :index="'不良率'"></v-indicator>
+            <v-indicator :fontcolor="'#3ac5b2'" :percent="53.72" :index="'不良率'" :lineFirstColor="'#008572'" :lineEndColor="'#57C2B3'"></v-indicator>
           </li>
           <li>
-            <v-indicator :fontcolor="'#3ac5b2'" :percent="53.72" :index="'市占率'"></v-indicator>
+            <v-indicator :fontcolor="'#3ac5b2'" :percent="53.72" :index="'市占率'" :lineFirstColor="'#008572'" :lineEndColor="'#57C2B3'"></v-indicator>
           </li>
           <li>
-            <v-indicator :fontcolor="'#3ac5b2'" :percent="53.72" :index="'渗透率'"></v-indicator>
+            <v-indicator :fontcolor="'#3ac5b2'" :percent="53.72" :index="'渗透率'" :lineFirstColor="'#008572'" :lineEndColor="'#57C2B3'"></v-indicator>
           </li>
           <li>
-            <v-indicator :fontcolor="'#3ac5b2'" :percent="53.72" :index="'核准率'"></v-indicator>
+            <v-indicator :fontcolor="'#3ac5b2'" :percent="53.72" :index="'核准率'" :lineFirstColor="'#008572'" :lineEndColor="'#57C2B3'"></v-indicator>
           </li>
           <li>
-            <v-indicator :fontcolor="'#3ac5b2'" :percent="53.72" :index="'自动审批率'"></v-indicator>
+            <v-indicator :fontcolor="'#3ac5b2'" :percent="53.72" :index="'自动审批率'" :lineFirstColor="'#008572'" :lineEndColor="'#57C2B3'"></v-indicator>
           </li>
         </ul>
       </div>

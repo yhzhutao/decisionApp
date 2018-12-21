@@ -19,7 +19,7 @@
                 <v-indicator :fontcolor="'rgb(245,161,1)'" :percent="53.72" :index="'全年达成率'"></v-indicator>
               </li>
               <li>
-                <v-indicator :fontcolor="'rgb(245,161,1)'" :percent="53.72" :index="'当月达成率'"></v-indicator>
+                <v-indicator :fontcolor="'rgb(245,161,1)'" :percent="25.72" :index="'当月达成率'"></v-indicator>
               </li>
             </ul>
             <div class="target-num">
