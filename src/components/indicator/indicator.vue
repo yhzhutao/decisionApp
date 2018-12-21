@@ -7,7 +7,7 @@
       <div class="rightBox">
         <div class="roundRight" :style="{'background':'linear-gradient('+lineFirstColor+','+lineEndColor+')'}"></div>
       </div>
-      <div class="roundMask">
+      <div class="roundMask" :style="{'background':maskBackground}">
         <div class="content">
           <span class="top" :style="{color:numcolor}">{{percent}}%</span>
           <div class="line"></div>
@@ -27,7 +27,8 @@
       percent: Number,
       index: String,
       lineFirstColor:String,
-      lineEndColor:String
+      lineEndColor:String,
+      maskBackground:String
     }
     // mounted(){
     //   this.init();
