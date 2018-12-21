@@ -1,153 +1,155 @@
 <template>
-  <div class="conditionIndividualLoanSituation">
-    <div class="yearlyReachRate">
-      <div class="module1">
-        <div class="top">
-          <div class="title">
-            <span></span><span>全年达成率</span>
+  <div class="conditionIndividualLoanSituation" ref="wrapper">
+    <div>
+      <div class="yearlyReachRate">
+        <div class="module1">
+          <div class="top">
+            <div class="title">
+              <span></span><span>全年达成率</span>
+            </div>
+            <div class="unit">
+              <span>单位：件</span>
+            </div>
+            <div class="reachRate ">
+              <Indicator :numcolor="'#ffffff'" :maskBackground="'#2F3543'" :fontcolor="'#F5A101'" :percent="53.72" :index="'全年达成率'"></Indicator>
+            </div>
           </div>
-          <div class="unit">
-            <span>单位：件</span>
-          </div>
-          <div class="reachRate ">
-            <Indicator :numcolor="'#ffffff'" :fontcolor="'#F5A101'" :percent="53.72" :index="'全年达成率'"></Indicator>
+          <div class="situation ">
+            <div>
+              <div>122,166</div>
+              <div>全年目标</div>
+            </div>
+            <div class="rlborder">
+              <div>122,166</div>
+              <div>全年达成</div>
+            </div>
+            <div>
+              <div>60%</div>
+              <div>时间进度</div>
+            </div>
           </div>
         </div>
-        <div class="situation ">
+        <div v-show="regionFlag" class="module2">
+          <monthsCharts :options="optionsYear" :styles="stylesYear"></monthsCharts>
+        </div>
+      </div>
+      <div class="monthlyReachRate">
+        <div class="module1 moduleBcolor">
+          <div class="top">
+            <div class="title">
+              <span></span><span>当月达成率</span>
+            </div>
+            <div class="unit">
+              <span>单位：件</span>
+            </div>
+            <div class="reachRate ">
+              <Indicator :numcolor="'#ffffff'" :fontcolor="'#F5A101'" :maskBackground="'#353D51'" :percent="53.72" :index="'当月达成率'"></Indicator>
+            </div>
+          </div>
+          <div class="situation ">
+            <div>
+              <div>122,166</div>
+              <div>当月目标</div>
+            </div>
+            <div class="rlborder">
+              <div>122,166</div>
+              <div>当月达成</div>
+            </div>
+            <div>
+              <div>60%</div>
+              <div>时间进度</div>
+            </div>
+          </div>
+        </div>
+        <div v-show="regionFlag" class="module2">
+          <monthsCharts :options="optionsYear" :styles="stylesYear"></monthsCharts>
+        </div>
+      </div>
+      <div class="sales">
+        <div class="title">
+          <span></span><span>销量</span>
+        </div>
+        <div class="situation">
           <div>
             <div>122,166</div>
-            <div>全年目标</div>
+            <div>当月累计</div>
           </div>
           <div class="rlborder">
             <div>122,166</div>
-            <div>全年达成</div>
+            <div>当月同期</div>
           </div>
           <div>
-            <div>60%</div>
-            <div>时间进度</div>
+            <div class="ratio">+10%</div>
+            <div>环比</div>
           </div>
         </div>
       </div>
-      <div class="module2">
-        <monthsCharts :options="optionsYear" :styles="stylesYear"></monthsCharts>
-      </div>
-    </div>
-    <div class="monthlyReachRate">
-      <div class="module1 moduleBcolor">
-        <div class="top">
-          <div class="title">
-            <span></span><span>当月达成率</span>
+      <div class="application">
+        <div class="title">
+          <div class="title-left">
+            <span class="icon"></span>
+            <span class="t-l-text">批售</span>
           </div>
-          <div class="unit">
+        </div>
+        <div class="chartIcon">
+          <div class="Icon-right">
+            <span class="icon-f"></span>
+            <span>当前</span>
+            <span class="icon-t"></span>
+            <span>同期</span>
             <span>单位：件</span>
           </div>
-          <div class="reachRate ">
-            <Indicator :numcolor="'#ffffff'" :fontcolor="'#F5A101'" :percent="53.72" :index="'当月达成率'"></Indicator>
-          </div>
         </div>
-        <div class="situation ">
-          <div>
-          <div>122,166</div>
-          <div>当月目标</div>
-        </div>
-          <div class="rlborder">
-            <div>122,166</div>
-            <div>当月达成</div>
-          </div>
-          <div>
-            <div>60%</div>
-            <div>时间进度</div>
-          </div>
-        </div>
-      </div>
-      <div class="module2">
-        <monthsCharts :options="optionsYear" :styles="stylesYear"></monthsCharts>
-      </div>
-    </div>
-    <div class="sales">
-      <div class="title">
-        <span></span><span>销量</span>
-      </div>
-      <div class="situation">
-        <div>
-          <div>122,166</div>
-          <div>当月累计</div>
-        </div>
-        <div class="rlborder">
-          <div>122,166</div>
-          <div>当月同期</div>
-        </div>
-        <div>
-          <div class="ratio">+10%</div>
-          <div>环比</div>
-        </div>
-      </div>
-    </div>
-    <div class="application">
-      <div class="title">
-        <div class="title-left">
-          <span class="icon"></span>
-          <span class="t-l-text">批售</span>
-        </div>
-      </div>
-      <div class="chartIcon">
-        <div class="Icon-right">
-          <span class="icon-f"></span>
-          <span>当前</span>
-          <span class="icon-t"></span>
-          <span>同期</span>
-          <span>单位：件</span>
-        </div>
-      </div>
-      <div class="reportModule" ref="monthCharts">
+        <div class="reportModule" ref="monthCharts1">
           <monthsCharts :options="optionsMonth" :styles="stylesMonth"></monthsCharts>
-      </div>
-      <div class="situation ">
-        <div>
-          <div>122,166</div>
-          <div>当月累计</div>
         </div>
-        <div class="rlborder">
-          <div>122,166</div>
-          <div>当月同期</div>
-        </div>
-        <div>
-          <div class="ratio">10%</div>
-          <div>环比</div>
-        </div>
-      </div>
-    </div>
-    <div class="loan">
-      <div class="title">
-        <div class="title-left">
-          <span class="icon"></span>
-          <span class="t-l-text">批售</span>
+        <div class="situation ">
+          <div>
+            <div>122,166</div>
+            <div>当月累计</div>
+          </div>
+          <div class="rlborder">
+            <div>122,166</div>
+            <div>当月同期</div>
+          </div>
+          <div>
+            <div class="ratio">10%</div>
+            <div>环比</div>
+          </div>
         </div>
       </div>
-      <div class="chartIcon">
-        <div class="Icon-right">
-          <span class="icon-f"></span>
-          <span>当前</span>
-          <span class="icon-t"></span>
-          <span>同期</span>
-          <span>单位：件</span>
+      <div class="loan">
+        <div class="title">
+          <div class="title-left">
+            <span class="icon"></span>
+            <span class="t-l-text">批售</span>
+          </div>
         </div>
-      </div>
-      <div class="reportModule" ref="monthCharts">
-        <monthsCharts :options="optionsMonthloan" :styles="stylesMonth"></monthsCharts>
-      </div>
-      <div class="situation ">
-        <div>
-          <div>122,166</div>
-          <div>当月累计</div>
+        <div class="chartIcon">
+          <div class="Icon-right">
+            <span class="icon-f"></span>
+            <span>当前</span>
+            <span class="icon-t"></span>
+            <span>同期</span>
+            <span>单位：件</span>
+          </div>
         </div>
-        <div class="rlborder">
-          <div>122,166</div>
-          <div>当月同期</div>
+        <div class="reportModule" ref="monthCharts2">
+          <monthsCharts :options="optionsMonthloan" :styles="stylesMonth"></monthsCharts>
         </div>
-        <div>
-          <div class="ratio">10%</div>
-          <div>环比</div>
+        <div class="situation ">
+          <div>
+            <div>122,166</div>
+            <div>当月累计</div>
+          </div>
+          <div class="rlborder">
+            <div>122,166</div>
+            <div>当月同期</div>
+          </div>
+          <div>
+            <div class="ratio">10%</div>
+            <div>环比</div>
+          </div>
         </div>
       </div>
     </div>
@@ -160,6 +162,9 @@
   import BScroll from 'better-scroll';
   export default {
     name: "conditionIndividualLoanSituation",
+    props:{
+      brandCode:String
+    },
     data(){
       return {
         optionsYear: {
@@ -505,6 +510,7 @@
               color: '#30C2AE',
             }]
         },
+        regionFlag:true
       }
     },
     methods:{
@@ -516,17 +522,22 @@
         return arr
       },
       _initScorll(){
-        new BScroll(this.$refs['monthCharts'], {
+        new BScroll(this.$refs['monthCharts1'], {
           scrollX: true,
           scrollY: false,
-          momentum: false,
-          snap: {
-            loop: this.loop,
-            threshold: 0.3,
-            speed: 400
-          },
           click: true
         })
+        new BScroll(this.$refs['monthCharts2'], {
+          scrollX: true,
+          scrollY: false,
+          click: true
+        })
+        new BScroll(this.$refs['wrapper'], {
+          scrollY: true,
+          scrollX: false,
+          click: true
+        })
+
       }
     },
     components:{
@@ -540,6 +551,14 @@
 </script>
 
 <style lang="scss" scoped>
+  .conditionIndividualLoanSituation{
+    overflow: hidden;
+    position: absolute;
+    top: 168px;
+    bottom: 0;
+    width: 100%;
+    background-color: #2F3543;
+  }
   .module1 {
     background-color: #2F3543;
     height: 580px;
@@ -612,6 +631,7 @@
   }
   .moduleBcolor{
     background-color: #353D51;
+
   }
   .sales{
     background-color: #2F3543;

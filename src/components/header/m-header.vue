@@ -5,7 +5,7 @@
       <div @click="goBack" v-show = "backFlag === false"><img class="back" src="../../image/back_icon.svg" alt=""></div>
       <div @click="openPicker" class="date"><span >{{ selectDate }}</span>
         <img src="../../image/date_choose_icon.svg" alt=""></div>
-      <div class="my-icon"><img src="../../image/my_icon@2x.png" alt=""></div>
+      <div @click="gotoPersonal" class="my-icon"><img src="../../image/my_icon@2x.png" alt=""></div>
     </div>
       <mt-datetime-picker
         ref="picker"
@@ -16,7 +16,6 @@
       </mt-datetime-picker>
   </div>
 </template>
-
 <script>
   import bus from '@/components/base/bus'
   import { DatetimePicker } from 'mint-ui';
@@ -33,13 +32,19 @@
       return {
         date: new Date(),
         dateValue:'',
-        selectDate:this.formatDate(new Date())
+        selectDate:this.formatDate(new Date()),
+        isIos:false
       }
     },
-    components: {
-    },
-    computed:{
-
+    created(){
+      /**
+       * 判断是安卓还是ios
+       */
+      if(/(iPhone|iPad|iPod|iOS)/i.test(navigator.userAgent)){
+        this.isIos = true
+      }else{
+        this.isIos = false
+      }
     },
     mounted() {
      // console.log(this)
@@ -54,6 +59,28 @@
       }
     },
     methods: {
+      gotoPersonal(){
+          this.connectWebViewJavascriptBridge(function(){
+            window.WebViewJavascriptBridge.callHandler(
+              'gotoPersonal', {},
+              function(res) {
+              })
+          })
+      },
+      //注册事件监听
+      connectWebViewJavascriptBridge(callback) {
+        if (window.WebViewJavascriptBridge) {
+          callback(WebViewJavascriptBridge)
+        } else {
+          document.addEventListener(
+            'WebViewJavascriptBridgeReady',
+            function () {
+              callback(WebViewJavascriptBridge)
+            },
+            false
+          );
+        }
+      },
       formatDate(date) {
         var o = {
           y: date.getFullYear(),

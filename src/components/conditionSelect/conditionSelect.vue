@@ -53,9 +53,11 @@
     methods: {
       selectRegion(event) {
         this.region = event.target.innerText
+
       },
       selectBrand(event) {
         this.brandName = event.target.innerText
+        this.$emit('getBrandCode',event.target.innerText)
       },
       togglePanel() {
         this.visible ? this.hide() : this.show()
