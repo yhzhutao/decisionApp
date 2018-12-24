@@ -9,7 +9,7 @@
         <p class="unit">单位:万元</p>
         <div class="img">
           <img src="../../image/Group 6@2x.png" alt="">
-          <span class="totalNum">349789</span>
+          <span class="totalNum">{{sum}}</span>
         </div>
         <span class="desc">目前累计投放</span>
       </div>
@@ -37,7 +37,8 @@
       }
     },
     props:{
-      titleCode:Number
+      titleCode:Number,
+      sum:Number
     },
     mounted(){
       this.getTitle(this.titleCode);

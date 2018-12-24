@@ -40,7 +40,9 @@
         <div class="market-share-content" ref="market-share-content">
           <div class="title clearfix">
             <span class="indicators">市占率</span>
-            <span class="more">更多</span>
+            <router-link to="/marketShare">
+              <span class="more">更多</span>
+            </router-link>
           </div>
           <div class="tip-container clearfix">
             <div class="tip">

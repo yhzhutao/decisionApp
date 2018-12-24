@@ -29,10 +29,9 @@
     },
     methods: {
       inte(percent) {
-        var canvas_1=this.$refs['canvas_1']
-        var canvas_2 = this.$refs['canvas_2'];
-        var windowWidth = document.body.clientWidth;
-        console.log(windowWidth);
+        let canvas_1=this.$refs['canvas_1']
+        let canvas_2 = this.$refs['canvas_2'];
+        let windowWidth = document.body.clientWidth;
         if(windowWidth<330){
           canvas_1.width = 112;
           canvas_1.height = 112;

@@ -4,13 +4,13 @@
     <div class="content">
       <ul>
         <li>
-          <v-creditCart :titleCode="0"></v-creditCart>
+          <v-creditCart :titleCode="0" :sum="totalNum"></v-creditCart>
         </li>
         <li>
-          <v-creditCart :titleCode="1"></v-creditCart>
+          <v-creditCart :titleCode="1" :sum="wholesaleNum"></v-creditCart>
         </li>
         <li>
-          <v-creditCart :titleCode="2"></v-creditCart>
+          <v-creditCart :titleCode="2" :sum="retailNum"></v-creditCart>
         </li>
       </ul>
     </div>
@@ -22,6 +22,13 @@
   import BScroll from 'better-scroll';
   export default {
     name: "creditAvailability",
+    data(){
+      return{
+        totalNum:5384950709,
+        wholesaleNum:84797437,
+        retailNum:4875945
+      }
+    },
     components:{
       'v-creditCart':CreditCart
     },
