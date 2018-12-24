@@ -77,7 +77,7 @@
           ctx_1.beginPath();
           ctx_1.moveTo (0,100);
           ctx_1.lineTo(0,heightOne);
-          heightOne--;
+          heightOne= heightOne-3;
           if(heightOne<10){
             window.cancelAnimationFrame(timer);
           }
@@ -92,7 +92,7 @@
           ctx_2.beginPath();
           ctx_2.moveTo (0,100);
           ctx_2.lineTo(0,heightTwo);
-          heightTwo--;
+          heightTwo=heightTwo-3;
           if(heightTwo<50){
             window.cancelAnimationFrame(timer1);
           }
