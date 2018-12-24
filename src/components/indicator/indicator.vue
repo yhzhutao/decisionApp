@@ -31,6 +31,39 @@
       inte(percent) {
         var canvas_1=this.$refs['canvas_1']
         var canvas_2 = this.$refs['canvas_2'];
+        var windowWidth = document.body.clientWidth;
+        console.log(windowWidth);
+        if(windowWidth<330){
+          canvas_1.width = 112;
+          canvas_1.height = 112;
+          canvas_2.width = 112;
+          canvas_2.height = 112;
+        }else if(windowWidth<370){
+          canvas_1.width = 127;
+          canvas_1.height = 127;
+          canvas_2.width = 127;
+          canvas_2.height = 127;
+        }else if(windowWidth<380){
+          canvas_1.width = 132;
+          canvas_1.height = 132;
+          canvas_2.width = 132;
+          canvas_2.height = 132;
+        }else if(windowWidth<420){
+          canvas_1.width = 146;
+          canvas_1.height = 146;
+          canvas_2.width = 146;
+          canvas_2.height = 146;
+        }else if(windowWidth<770){
+          canvas_1.width = 271;
+          canvas_1.height = 271;
+          canvas_2.width = 271;
+          canvas_2.height = 271;
+        }else{
+          canvas_1.width = 361;
+          canvas_1.height = 361;
+          canvas_2.width = 361;
+          canvas_2.height = 361;
+        }
         var ctx_1 = canvas_1.getContext('2d');
         var ctx_2 = canvas_2.getContext('2d');
         ctx_1.lineWidth = 6;
@@ -82,6 +115,7 @@
   .indicator {
     text-align: center;
     .circle{
+      margin: 0 auto;
       width: 264px;
       height: 264px;
       position: relative;
@@ -116,6 +150,5 @@
         }
       }
     }
-
   }
 </style>
