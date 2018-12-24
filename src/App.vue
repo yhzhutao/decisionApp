@@ -50,6 +50,7 @@
       }
     },
     created() {
+      let that = this
       let path = this.$router.currentRoute.path
       if (path === '/assetsSituation' || path === '/individualIoanSituation' || path === '/variousIndicators' || path === '/creditAvailability') {
         this.tabFlag = true
@@ -63,17 +64,31 @@
       } else {
         this.selecetFlag = false
       }
-      this.connectWebViewJavascriptBridge(function(){
-        WebViewJavascriptBridge.registerHandler("outApp", function (data, responseCallback) {
-          alert(path);
-          if (path === '/assetsSituation' || path === '/individualIoanSituation' || path === '/variousIndicators' || path === '/creditAvailability') {
-            alert('传值0')
-            responseCallback('0');
-          } else {
-            alert('传值1')
-            responseCallback('1');
+      this.connectWebViewJavascriptBridge(function(bridge){
+        bridge.init(function(message, responseCallback) {
+          let path = that.$router.currentRoute.path
+          if (message ==="outApp" && responseCallback) {
+            if (path === '/assetsSituation' || path === '/individualIoanSituation' || path === '/variousIndicators' || path === '/creditAvailability') {
+              responseCallback('0');
+            } else {
+              responseCallback('1');
+            }
           }
         });
+
+
+
+
+        bridge.registerHandler("outApp",function(data, responseCallback){
+            alert(path);
+            if (path === '/assetsSituation' || path === '/individualIoanSituation' || path === '/variousIndicators' || path === '/creditAvailability') {
+              alert('传值0')
+              responseCallback('0');
+            } else {
+              alert('传值1')
+              responseCallback('1');
+            }
+        })
       })
     },
     mounted() {

@@ -200,6 +200,9 @@
             ],
             labels: {
               rotation: 0,
+              style: {
+                color: '#dadfec'
+              }
             },
             enableMouseTracking: false,
             tickPosition: 'inside',
@@ -260,6 +263,9 @@
             categories:this.monthArr(),
             labels: {
               rotation: 0,
+              style: {
+                color: '#dadfec'
+              }
             },
             crosshair: {
               color: "#FFFFFF",
@@ -299,9 +305,9 @@
             borderRadius: 10,
             headerFormat: '',
             pointFormat:'<p>{point.y}%</p>',
-            shared: true
           },
           series: [{
+            enableMouseTracking:false,
             allowPointSelect: false,
             data: [{'y': 5},
               {'y': 12},
@@ -365,6 +371,7 @@
                 {'color': 'rgb(218,223,236)', 'y': 12},
                 {'color': 'rgb(218,223,236)', 'y': 18},
                 {'color': 'rgb(218,223,236)', 'y': 0}],
+
               pointStart: 0,
               type: 'line',
               marker: {
@@ -393,6 +400,9 @@
             categories:this.monthArr(),
             labels: {
               rotation: 0,
+              style: {
+                color: '#dadfec'
+              }
             },
             crosshair: {
               color: "#FFFFFF",
@@ -681,6 +691,7 @@
   }
   .application{
     background-color: #353D51;
+    height: 770px;
     .title{
       height: 108px;
       .title-left{

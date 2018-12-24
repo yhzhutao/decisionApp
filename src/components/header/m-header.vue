@@ -60,8 +60,8 @@
     },
     methods: {
       gotoPersonal(){
-          this.connectWebViewJavascriptBridge(function(){
-            window.WebViewJavascriptBridge.callHandler(
+          this.connectWebViewJavascriptBridge(function(bridge){
+            bridge.callHandler(
               'gotoPersonal', {},
               function(res) {
               })
@@ -148,4 +148,13 @@
      line-height: 75px
   .picker-items
    width: 100%
+   .picker-item
+     font-size: 32px
+     height: 40px
+  .mint-datetime-action
+   font-size: 32px
+   height: 44px
+  .picker-center-highlight:before,.picker-center-highlight:after
+    background-color: #ccc
+    height: 4px
 </style>
