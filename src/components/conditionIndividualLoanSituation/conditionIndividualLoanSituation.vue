@@ -179,6 +179,9 @@
               fontWeight: 'bold'
             }
           },
+          tooltip: {
+            enabled:false
+          },
           events: {
             click: function (e) {
               console.log(e)
@@ -241,9 +244,6 @@
                 }
               }
             },
-            tooltip: {
-              pointFormat: ''
-            },
             color: '#DADFEC'
           }]
         },
@@ -304,6 +304,10 @@
             backgroundColor: '#3AC3B1',
             borderRadius: 10,
             headerFormat: '',
+            style:{
+              fontSize:'18px',
+              fontWeight:'700'
+            },
             pointFormat:'<p>{point.y}%</p>',
           },
           series: [{
