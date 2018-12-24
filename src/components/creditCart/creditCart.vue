@@ -18,9 +18,10 @@
           <span class="current">目前</span><span class="synchronism">同期</span>
         </div>
         <div class="histogram">
-          <div class="histogram-one"></div><div class="histogram-two"></div>
-          <p>同期对比<span>+10%</span></p>
+          <canvas class="histogram-one" ref="histogram-one" width="40" height="100"></canvas>
+          <canvas class="histogram-two"ref="histogram-two" width="20" height="100"></canvas>
         </div>
+        <p>同期对比<span>+10%</span></p>
       </div>
     </div>
   </div>
@@ -40,6 +41,7 @@
     },
     mounted(){
       this.getTitle(this.titleCode);
+      this.init();
     },
     methods:{
       getTitle(titleCode){
@@ -55,6 +57,55 @@
         }else{
           return;
         }
+      },
+      init(){
+        var canvas_1=this.$refs['histogram-one']
+        var canvas_2 = this.$refs['histogram-two'];
+        var ctx_1 = canvas_1.getContext('2d');
+        var ctx_2 = canvas_2.getContext('2d');
+        ctx_1.lineWidth = 80;
+        ctx_1.strokeStyle = "rgb(89,129,198)";
+        ctx_2.lineWidth = 40;
+        ctx_2.strokeStyle = "rgb(218,223,236)"
+        let heightOne=100;
+        let heightTwo=100;
+        let timer;
+        let timer1;
+        (function draw(){
+          timer = requestAnimationFrame(draw);
+          ctx_1.clearRect(0,0,canvas_1.width,canvas_1.height);
+          ctx_1.beginPath();
+          ctx_1.moveTo (0,100);
+          ctx_1.lineTo(0,heightOne);
+          heightOne--;
+          if(heightOne<10){
+            window.cancelAnimationFrame(timer);
+          }
+          ctx_1.stroke();
+          ctx_1.closePath();
+          ctx_1.save();
+          ctx_1.restore();
+        })();
+        (function draw(){
+          timer1 = requestAnimationFrame(draw);
+          ctx_2.clearRect(0,0,canvas_2.width,canvas_2.height);
+          ctx_2.beginPath();
+          ctx_2.moveTo (0,100);
+          ctx_2.lineTo(0,heightTwo);
+          heightTwo--;
+          if(heightTwo<50){
+            window.cancelAnimationFrame(timer1);
+          }
+          ctx_2.stroke();
+          ctx_2.closePath();
+          ctx_2.save();
+          ctx_2.restore();
+        })();
+        // ctx_2.lineWidth = 40;
+        // ctx_2.moveTo (0,100);
+        // ctx_2.lineTo (0,50);
+        // ctx_2.strokeStyle = "rgb(218,223,236)";
+        // ctx_2.stroke();
       }
     }
   }
@@ -164,37 +215,40 @@
           }
         }
         .histogram {
-          position: absolute;
-          bottom: 0px;
-          .histogram-one {
-            display: inline-block;
-            width: 80px;
-            height: 180px;
-            background: rgb(89, 129, 198);
-            animation:mymove-one 0.8s;
-          }
-          @keyframes mymove-one {
-            0%{height: 0}
-            100%{height:180px}
-          }
-          @keyframes mymove-two {
-            0%{height: 0}
-            100%{height:112px}
-          }
-          .histogram-two {
-            display: inline-block;
-            width: 40px;
-            height: 112px;
-            background: rgb(218, 223, 236);
-            animation:mymove-two 0.8s;
-          }
-          p {
-            margin-top: 32px;
-            font-size: 32px;
-            color: #000;
-            span {
-              color: rgb(208, 2, 27);
-            }
+          margin-top:60px;
+          display: flex;
+          /*position: absolute;*/
+          /*bottom: 0px;*/
+          /*.histogram-one {*/
+            /*display: inline-block;*/
+            /*width: 80px;*/
+            /*height: 180px;*/
+            /*background: rgb(89, 129, 198);*/
+            /*animation:mymove-one 0.8s;*/
+          /*}*/
+          /*@keyframes mymove-one {*/
+            /*0%{height: 0}*/
+            /*100%{height:180px}*/
+          /*}*/
+          /*@keyframes mymove-two {*/
+            /*0%{height: 0}*/
+            /*100%{height:112px}*/
+          /*}*/
+          /*.histogram-two {*/
+            /*display: inline-block;*/
+            /*width: 40px;*/
+            /*height: 112px;*/
+            /*background: rgb(218, 223, 236);*/
+            /*animation:mymove-two 0.8s;*/
+          /*}*/
+
+        }
+        p {
+          margin-top: 32px;
+          font-size: 32px;
+          color: #000;
+          span {
+            color: rgb(208, 2, 27);
           }
         }
       }
