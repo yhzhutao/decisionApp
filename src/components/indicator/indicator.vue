@@ -86,7 +86,6 @@
       width: 264px;
       height: 264px;
       position: relative;
-      background: white;
       canvas{
         display: block;
         margin: 0;
