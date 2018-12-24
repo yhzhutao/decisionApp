@@ -290,6 +290,12 @@
         }
       }
     }
+    &:after{
+      content: '';
+      display: block;
+      height: 32px;
+      width: 100%;
+    }
   }
 }
 </style>

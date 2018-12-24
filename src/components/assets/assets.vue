@@ -241,6 +241,12 @@
           margin-top: 12px;
         }
       }
+      &:after{
+        content: '';
+        display: block;
+        height: 16px;
+        width: 100%;
+      }
     }
   }
 </style>

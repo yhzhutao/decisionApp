@@ -44,11 +44,20 @@
   bottom: 0;
   overflow: hidden;
   .content{
-  ul{
-    li{
-      margin-bottom: 32px;
+    ul{
+      li{
+        margin-bottom: 32px;
+        &:last-child{
+          margin-bottom: 0;
+        }
+      }
     }
-  }
+    &:after{
+      content: '';
+      display: block;
+      height: 32px;
+      width: 100%;
+    }
   }
 }
 </style>

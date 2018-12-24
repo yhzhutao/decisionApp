@@ -7,11 +7,11 @@
     <div class="cart-content clearfix">
       <div class="content-left">
         <p class="unit">单位:万元</p>
-        <!--<div class="num">-->
-        <!--1234567-->
-        <!--</div>-->
-        <img src="../../image/Group 6@2x.png" alt="">
-        <span>目前累计投放</span>
+        <div class="img">
+          <img src="../../image/Group 6@2x.png" alt="">
+          <span class="totalNum">349789</span>
+        </div>
+        <span class="desc">目前累计投放</span>
       </div>
       <div class="content-right">
         <div class="explain">
@@ -100,13 +100,25 @@
           font-size: 24px;
           line-height: 34px;
         }
-        img {
+        .img {
+          position: relative;
           margin-top: 20px;
           width: 300px;
           height: 240px;
-          /*background: url("../../image/Group 6@2x.png");*/
+          /*background-image: url("../../image/Group 6@2x.png");*/
+          img{
+            width: 100%;
+            height: 100%;
+          }
+          .totalNum{
+            display: block;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%,-50%);
+          }
         }
-        span {
+        .desc {
           display: block;
           margin-top: 32px;
           text-align: center;
@@ -159,17 +171,22 @@
             width: 80px;
             height: 180px;
             background: rgb(89, 129, 198);
-            animation:mymove 0.8s;
+            animation:mymove-one 0.8s;
           }
-          @keyframes mymove {
+          @keyframes mymove-one {
             0%{height: 0}
             100%{height:180px}
+          }
+          @keyframes mymove-two {
+            0%{height: 0}
+            100%{height:112px}
           }
           .histogram-two {
             display: inline-block;
             width: 40px;
             height: 112px;
             background: rgb(218, 223, 236);
+            animation:mymove-two 0.8s;
           }
           p {
             margin-top: 32px;
