@@ -17,9 +17,9 @@
   </div>
 </template>
 <script>
-  import bus from '@/components/base/bus'
   import { DatetimePicker } from 'mint-ui';
   import Vue from 'vue'
+  import bus from '@/components/base/bus'
   Vue.component(DatetimePicker.name, DatetimePicker);
   export default {
     name: "m-header",
@@ -45,9 +45,10 @@
       }else{
         this.isIos = false
       }
+
     },
     mounted() {
-     // console.log(this)
+      bus.$emit('selectDate',this.formatDate(new Date()))
     },
     watch:{
       $route(to,from){
@@ -96,7 +97,9 @@
         this.$refs.picker.open();
       },
       handleConfirm(date){
-        this.selectDate = this.formatDate(date)
+        let selectDate = this.formatDate(date)
+        this.selectDate = selectDate
+        bus.$emit('selectDate',selectDate)
       },
     }
   }

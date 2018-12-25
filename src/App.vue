@@ -27,7 +27,7 @@
         tabFlag: true,
         backFlag: true,
         selecetFlag: false,
-        brandCode:''
+        brandCode:'',
       }
     },
     methods: {
@@ -59,6 +59,7 @@
         this.tabFlag = false
         this.backFlag = false
       }
+      //将date传入view
       if (path.indexOf('/conditionIndividualLoanSituation') !== -1) {
         this.selecetFlag = true
       } else {
@@ -75,10 +76,6 @@
             }
           }
         });
-
-
-
-
         bridge.registerHandler("outApp",function(data, responseCallback){
             alert(path);
             if (path === '/assetsSituation' || path === '/individualIoanSituation' || path === '/variousIndicators' || path === '/creditAvailability') {

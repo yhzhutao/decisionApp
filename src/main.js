@@ -4,11 +4,11 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import {DatePicker} from 'element-ui'
-import bus from './components/base/bus'
 import VueResource from 'vue-resource'
 
 Vue.config.productionTip = false
 Vue.use(VueResource);
+require('./mock.js')
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

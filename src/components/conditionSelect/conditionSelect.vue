@@ -22,11 +22,12 @@
       </div>
       <div class="brandName" v-show="visible2" ref="main2">
         <ul>
-          <li @click="selectRegion">北区</li>
-          <li @click="selectRegion">东区</li>
-          <li @click="selectRegion">南区</li>
-          <li @click="selectRegion">西区</li>
-          <li @click="selectRegion">中区</li>
+          <li @click="selectRegion" data-code="1">全区域</li>
+          <li @click="selectRegion" data-code="7247">北区</li>
+          <li @click="selectRegion" data-code="4473">东区</li>
+          <li @click="selectRegion" data-code="7245">南区</li>
+          <li @click="selectRegion" data-code="6830">西区</li>
+          <li @click="selectRegion" data-code="5534">中区</li>
         </ul>
       </div>
     </div>
@@ -34,6 +35,7 @@
 </template>
 
 <script>
+  import bus from '@/components/base/bus'
   export default {
     name: "conditionSelect",
     data() {
@@ -52,12 +54,13 @@
     },
     methods: {
       selectRegion(event) {
+        console.log(event)
         this.region = event.target.innerText
-
+        bus.$emit('getRegion',event.target.dataset.code)
       },
       selectBrand(event) {
         this.brandName = event.target.innerText
-        this.$emit('getBrandCode',event.target.innerText)
+        bus.$emit('getBrandCode',event.target.innerText)
       },
       togglePanel() {
         this.visible ? this.hide() : this.show()

@@ -93,7 +93,7 @@
 </template>
 
 <script>
-  import bus from '../base/bus';
+  import bus from '../base/osc_common';
   import Indicator from '@/components/indicator/indicator';
   import BScroll from 'better-scroll';
   export default {

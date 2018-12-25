@@ -236,7 +236,7 @@
     background-color: #2F3543;
   }
   .Wholesale,.retail{
-    height: 770px;
+    height: 750px;
     background-color: #2F3543;
     overflow: hidden;
     .title{
@@ -302,10 +302,10 @@
     .charts{
       position: relative;
       width: 100%;
-      height: 480px;
+      height: 460px;
       >div{
         position: absolute;
-        top:55%;
+        top:50%;
         left: 50%;
         transform: translate(-50%,-50%);
       }
@@ -340,5 +340,7 @@
      }
     }
   }
-
+  .retail{
+    background-color: #353d51;
+  }
 </style>

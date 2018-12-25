@@ -11,20 +11,20 @@
               <span>单位：件</span>
             </div>
             <div class="reachRate ">
-              <Indicator :numcolor="'#ffffff'" :maskBackground="'#2F3543'" :fontcolor="'#F5A101'" :percent="53.72" :index="'全年达成率'"></Indicator>
+              <Indicator :numcolor="'#ffffff'" :maskBackground="'#2F3543'" :fontcolor="'#F5A101'" :percent="yearlyRatio" :index="'全年达成率'"></Indicator>
             </div>
           </div>
           <div class="situation ">
             <div>
-              <div>122,166</div>
+              <div>{{yearlyTarget}}</div>
               <div>全年目标</div>
             </div>
             <div class="rlborder">
-              <div>122,166</div>
+              <div>{{yearlyReach}}</div>
               <div>全年达成</div>
             </div>
             <div>
-              <div>60%</div>
+              <div>{{yProgress}}%</div>
               <div>时间进度</div>
             </div>
           </div>
@@ -33,8 +33,8 @@
           <monthsCharts :options="optionsYear" :styles="stylesYear"></monthsCharts>
         </div>
       </div>
-      <div class="monthlyReachRate">
-        <div class="module1 moduleBcolor">
+      <div class="monthlyReachRate moduleBcolor">
+        <div class="module1">
           <div class="top">
             <div class="title">
               <span></span><span>当月达成率</span>
@@ -43,26 +43,26 @@
               <span>单位：件</span>
             </div>
             <div class="reachRate ">
-              <Indicator :numcolor="'#ffffff'" :fontcolor="'#F5A101'" :maskBackground="'#353D51'" :percent="53.72" :index="'当月达成率'"></Indicator>
+              <Indicator :numcolor="'#ffffff'" :fontcolor="'#F5A101'" :maskBackground="'#353D51'" :percent="monthlyRatio" :index="'当月达成率'"></Indicator>
             </div>
           </div>
           <div class="situation ">
             <div>
-              <div>122,166</div>
+              <div>{{currentMonthTarget}}</div>
               <div>当月目标</div>
             </div>
             <div class="rlborder">
-              <div>122,166</div>
+              <div>{{currentMonthReach}}</div>
               <div>当月达成</div>
             </div>
             <div>
-              <div>60%</div>
+              <div>{{mProgress}}%</div>
               <div>时间进度</div>
             </div>
           </div>
         </div>
         <div v-show="regionFlag" class="module2">
-          <monthsCharts :options="optionsYear" :styles="stylesYear"></monthsCharts>
+          <monthsCharts :options="optionsMonth" :styles="stylesYear"></monthsCharts>
         </div>
       </div>
       <div class="sales">
@@ -101,7 +101,7 @@
           </div>
         </div>
         <div class="reportModule" ref="monthCharts1">
-          <monthsCharts :options="optionsMonth" :styles="stylesMonth"></monthsCharts>
+          <monthsCharts :options="optionsMonthSales" :styles="stylesMonth"></monthsCharts>
         </div>
         <div class="situation ">
           <div>
@@ -135,7 +135,7 @@
           </div>
         </div>
         <div class="reportModule" ref="monthCharts2">
-          <monthsCharts :options="optionsMonthloan" :styles="stylesMonth"></monthsCharts>
+          <monthsCharts :options="optionsMonthLoan" :styles="stylesMonth"></monthsCharts>
         </div>
         <div class="situation ">
           <div>
@@ -155,18 +155,26 @@
     </div>
   </div>
 </template>
-
 <script>
   import Indicator from '@/components/indicator/indicator'
   import monthsCharts from '@/components/highchartsComponent/HighchartsComponent'
-  import BScroll from 'better-scroll';
+  import BScroll from 'better-scroll'
+  import osc from '@/components/base/osc_common'
+  import bus from '@/components/base/bus'
   export default {
     name: "conditionIndividualLoanSituation",
     props:{
-      brandCode:String
+      brandCode:String,
+      sDate:String
     },
     data(){
       return {
+        yearlyRatio:0,
+        monthlyRatio:0,
+        yearlyTarget:'暂无',
+        currentMonthTarget:'暂无',
+        yearlyReach:0,
+        currentMonthReach:0,
         optionsYear: {
           chart: {
             backgroundColor: '#2F3543',
@@ -247,8 +255,88 @@
             color: '#DADFEC'
           }]
         },
-        stylesYear: {width: 100, height: 180},
         optionsMonth: {
+          chart: {
+            backgroundColor: '#353d51',
+            type: 'column'
+          },
+          title: {
+            align: 'left',
+            text: null,
+            style: {
+              fontWeight: 'bold'
+            }
+          },
+          tooltip: {
+            enabled:false
+          },
+          events: {
+            click: function (e) {
+              console.log(e)
+            }
+          },
+          plotOptions: {
+            column: {
+              pointPadding: 0.2,
+              borderWidth: 0,
+              dataLabels: {
+                enabled: true,
+                color: '#ffffff'
+              }
+            }
+          },
+          xAxis: {
+            categories: [
+              '北区', '东区', '南区', '西区', '中区'
+            ],
+            labels: {
+              rotation: 0,
+              style: {
+                color: '#dadfec'
+              }
+            },
+            enableMouseTracking: false,
+            tickPosition: 'inside',
+            tickmarkPlacement: 'on',
+            startOnTick: true,
+          },
+          yAxis: {
+            title: {
+              text: ''
+            },
+            labels: {
+              enabled: false,
+            },
+            gridLineWidth: '0px',
+            lineWidth: 1
+          },
+          credits: {enabled: false},
+          legend: {enabled: false},
+          exporting: {enabled: false},
+          series: [{
+            allowPointSelect: false,
+            data: [
+              {'y': 12},
+              {'y': 13},
+              {'y': 14},
+              {'y': 15},
+              {'color': '#F19938', 'y': 16}],
+            marker: {
+              enabled: false,
+              states: {
+                hover: {
+                  enabled: false
+                },
+                select: {
+                  enabled: false
+                }
+              }
+            },
+            color: '#DADFEC'
+          }]
+        },
+        stylesYear: {width: 100, height: 180},
+        optionsMonthSales: {
           chart: {
             backgroundColor: '#353D51'
           },
@@ -389,7 +477,7 @@
             }]
         },
         stylesMonth: {width: 280, height: 180},
-        optionsMonthloan: {
+        optionsMonthLoan: {
           chart: {
             backgroundColor: '#2F3543'
           },
@@ -524,10 +612,46 @@
               color: '#30C2AE',
             }]
         },
-        regionFlag:true
+        regionFlag:true,
+        yProgress:0,
+        mProgress:0
       }
     },
+    created(){
+      let that = this
+      bus.$on('selectDate',function(date){
+        that.getProgress(date)
+      })
+      bus.$on('getBrandCode',function(brandCode){
+        console.log(brandCode)
+      })
+      bus.$on('getRegion',function(code){
+        if(code !== '1'){
+          that.regionFlag = false
+        }else{
+          that.regionFlag = true
+        }
+      })
+      this.$http.post('/individualLoanFilter').then(function(res){
+        let data = res.body
+        console.log(data)
+        this.yearlyRatio = Number((data.yearlyReach/data.yearlyTarget*100).toFixed(2))
+        this.yearlyReach=osc.formatterCount(data.yearlyReach)
+        this.yearlyTarget=osc.formatterCount(data.yearlyTarget)
+        this.monthlyRatio = Number((data.currentMonthReach/data.currentMonthTarget*100).toFixed(2))
+        this.currentMonthTarget=osc.formatterCount(data.currentMonthTarget)
+        this.currentMonthReach=osc.formatterCount(data.currentMonthReach)
+        if(data.yearRegions.length >0){
+          console.dir(this.optionsYear)
+        }
+      })
+    },
     methods:{
+      getProgress(date){
+        let dateArr = date.split('\/');
+        this.getYearProgress(dateArr[1],dateArr[1],dateArr[2])
+        this.getMonthProgress(dateArr[1],dateArr[1],dateArr[2])
+      },
       monthArr(){
         let arr = []
         for(let i=1;i<=30;i++){
@@ -551,7 +675,39 @@
           scrollX: false,
           click: true
         })
-
+      },
+      getMonthProgress(year,month,day){
+        //先将每个月份的天数存入数组中
+        let arr = [31,28,31,30,31,30,31,31,30,31,30,31]
+        let days = Number(day)
+        if(month == '1' && this.isLeap(year)){
+          this.mProgress = Math.round(days/(arr[month-1]+1)*100)
+        }else{
+          this.mProgress = Math.round(days/arr[month-1]*100)
+        }
+      },
+      getYearProgress(year,month,day){
+        //先将每个月份的天数存入数组中
+        let arr = [31,28,31,30,31,30,31,31,30,31,30,31]
+        let yearDays = 365
+        let days = Number(day)
+        //将输入月份之前月份的天数累加
+        for(let i = 0; i< month -1;i++){
+          days += arr[i]
+        }
+        //判断是否是闰年且看是否大于2月(小于2月没必要考虑闰年问题)
+        if(month > 2 && this.isLeap(year)){
+          days ++
+          yearDays++
+        }
+        this.yProgress =Math.round(days/yearDays*100)
+      },
+      isLeap(year){
+        if (year % 400 == 0 || year % 4 === 0 && year % 100 !== 0){
+          return true;
+        }else{
+          return false;
+        }
       }
     },
     components:{
@@ -574,8 +730,7 @@
     background-color: #2F3543;
   }
   .module1 {
-    background-color: #2F3543;
-    height: 580px;
+    height: 550px;
     overflow: hidden;
     .top{
       position: relative;
