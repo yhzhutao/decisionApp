@@ -8,7 +8,7 @@
         </div>
         <div class="currentAssets-content">
           <p class="unit">单位: 亿元</p>
-          <p class="num">888.88</p>
+          <p class="num">{{assetsScale.totalAssetsAmount}}</p>
           <div class="line"></div>
           <div class="content-bottom">
             <div class="chart-container">
@@ -17,15 +17,15 @@
             </div>
             <div class="container-right">
               <div class="right-top">
-                <span>222.22</span>
+                <span>{{assetsScale.salesAmount}}</span>
                 <span>批售</span>
-                <span>{{this.wholesalePercent*100+'%'}}</span>
+                <span>{{wholesalePercent*100+'%'}}</span>
               </div>
               <div class="right-middle"></div>
               <div class="right-bottom">
-                <span>666.66</span>
+                <span>{{assetsScale.retailAmount}}</span>
                 <span>零售</span>
-                <span>{{this.retailPercent*100+'%'}}</span>
+                <span>{{retailPercent*100+'%'}}</span>
               </div>
             </div>
           </div>
@@ -33,10 +33,10 @@
       </div>
       <ul>
         <li>
-          <v-asset :titleCode="0"></v-asset>
+          <v-asset :titleCode="0" :assetsScale="assetsScale"></v-asset>
         </li>
         <li>
-          <v-asset :titleCode="1"></v-asset>
+          <v-asset :titleCode="1" :assetsScale="assetsScale"></v-asset>
         </li>
       </ul>
       <div class="bottom">
@@ -84,8 +84,19 @@
           }]
         },
         styles: {},
-        wholesalePercent:0.25,
-        retailPercent:0.3
+        wholesalePercent:0,
+        retailPercent:0,
+        assetsScale:{
+          totalAssetsAmount:0,
+          salesAmount:0,
+          retailAmount:0,
+          currentIncome:0,
+          syIncome:0,
+          groupIncomeIndex:0,
+          currentProfit:0,
+          syProfit:0,
+          groupProfitIndex:0
+        }
       }
     },
     methods: {
@@ -137,9 +148,14 @@
         }
       },
       init() {
-        let data_arr = [this.wholesalePercent, this.retailPercent];
-        let color_arr = ['#3A404D', '#6E5AC8'];
-        this.drawCircle('drawing', data_arr, color_arr);
+        this.$http.post('/assetsScale?date='+20180510).then((response)=>{
+          this.assetsScale = Object.assign({},this.assetsScale,response.body.data);
+          this.wholesalePercent = this.assetsScale.salesAmount/this.assetsScale.totalAssetsAmount;
+          this.retailPercent = this.assetsScale.retailAmount/this.assetsScale.totalAssetsAmount;
+          let data_arr = [this.wholesalePercent, this.retailPercent];
+          let color_arr = ['#3A404D', '#6E5AC8'];
+          this.drawCircle('drawing', data_arr, color_arr);
+        })
       }
     },
     components: {
@@ -222,7 +238,7 @@
             }
             .container-right {
               display: inline-block;
-              margin-left: 40px;
+              margin-left: 10px;
               vertical-align: middle;
               .right-top, .right-bottom {
                 span:first-child {

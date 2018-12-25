@@ -10,10 +10,9 @@
           <span>当前</span>
           <div class="progress">
             <div class="progress_bg">
-              <div class="progress_bar"></div>
+              <div class="progress_bar" :style="{'width':percentProgress+'%'}"></div>
             </div>
-            <div class="progress_btn"></div>
-            <!--<div class="text">0%</div>-->
+            <div class="progress_btn" :style="{'left':percentProgress-4+'%'}"></div>
           </div>
         </div>
         <div class="synchronism">
@@ -21,15 +20,15 @@
         </div>
         <div class="content-bottom">
           <div class="left">
-            <p>12.66</p>
-            <span>当前收入</span>
+            <p>{{currentSum}}</p>
+            <span>{{text}}</span>
           </div>
           <div class="center">
-            <p>+10%</p>
+            <p :class="fluctuation>0?'top':'low'">{{fluctuation+'%'}}</p>
             <span>同比变动</span>
           </div>
           <div class="right">
-            <p>12.66</p>
+            <p>{{index}}</p>
             <span>集团指标</span>
           </div>
         </div>
@@ -44,26 +43,54 @@
         return{
           title:'',
           url:'',
-          percent:50
+          text:'',
+          percent:0,
+          percentProgress:0,
+          currentSum:0, //当前收入/利润
+          fluctuation:0, //同比变动
+          index:0  //集团指标
         }
       },
       props:{
-          titleCode:Number
+          titleCode:Number,
+          assetsScale:Object
       },
       mounted(){
         this.getTitle(this.titleCode);
+        // console.log(this.$parent.assetsScale);
       },
       methods:{
         getTitle(titleCode){
           if(titleCode==0){
             this.title='收入';
             this.url=require('../../image/income_icon@2x.png');
+            this.text='当前收入';
+            this.currentSum = this.assetsScale.currentIncome;
+            this.fluctuation =
+              ((this.assetsScale.currentIncome-this.assetsScale.syIncome)/this.assetsScale.syIncome*100).toFixed(0);
+            this.index = this.assetsScale.groupIncomeIndex;
+            this.percent = (this.assetsScale.currentIncome/this.assetsScale.syIncome*100).toFixed(0);
+            this.percentProgress = this.percent>100?100:this.percent;
+            // console.log(this.percent);
           }else if(titleCode==1){
             this.title='利润';
             this.url=require('../../image/profit_icon@2x.png');
+            this.text = '当前利润';
+            this.currentSum = this.assetsScale.currentProfit;
+            this.fluctuation =
+              ((this.assetsScale.currentProfit-this.assetsScale.syProfit)/this.assetsScale.syProfit*100).toFixed(0);
+            this.index = this.assetsScale.groupProfitIndex;
+            this.percent = (this.assetsScale.currentProfit/this.assetsScale.syProfit*100).toFixed(0);
+            this.percentProgress = this.percent>100?100:this.percent;
           }else{
             return;
           }
+        }
+      },
+      watch:{
+        assetsScale:function(){
+          // console.log(111);
+          this.getTitle(this.titleCode);
         }
       }
     }
@@ -195,7 +222,12 @@
           font-size: 60px;
           line-height: 84px;
           margin-bottom: 16px;
-          color: rgb(208,2,27);
+          &.top{
+            color: rgb(208,2,27);
+          }
+          &.low{
+            color:rgb(0,128,0);
+          }
         }
         span{
           font-size: 32px;

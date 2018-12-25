@@ -16,23 +16,23 @@
           <div class="target-content">
             <ul>
               <li>
-                <v-indicator :fontcolor="'rgb(245,161,1)'" :percent="53.72" :index="'全年达成率'"></v-indicator>
+                <v-indicator :fontcolor="'rgb(245,161,1)'" :percent="yearRate" :index1="'全年达成率'"></v-indicator>
               </li>
               <li>
-                <v-indicator :fontcolor="'rgb(245,161,1)'" :percent="85.72" :index="'当月达成率'"></v-indicator>
+                <v-indicator :fontcolor="'rgb(245,161,1)'" :percent="monthRate" :index1="'当月达成率'"></v-indicator>
               </li>
             </ul>
             <div class="target-num">
               <div class="year-target">
-                <p>3123456</p>
+                <p>{{individualLoanSituation.yearlyTarget}}</p>
                 <span>全年目标</span>
-                <p>1623456</p>
+                <p>{{individualLoanSituation.yearlyReach}}</p>
                 <span>全年达成</span>
               </div>
               <div class="month-target">
-                <p>3123456</p>
+                <p>{{individualLoanSituation.currentMonthTarget}}</p>
                 <span>当月目标</span>
-                <p>1623456</p>
+                <p>{{individualLoanSituation.currentMonthReach}}</p>
                 <span>当月达成</span>
               </div>
             </div>
@@ -49,40 +49,39 @@
             <ul>
               <li>
                 <span>
-                  <p>1234</p>
+                  <p>{{individualLoanSituation.todayApplication}}</p>
                   <p>本日申请</p>
                 </span>
               </li><li>
                 <span>
-                  <p>1234</p>
-                  <p>本日申请</p>
+                  <p>{{individualLoanSituation.todayApproval}}</p>
+                  <p>本日审批</p>
                 </span>
               </li>
               <li>
                 <span>
-                  <p>1234</p>
-                  <p>本日申请</p>
+                  <p>{{individualLoanSituation.pendingApproval}}</p>
+                  <p>待审批</p>
                 </span>
               </li>
               <li>
                 <span>
-                  <p>1234</p>
-                  <p>本日申请</p>
+                  <p>{{individualLoanSituation.monthApplication}}</p>
+                  <p>当月申请</p>
                 </span>
               </li>
               <li>
                 <span>
-                  <p>1234</p>
-                  <p>本日申请</p>
+                  <p>{{individualLoanSituation.monthApproval}}</p>
+                  <p>当月审批</p>
                 </span>
               </li>
               <li>
                 <span>
-                  <p>1234</p>
-                  <p>本日申请</p>
+                  <p>{{individualLoanSituation.monthCheck}}</p>
+                  <p>当月核准</p>
                 </span>
               </li>
-
             </ul>
             <div class="unit">
               单位: 件
@@ -101,7 +100,10 @@
         name: "individualIoan",
         data(){
           return {
-          date:''
+            date:'',
+            yearRate:0,
+            monthRate:0,
+            individualLoanSituation:{}
           }
         },
       components:{
@@ -118,6 +120,15 @@
       },
       methods:{
         _initScroll(){
+          this.$http.post('/individualLoanSituation?date='+20180510).then((response)=>{
+            this.individualLoanSituation = Object.assign({},this.individualLoanSituation,response.body.data);
+            console.log(this.individualLoanSituation);
+            this.yearRate = this.individualLoanSituation.yearlyReach/this.individualLoanSituation.yearlyTarget*100;
+            // this.yearRate = parseFloat(this.yearRate.toFixed(2));
+            this.yearRate = this.yearRate.toFixed(2);
+            this.monthRate = this.individualLoanSituation.currentMonthReach/this.individualLoanSituation.currentMonthTarget*100;
+            this.monthRate = parseFloat(this.monthRate.toFixed(2));
+          });
           new BScroll(this.$refs['individualIoan-wrapper'],{click:true});
         }
       }

@@ -6,7 +6,7 @@
       <div class="content">
         <span class="top" :style="{color:numcolor}">{{percent}}%</span>
         <div class="line"></div>
-        <span class="bottom" :style="{color:fontcolor}">{{index}}</span>
+        <span class="bottom" :style="{color:fontcolor}">{{index1}}</span>
       </div>
     </div>
   </div>
@@ -15,20 +15,21 @@
 <script>
   export default {
     name: "indicator",
-    props: {
-      numcolor: String,
-      fontcolor: String,
-      percent: Number,
-      index: String,
-      lineFirstColor: String,
-      lineEndColor: String,
-      maskBackground: String
-    },
+    props: [
+      'numcolor',
+      'fontcolor',
+      'percent',
+      'index1',
+      'lineFirstColor',
+      'lineEndColor',
+      'maskBackground'
+    ],
     mounted(){
       this.inte(this.percent);
     },
     methods: {
       inte(percent) {
+        // console.log(percent);
         let canvas_1=this.$refs['canvas_1']
         let canvas_2 = this.$refs['canvas_2'];
         let windowWidth = document.body.clientWidth;
@@ -103,6 +104,12 @@
           ctx_2.closePath();
           ctx_2.restore();
         })()
+      }
+    },
+    watch:{
+      percent:function(){
+        // console.log(111);
+        this.inte(this.percent);
       }
     }
   }

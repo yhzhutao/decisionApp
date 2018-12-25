@@ -1,0 +1,33 @@
+{
+  "assetsScale":{
+    "totalAssetsAmount":888.88,
+    "salesAmount":222.22,
+    "retailAmount":555.55,
+    "currentIncome":9.66,
+    "syIncome":10.66,
+    "groupIncomeIndex":12.66,
+    "currentProfit":9.8,
+    "syProfit":8.7,
+    "groupProfitIndex":10.00
+  },
+  "individualLoanSituation":{
+    "yearlyTarget":3123456,
+    "yearlyReach":1623456,
+    "currentMonthTarget":123455,
+    "currentMonthReach":23456,
+    "todayApplication":1234,
+    "todayApproval":1234,
+    "pendingApproval":1234,
+    "monthApplication":1234,
+    "monthApproval":1234,
+    "monthCheck":1234
+  },
+  "indicators":{
+    "assetliabilityRatio":20.45,
+    "defectiveRate":31.56,
+    "marketShare":76.89,
+    "permeability":80.12,
+    "approvalRate":67.33,
+    "automaticRate":25.00
+  }
+}

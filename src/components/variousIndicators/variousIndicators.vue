@@ -16,22 +16,22 @@
       <div class="content">
         <ul>
           <li>
-            <v-indicator :fontcolor="'#3ac5b2'" :percent="83.72" :index="'资产负率'" :lineFirstColor="'#008572'" :lineEndColor="'#57C2B3'"></v-indicator>
+            <v-indicator :fontcolor="'#3ac5b2'" :percent="indicators.assetliabilityRatio" :index1="'资产负债率'" :lineFirstColor="'#008572'" :lineEndColor="'#57C2B3'"></v-indicator>
           </li>
           <li>
-            <v-indicator :fontcolor="'#3ac5b2'" :percent="33.72" :index="'不良率'" :lineFirstColor="'#008572'" :lineEndColor="'#57C2B3'"></v-indicator>
+            <v-indicator :fontcolor="'#3ac5b2'" :percent="indicators.defectiveRate" :index1="'不良率'" :lineFirstColor="'#008572'" :lineEndColor="'#57C2B3'"></v-indicator>
           </li>
           <li>
-            <v-indicator :fontcolor="'#3ac5b2'" :percent="53.72" :index="'市占率'" :lineFirstColor="'#008572'" :lineEndColor="'#57C2B3'"></v-indicator>
+            <v-indicator :fontcolor="'#3ac5b2'" :percent="indicators.marketShare" :index1="'市占率'" :lineFirstColor="'#008572'" :lineEndColor="'#57C2B3'"></v-indicator>
           </li>
           <li>
-            <v-indicator :fontcolor="'#3ac5b2'" :percent="43.72" :index="'渗透率'" :lineFirstColor="'#008572'" :lineEndColor="'#57C2B3'"></v-indicator>
+            <v-indicator :fontcolor="'#3ac5b2'" :percent="indicators.permeability" :index1="'渗透率'" :lineFirstColor="'#008572'" :lineEndColor="'#57C2B3'"></v-indicator>
           </li>
           <li>
-            <v-indicator :fontcolor="'#3ac5b2'" :percent="38.79" :index="'核准率'" :lineFirstColor="'#008572'" :lineEndColor="'#57C2B3'"></v-indicator>
+            <v-indicator :fontcolor="'#3ac5b2'" :percent="indicators.approvalRate" :index1="'核准率'" :lineFirstColor="'#008572'" :lineEndColor="'#57C2B3'"></v-indicator>
           </li>
           <li>
-            <v-indicator :fontcolor="'#3ac5b2'" :percent="63.72" :index="'自动审批率'" :lineFirstColor="'#008572'" :lineEndColor="'#57C2B3'"></v-indicator>
+            <v-indicator :fontcolor="'#3ac5b2'" :percent="indicators.automaticRate" :index1="'自动审批率'" :lineFirstColor="'#008572'" :lineEndColor="'#57C2B3'"></v-indicator>
           </li>
         </ul>
       </div>
@@ -45,6 +45,18 @@
   import BScroll from 'better-scroll';
   export default {
     name: "variousIndicators",
+    data(){
+      return{
+        indicators:{
+          assetliabilityRatio:0,
+          defectiveRate:0,
+          marketShare:0,
+          permeability:0,
+          approvalRate:0,
+          automaticRate:0
+        }
+      }
+    },
     components: {
       'v-indicator': Indicator
     },
@@ -53,6 +65,11 @@
     },
     methods:{
       _initScorll(){
+        this.$http.post('/indicators?date='+20180510).then((response)=>{
+          // console.log(response);
+          this.indicators = Object.assign({},this.indicators,response.body.data);
+          // console.log(this.indicators);
+        })
         new BScroll(this.$refs['variousIndicators-wrapper'],{click:true});
       }
     }
