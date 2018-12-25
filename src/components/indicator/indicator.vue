@@ -73,9 +73,11 @@
         ctx_1.arc(canvas_1.width / 2, canvas_1.height / 2, canvas_1.width / 2 - ctx_1.lineWidth / 2, 0, Math.PI * 2, false);
         ctx_1.closePath();
         ctx_1.stroke();
-        if (percent < 0 || percent > 100) {
-          throw new Error('percent must be between 0 and 100');
+        if (percent < 0) {
+          throw new Error('percent must be Greater than 0');
           return
+        }else if(percent>100){
+          percent=100;
         }
         ctx_2.lineWidth = 6;
         var gradient = ctx_2.createLinearGradient(canvas_2.width / 2, 0, canvas_2.width / 2, canvas_2.height);
