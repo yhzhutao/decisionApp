@@ -12,20 +12,19 @@
           <div class="line"></div>
           <div class="content-bottom">
             <div class="chart-container">
-              <!--<v-highchart :options="options" :styles="styles"></v-highchart>-->
               <canvas id="drawing" width="96" height="96"></canvas>
             </div>
             <div class="container-right">
               <div class="right-top">
                 <span>{{assetsScale.salesAmount}}</span>
                 <span>批售</span>
-                <span>{{wholesalePercent*100+'%'}}</span>
+                <span>{{(wholesalePercent*100).toFixed(0)+'%'}}</span>
               </div>
               <div class="right-middle"></div>
               <div class="right-bottom">
                 <span>{{assetsScale.retailAmount}}</span>
                 <span>零售</span>
-                <span>{{retailPercent*100+'%'}}</span>
+                <span>{{(retailPercent*100).toFixed(0)+'%'}}</span>
               </div>
             </div>
           </div>
@@ -52,6 +51,7 @@
   import Asset from '@/components/assetCard/assetCard';
   import HighchartsComponent from '@/components/highchartsComponent/HighchartsComponent';
   import BScroll from 'better-scroll';
+  import bus from '@/components/base/bus.js'
 
   export default {
     name: "assets",
@@ -152,8 +152,8 @@
           this.assetsScale = Object.assign({},this.assetsScale,response.body.data);
           this.wholesalePercent = this.assetsScale.salesAmount/this.assetsScale.totalAssetsAmount;
           this.retailPercent = this.assetsScale.retailAmount/this.assetsScale.totalAssetsAmount;
-          let data_arr = [this.wholesalePercent, this.retailPercent];
-          let color_arr = ['#3A404D', '#6E5AC8'];
+          let data_arr = [this.wholesalePercent, this.retailPercent,1-this.wholesalePercent-this.retailPercent];
+          let color_arr = ['#3A404D', '#6E5AC8','#DADFEC'];
           this.drawCircle('drawing', data_arr, color_arr);
         })
       }
@@ -238,7 +238,7 @@
             }
             .container-right {
               display: inline-block;
-              margin-left: 10px;
+              margin-left: 30px;
               vertical-align: middle;
               .right-top, .right-bottom {
                 span:first-child {
