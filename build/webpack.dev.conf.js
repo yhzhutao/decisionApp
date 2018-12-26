@@ -18,6 +18,7 @@ const appData = require('../mock/data.json');
 const assetsScale = appData.assetsScale;
 const individualLoanSituation = appData.individualLoanSituation;
 const indicators = appData.indicators;
+const creditInjection = appData.creditInjection;
 app.use('/api', router);
 
 const HOST = process.env.HOST
@@ -50,7 +51,13 @@ const devWebpackConfig = merge(baseWebpackConfig, {
           errno:0,
           data:indicators
         })
-      })
+      });
+      app.post('/creditInjection',(req,res,next)=>{
+        res.json({
+          errno:0,
+          data:creditInjection
+        })
+      });
     },
     clientLogLevel: 'warning',
     historyApiFallback: {

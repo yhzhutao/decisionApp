@@ -29,5 +29,22 @@
     "permeability":80.12,
     "approvalRate":67.33,
     "automaticRate":25.00
-  }
+  },
+  "creditInjection":[
+    {
+      "currentRelease":1234567,
+      "syRelease":2345678,
+      "salesWay":"wholesaleSale"
+    },
+    {
+      "currentRelease":2345676,
+      "syRelease":1334548,
+      "salesWay":"retail"
+    },
+    {
+      "currentRelease":5234567,
+      "syRelease":3349678,
+      "salesWay":"overallSituation"
+    }
+  ]
 }

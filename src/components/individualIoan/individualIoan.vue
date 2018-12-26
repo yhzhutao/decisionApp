@@ -96,11 +96,12 @@
   import bus from '../base/osc_common';
   import Indicator from '@/components/indicator/indicator';
   import BScroll from 'better-scroll';
+  import Bus from '@/components/base/bus.js';
   export default {
         name: "individualIoan",
         data(){
           return {
-            date:'',
+            date:0,
             yearRate:0,
             monthRate:0,
             individualLoanSituation:{}
@@ -109,20 +110,17 @@
       components:{
         'v-indicator':Indicator
       },
-        created(){
-          let _this = this
-          bus.$on('date',function(val){
-            _this.date = val
-          })
-        },
       mounted(){
           this._initScroll();
       },
       methods:{
         _initScroll(){
+          Bus.$on('selectDate',function(val){
+            console.log(val);
+            this.date = val;
+          });
           this.$http.post('/individualLoanSituation?date='+20180510).then((response)=>{
             this.individualLoanSituation = Object.assign({},this.individualLoanSituation,response.body.data);
-            console.log(this.individualLoanSituation);
             this.yearRate = this.individualLoanSituation.yearlyReach/this.individualLoanSituation.yearlyTarget*100;
             // this.yearRate = parseFloat(this.yearRate.toFixed(2));
             this.yearRate = this.yearRate.toFixed(2);
