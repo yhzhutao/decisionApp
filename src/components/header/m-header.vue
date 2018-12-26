@@ -48,7 +48,7 @@
 
     },
     mounted() {
-      bus.$emit('selectDate',this.formatDate(new Date()))
+      bus.$emit('selectDate',this.formatDate(new Date()).replace(/\//g,''))
     },
     watch:{
       $route(to,from){
@@ -99,7 +99,7 @@
       handleConfirm(date){
         let selectDate = this.formatDate(date)
         this.selectDate = selectDate
-        bus.$emit('selectDate',selectDate)
+        bus.$emit('selectDate',selectDate.replace(/\//g,''))
       },
     }
   }

@@ -634,7 +634,6 @@
       })
       this.$http.post('/individualLoanFilter').then(function(res){
         let data = res.body
-        console.log(data)
         this.yearlyRatio = Number((data.yearlyReach/data.yearlyTarget*100).toFixed(2))
         this.yearlyReach=osc.formatterCount(data.yearlyReach)
         this.yearlyTarget=osc.formatterCount(data.yearlyTarget)
@@ -642,15 +641,18 @@
         this.currentMonthTarget=osc.formatterCount(data.currentMonthTarget)
         this.currentMonthReach=osc.formatterCount(data.currentMonthReach)
         if(data.yearRegions.length >0){
-          console.dir(this.optionsYear)
+          console.log(data.yearRegions)
+          console.dir(this.optionsYear.series[0].data)
         }
       })
     },
     methods:{
       getProgress(date){
-        let dateArr = date.split('\/');
-        this.getYearProgress(dateArr[1],dateArr[1],dateArr[2])
-        this.getMonthProgress(dateArr[1],dateArr[1],dateArr[2])
+        let year = date.substr(0,4)
+        let month = date.substr(4,2)
+        let day = date.substr(6,2)
+        this.getYearProgress(year,month,day)
+        this.getMonthProgress(year,month,day)
       },
       monthArr(){
         let arr = []
