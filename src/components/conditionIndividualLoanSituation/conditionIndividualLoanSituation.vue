@@ -192,7 +192,7 @@
           },
           events: {
             click: function (e) {
-              console.log(e)
+              // console.log(e)
             }
           },
           plotOptions: {
@@ -236,9 +236,9 @@
           series: [{
             allowPointSelect: false,
             data: [
-              {'y': 12},
-              {'y': 13},
               {'y': 14},
+              {'y': 13},
+              {'y': 11},
               {'y': 15},
               {'color': '#F19938', 'y': 16}],
             marker: {
@@ -641,8 +641,7 @@
         this.currentMonthTarget=osc.formatterCount(data.currentMonthTarget)
         this.currentMonthReach=osc.formatterCount(data.currentMonthReach)
         if(data.yearRegions.length >0){
-          console.log(data.yearRegions)
-          console.dir(this.optionsYear.series[0].data)
+          this.optionsYear.series[0].data = this.sortRegion(data.yearRegions)
         }
       })
     },
@@ -710,6 +709,39 @@
         }else{
           return false;
         }
+      },
+      //区域排序并添加颜色
+      sortRegion(arr){
+        let regionValue = []
+        let maxValueObj = {max:0,index:0}
+        console.log(arr)
+         arr.forEach(function(item){
+           switch (item.region) {
+             case 'norhRegion':
+               regionValue.splice(0,0,{y:Math.round(item.regionalReach/item.regionalGoals*100)})
+               break;
+             case 'eastRegion':
+               regionValue.splice(1,0,{y:Math.round(item.regionalReach/item.regionalGoals*100)})
+               break;
+             case 'southRegion':
+               regionValue.splice(2,0,{y:Math.round(item.regionalReach/item.regionalGoals*100)})
+               break;
+             case 'westRegion':
+               regionValue.splice(3,0,{y:Math.round(item.regionalReach/item.regionalGoals*100)})
+               break;
+             case 'middleRegion':
+               regionValue.splice(4,0,{y:Math.round(item.regionalReach/item.regionalGoals*100)})
+               break;
+           }
+         })
+        regionValue.forEach(function(item,index){
+          if(maxValueObj.max < item.y){
+            maxValueObj.max = item.y
+            maxValueObj.index = index
+          }
+        })
+        regionValue[maxValueObj.index].color = "#F19938"
+        return regionValue
       }
     },
     components:{
@@ -718,6 +750,7 @@
     },
     mounted(){
       this._initScorll();
+      // console.log(this.optionsYear.series[0].data)
     },
   }
 </script>
