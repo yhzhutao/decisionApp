@@ -71,15 +71,15 @@
         </div>
         <div class="situation">
           <div>
-            <div>122,166</div>
+            <div>{{monthSales}}</div>
             <div>当月累计</div>
           </div>
           <div class="rlborder">
-            <div>122,166</div>
+            <div>{{chainSales}}</div>
             <div>当月同期</div>
           </div>
           <div>
-            <div class="ratio">+10%</div>
+            <div class="ratio">{{salesRatio}}%</div>
             <div>环比</div>
           </div>
         </div>
@@ -88,7 +88,7 @@
         <div class="title">
           <div class="title-left">
             <span class="icon"></span>
-            <span class="t-l-text">批售</span>
+            <span class="t-l-text">申请件</span>
           </div>
         </div>
         <div class="chartIcon">
@@ -105,15 +105,15 @@
         </div>
         <div class="situation ">
           <div>
-            <div>122,166</div>
+            <div>{{applyCurrentMonth}}</div>
             <div>当月累计</div>
           </div>
           <div class="rlborder">
-            <div>122,166</div>
+            <div>{{applyChain}}</div>
             <div>当月同期</div>
           </div>
           <div>
-            <div class="ratio">10%</div>
+            <div class="ratio">{{applyRatio}}%</div>
             <div>环比</div>
           </div>
         </div>
@@ -122,7 +122,7 @@
         <div class="title">
           <div class="title-left">
             <span class="icon"></span>
-            <span class="t-l-text">批售</span>
+            <span class="t-l-text">放款件</span>
           </div>
         </div>
         <div class="chartIcon">
@@ -139,15 +139,15 @@
         </div>
         <div class="situation ">
           <div>
-            <div>122,166</div>
+            <div>{{loanCurrentMonth}}</div>
             <div>当月累计</div>
           </div>
           <div class="rlborder">
-            <div>122,166</div>
+            <div>{{loanChain}}</div>
             <div>当月同期</div>
           </div>
           <div>
-            <div class="ratio">10%</div>
+            <div class="ratio">{{loanRatio}}%</div>
             <div>环比</div>
           </div>
         </div>
@@ -614,7 +614,16 @@
         },
         regionFlag:true,
         yProgress:0,
-        mProgress:0
+        mProgress:0,
+        monthSales:0,
+        chainSales:0,
+        salesRatio:0,
+        applyCurrentMonth:0,
+        applyChain:0,
+        applyRatio:0,
+        loanCurrentMonth:0,
+        loanChain:0,
+        loanRatio:0
       }
     },
     created(){
@@ -643,6 +652,28 @@
         if(data.yearRegions.length >0){
           this.optionsYear.series[0].data = this.sortRegion(data.yearRegions)
         }
+        if(data.monthRegions.length>0){
+          this.optionsMonth.series[0].data = this.sortRegion(data.monthRegions)
+        }
+        this.monthSales = osc.formatterCount(data.monthSales)
+        this.chainSales = osc.formatterCount(data.chainSales)
+        this.salesRatio = Math.round((data.monthSales-data.chainSales)/data.chainSales*100)
+        data.salesData.forEach(function(item,index){
+         if(item.salesWay === 'apply'){
+           that.applyCurrentMonth = osc.formatterCount(item.cumulativeMonth)
+           that.applyChain = osc.formatterCount(item.currentSy)
+           that.applyRatio = Math.round((item.cumulativeMonth-item.chainSales)/item.chainSales*100)
+           that.optionsMonthSales.series[0].data = item.currentData
+           that.optionsMonthSales.series[1].data = item.chainData
+         }
+          if(item.salesWay === 'loan'){
+            that.loanCurrentMonth = osc.formatterCount(item.cumulativeMonth)
+            that.loanChain = osc.formatterCount(item.currentSy)
+            that.loanRatio = Math.round((item.cumulativeMonth-item.chainSales)/item.chainSales*100)
+            that.optionsMonthLoan.series[0].data = item.currentData
+            that.optionsMonthLoan.series[1].data = item.chainData
+          }
+        })
       })
     },
     methods:{
@@ -714,7 +745,6 @@
       sortRegion(arr){
         let regionValue = []
         let maxValueObj = {max:0,index:0}
-        console.log(arr)
          arr.forEach(function(item){
            switch (item.region) {
              case 'norhRegion':
@@ -754,7 +784,6 @@
     },
   }
 </script>
-
 <style lang="scss" scoped>
   .conditionIndividualLoanSituation{
     overflow: hidden;
