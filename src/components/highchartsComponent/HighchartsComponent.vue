@@ -13,7 +13,7 @@
   Highcharts3D(Highcharts);
 
   export default {
-    props: ['options', 'styles'],
+    props: ['options','styles'],
     name: 'highcharts',
     data() {
       return {
@@ -42,7 +42,5 @@
 
 <style lang="scss">
   .highcharts-container {
-    /*width: 200px;*/
-    /*height: 200px;*/
   }
 </style>

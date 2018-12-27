@@ -19,6 +19,7 @@ const assetsScale = appData.assetsScale;
 const individualLoanSituation = appData.individualLoanSituation;
 const indicators = appData.indicators;
 const creditInjection = appData.creditInjection;
+const indicatorsClass = appData.indicatorsClass;
 app.use('/api', router);
 
 const HOST = process.env.HOST
@@ -56,6 +57,12 @@ const devWebpackConfig = merge(baseWebpackConfig, {
         res.json({
           errno:0,
           data:creditInjection
+        })
+      });
+      app.post('/indicatorsClass',(req,res,next)=>{
+        res.json({
+          errno:0,
+          data:indicatorsClass
         })
       });
     },
