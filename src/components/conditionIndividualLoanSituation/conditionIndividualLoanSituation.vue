@@ -396,7 +396,7 @@
               fontSize:'18px',
               fontWeight:'700'
             },
-            pointFormat:'<p>{point.y}%</p>',
+            pointFormat:'<p>{point.y}</p>',
           },
           series: [{
             enableMouseTracking:false,
@@ -533,7 +533,7 @@
             backgroundColor: '#3AC3B1',
             borderRadius: 10,
             headerFormat: '',
-            pointFormat:'<p>{point.y}%</p>',
+            pointFormat:'<p>{point.y}</p>',
             shared: true
           },
           series: [{
