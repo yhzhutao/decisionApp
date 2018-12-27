@@ -71,15 +71,15 @@
         </div>
         <div class="situation">
           <div>
-            <div>122,166</div>
+            <div>{{monthSales}}</div>
             <div>当月累计</div>
           </div>
           <div class="rlborder">
-            <div>122,166</div>
+            <div>{{chainSales}}</div>
             <div>当月同期</div>
           </div>
           <div>
-            <div class="ratio">+10%</div>
+            <div class="ratio">{{salesRatio}}%</div>
             <div>环比</div>
           </div>
         </div>
@@ -88,7 +88,7 @@
         <div class="title">
           <div class="title-left">
             <span class="icon"></span>
-            <span class="t-l-text">批售</span>
+            <span class="t-l-text">申请件</span>
           </div>
         </div>
         <div class="chartIcon">
@@ -105,15 +105,15 @@
         </div>
         <div class="situation ">
           <div>
-            <div>122,166</div>
+            <div>{{applyCurrentMonth}}</div>
             <div>当月累计</div>
           </div>
           <div class="rlborder">
-            <div>122,166</div>
+            <div>{{applyChain}}</div>
             <div>当月同期</div>
           </div>
           <div>
-            <div class="ratio">10%</div>
+            <div class="ratio">{{applyRatio}}%</div>
             <div>环比</div>
           </div>
         </div>
@@ -122,7 +122,7 @@
         <div class="title">
           <div class="title-left">
             <span class="icon"></span>
-            <span class="t-l-text">批售</span>
+            <span class="t-l-text">放款件</span>
           </div>
         </div>
         <div class="chartIcon">
@@ -139,15 +139,15 @@
         </div>
         <div class="situation ">
           <div>
-            <div>122,166</div>
+            <div>{{loanCurrentMonth}}</div>
             <div>当月累计</div>
           </div>
           <div class="rlborder">
-            <div>122,166</div>
+            <div>{{loanChain}}</div>
             <div>当月同期</div>
           </div>
           <div>
-            <div class="ratio">10%</div>
+            <div class="ratio">{{loanRatio}}%</div>
             <div>环比</div>
           </div>
         </div>
@@ -192,7 +192,7 @@
           },
           events: {
             click: function (e) {
-              console.log(e)
+              // console.log(e)
             }
           },
           plotOptions: {
@@ -236,9 +236,9 @@
           series: [{
             allowPointSelect: false,
             data: [
-              {'y': 12},
-              {'y': 13},
               {'y': 14},
+              {'y': 13},
+              {'y': 11},
               {'y': 15},
               {'color': '#F19938', 'y': 16}],
             marker: {
@@ -396,7 +396,7 @@
               fontSize:'18px',
               fontWeight:'700'
             },
-            pointFormat:'<p>{point.y}%</p>',
+            pointFormat:'<p>{point.y}</p>',
           },
           series: [{
             enableMouseTracking:false,
@@ -533,7 +533,7 @@
             backgroundColor: '#3AC3B1',
             borderRadius: 10,
             headerFormat: '',
-            pointFormat:'<p>{point.y}%</p>',
+            pointFormat:'<p>{point.y}</p>',
             shared: true
           },
           series: [{
@@ -614,7 +614,16 @@
         },
         regionFlag:true,
         yProgress:0,
-        mProgress:0
+        mProgress:0,
+        monthSales:0,
+        chainSales:0,
+        salesRatio:0,
+        applyCurrentMonth:0,
+        applyChain:0,
+        applyRatio:0,
+        loanCurrentMonth:0,
+        loanChain:0,
+        loanRatio:0
       }
     },
     created(){
@@ -634,7 +643,6 @@
       })
       this.$http.post('/individualLoanFilter').then(function(res){
         let data = res.body
-        console.log(data)
         this.yearlyRatio = Number((data.yearlyReach/data.yearlyTarget*100).toFixed(2))
         this.yearlyReach=osc.formatterCount(data.yearlyReach)
         this.yearlyTarget=osc.formatterCount(data.yearlyTarget)
@@ -642,15 +650,39 @@
         this.currentMonthTarget=osc.formatterCount(data.currentMonthTarget)
         this.currentMonthReach=osc.formatterCount(data.currentMonthReach)
         if(data.yearRegions.length >0){
-          console.dir(this.optionsYear)
+          this.optionsYear.series[0].data = this.sortRegion(data.yearRegions)
         }
+        if(data.monthRegions.length>0){
+          this.optionsMonth.series[0].data = this.sortRegion(data.monthRegions)
+        }
+        this.monthSales = osc.formatterCount(data.monthSales)
+        this.chainSales = osc.formatterCount(data.chainSales)
+        this.salesRatio = Math.round((data.monthSales-data.chainSales)/data.chainSales*100)
+        data.salesData.forEach(function(item,index){
+         if(item.salesWay === 'apply'){
+           that.applyCurrentMonth = osc.formatterCount(item.cumulativeMonth)
+           that.applyChain = osc.formatterCount(item.currentSy)
+           that.applyRatio = Math.round((item.cumulativeMonth-item.chainSales)/item.chainSales*100)
+           that.optionsMonthSales.series[0].data = item.currentData
+           that.optionsMonthSales.series[1].data = item.chainData
+         }
+          if(item.salesWay === 'loan'){
+            that.loanCurrentMonth = osc.formatterCount(item.cumulativeMonth)
+            that.loanChain = osc.formatterCount(item.currentSy)
+            that.loanRatio = Math.round((item.cumulativeMonth-item.chainSales)/item.chainSales*100)
+            that.optionsMonthLoan.series[0].data = item.currentData
+            that.optionsMonthLoan.series[1].data = item.chainData
+          }
+        })
       })
     },
     methods:{
       getProgress(date){
-        let dateArr = date.split('\/');
-        this.getYearProgress(dateArr[1],dateArr[1],dateArr[2])
-        this.getMonthProgress(dateArr[1],dateArr[1],dateArr[2])
+        let year = date.substr(0,4)
+        let month = date.substr(4,2)
+        let day = date.substr(6,2)
+        this.getYearProgress(year,month,day)
+        this.getMonthProgress(year,month,day)
       },
       monthArr(){
         let arr = []
@@ -708,6 +740,38 @@
         }else{
           return false;
         }
+      },
+      //区域排序并添加颜色
+      sortRegion(arr){
+        let regionValue = []
+        let maxValueObj = {max:0,index:0}
+         arr.forEach(function(item){
+           switch (item.region) {
+             case 'norhRegion':
+               regionValue.splice(0,0,{y:Math.round(item.regionalReach/item.regionalGoals*100)})
+               break;
+             case 'eastRegion':
+               regionValue.splice(1,0,{y:Math.round(item.regionalReach/item.regionalGoals*100)})
+               break;
+             case 'southRegion':
+               regionValue.splice(2,0,{y:Math.round(item.regionalReach/item.regionalGoals*100)})
+               break;
+             case 'westRegion':
+               regionValue.splice(3,0,{y:Math.round(item.regionalReach/item.regionalGoals*100)})
+               break;
+             case 'middleRegion':
+               regionValue.splice(4,0,{y:Math.round(item.regionalReach/item.regionalGoals*100)})
+               break;
+           }
+         })
+        regionValue.forEach(function(item,index){
+          if(maxValueObj.max < item.y){
+            maxValueObj.max = item.y
+            maxValueObj.index = index
+          }
+        })
+        regionValue[maxValueObj.index].color = "#F19938"
+        return regionValue
       }
     },
     components:{
@@ -716,10 +780,10 @@
     },
     mounted(){
       this._initScorll();
+      // console.log(this.optionsYear.series[0].data)
     },
   }
 </script>
-
 <style lang="scss" scoped>
   .conditionIndividualLoanSituation{
     overflow: hidden;

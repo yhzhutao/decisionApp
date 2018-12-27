@@ -76,3 +76,18 @@ Mock.mock('/individualLoanFilter',{
     },
   ]
 })
+Mock.mock('/defectiveRatio',[{
+  'salesWay':'wholesaleSale',
+  'saleRatio':0.0021,
+  'saleRatioYoy':-0.002,
+  'saleRatioMom':-0.01,
+  'currentMonthsRatio':[0.01,0.011,0.03,0.014,0.04,0.03,0.05,0.001,0.01,0.011,0.03,0.014],
+  'lastMonthsRatio':[0.05,0.001,0.03,0.011,0.03,0.012,0.01,0.011,0.03,0.014,0.04,0.03]
+},{
+  'salesWay':'retail',
+  'saleRatio':0.0011,
+  'saleRatioYoy':-0.002,
+  'saleRatioMom':-0.01,
+  'currentMonthsRatio':[0.01,0.011,0.03,0.014,0.04,0.03,0.05,0.001,0.01,0.011,0.03,0.014],
+  'lastMonthsRatio':[0.05,0.001,0.03,0.011,0.03,0.012,0.01,0.011,0.03,0.014,0.04,0.03]
+}])

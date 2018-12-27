@@ -20,19 +20,19 @@
          </div>
        </div>
        <div class="charts">
-         <monthsCharts :options="optionsYear" :styles="stylesYear"></monthsCharts>
+         <monthsCharts :options="wholesaleSale" :styles="stylesYear"></monthsCharts>
        </div>
        <div class="ratio">
          <div>
-           <div class="itemColor1">10%</div>
+           <div class="itemColor1">{{wSaleRatio}}%</div>
            <div>当月不良率</div>
          </div>
          <div class="rlborder itemColor2">
-           <div>-10%</div>
+           <div :style='{color:wSaleRatioYoy>0?"#d0021b":"#30aa2d"}'>{{wSaleRatioYoy}}%</div>
            <div>同比变动</div>
          </div>
          <div>
-           <div class="itemColor3">-10%</div>
+           <div class="itemColor3" :style='{color:wSaleRatioMom>0?"#d0021b":"#30aa2d"}'>{{wSaleRatioMom}}%</div>
            <div>环比变动</div>
          </div>
        </div>
@@ -56,19 +56,19 @@
          </div>
        </div>
        <div class="charts">
-         <monthsCharts :options="optionsYear" :styles="stylesYear"></monthsCharts>
+         <monthsCharts :options="retail" :styles="stylesYear"></monthsCharts>
        </div>
        <div class="ratio">
          <div>
-           <div class="itemColor1">10%</div>
+           <div class="itemColor1">{{rSaleRatio}}%</div>
            <div>当月不良率</div>
          </div>
          <div class="rlborder itemColor2">
-           <div>-10%</div>
+           <div :style='{color:rSaleRatioYoy>0?"#d0021b":"#30aa2d"}'>{{rSaleRatioYoy}}%</div>
            <div>同比变动</div>
          </div>
          <div>
-           <div class="itemColor3">-10%</div>
+           <div class="itemColor3" :style='{color:rSaleRatioMom>0?"#d0021b":"#30aa2d"}'>{{rSaleRatioMom}}%</div>
            <div>环比变动</div>
          </div>
        </div>
@@ -84,7 +84,7 @@
         name: "defectiveRatio",
       data(){
         return{
-          optionsYear:{
+          wholesaleSale:{
             chart: {
               backgroundColor:'#2F3543'
             },
@@ -139,15 +139,19 @@
                 }
               },
             },
-            tooltip:{
-              enabled:true,
-              backgroundColor:'#3AC3B1',
-              borderRadius:10,
-              headerFormat:'',
-              pointFormat: '<b>{point.y:.1f}%</b>',
-              shared:true
+            tooltip: {
+              enabled: true,
+              backgroundColor: '#3AC3B1',
+              borderRadius: 10,
+              headerFormat: '',
+              style:{
+                fontSize:'18px',
+                fontWeight:'700'
+              },
+              pointFormat:'<p>{point.y}%</p>',
             },
             series: [{
+              enableMouseTracking:false,
               allowPointSelect: false,
               data: [{'y':5},
                 {'y':12},
@@ -209,15 +213,183 @@
                 }
               }]
           },
-          stylesYear:{width: 95,height:180}
+          retail:{
+            chart: {
+              backgroundColor:'#353d51'
+            },
+            title: {
+              align:'left',
+              text:null,
+              style: {
+                fontWeight: 'bold'
+              }
+            },
+            events:{
+              click:function(e){
+                console.log(e)
+              }
+            },
+            xAxis: {
+              categories: [
+                '01','02','03','04','05','06','07','08','09','10','11','12'
+              ],
+              labels : {
+                rotation:0,
+              },
+              crosshair:{
+                color:"#FFFFFF",
+                dashStyle:'solid',
+                width:1,
+                zIndex:999
+              },
+              enableMouseTracking:false,
+              type:'line',
+              tickPosition:'inside',
+              tickmarkPlacement:'on',
+              startOnTick:true,
+              gridLineWidth:1,
+              gridLineDashStyle:'Dash'
+            },
+            yAxis: {
+              title: {
+                text: ''
+              },
+              visible:false,
+              gridLineWidth:0
+            },
+            credits:{enabled:false},
+            legend:{enabled:false},
+            exporting:{enabled:false},
+            plotOptions: {
+              line: {
+                borderWidth: 0,
+                dataLabels:{
+                  enabled:true,
+                }
+              },
+            },
+            tooltip: {
+              enabled: true,
+              backgroundColor: '#3AC3B1',
+              borderRadius: 10,
+              headerFormat: '',
+              style:{
+                fontSize:'18px',
+                fontWeight:'700'
+              },
+              pointFormat:'<p>{point.y}%</p>',
+            },
+            series: [{
+              enableMouseTracking:false,
+              allowPointSelect: false,
+              data: [{'y':5},
+                {'y':12},
+                {'y':13},
+                {'y':14},
+                {'y':15},
+                {'y':16},
+                {'y':30},
+                {'y':12},
+                {'y':13},
+                {'y':14},
+                {'y':15},
+                {'y':16}],
+              marker:{
+                enabled:false,
+                states:{
+                  hover:{
+                    enabled:false
+                  },
+                  select:{
+                    enabled:false
+                  }
+                }
+              },
+              tooltip:{
+                pointFormat:''
+              },
+              type:'area',
+              color:'#596073'
+            },
+              {
+                allowPointSelect: false,
+                data: [{'color':'rgb(218,223,236)','y':7},
+                  {'color':'rgb(218,223,236)','y':15},
+                  {'color':'rgb(218,223,236)','y':23},
+                  {'color':'rgb(218,223,236)','y':15},
+                  {'color':'rgb(218,223,236)','y':16},
+                  {'color':'rgb(218,223,236)','y':20},
+                  {'color':'rgb(218,223,236)','y':16},
+                  {'color':'rgb(218,223,236)','y':12},
+                  {'color':'rgb(218,223,236)','y':16},
+                  {'color':'rgb(218,223,236)','y':16},
+                  {'color':'rgb(218,223,236)','y':12},
+                  {'color':'rgb(218,223,236)','y':18}],
+                pointStart: 0,
+                type:'line',
+                marker:{
+                  symbol:'circle',
+                  enabled:true
+                },
+                dataLabels:{
+                  enabled:false,
+                },
+                color:'#30C2AE',
+                events: {
+                  click: function (event) {
+                    // event.target.setAttribute('fill','rgb(241,155,58)');
+                  }
+                }
+              }]
+          },
+          stylesYear:{width: 95,height:180},
+          wSaleRatio:0,
+          wSaleRatioYoy:0,
+          wSaleRatioMom:0,
+          rSaleRatio:0,
+          rSaleRatioYoy:0,
+          rSaleRatioMom:0,
         }
       },
+    created() {
+      this.$http.post('/defectiveRatio').then(function (res) {
+        let that = this
+        let data = res.body
+        data.forEach(function (item, index) {
+
+          if (item.salesWay === "wholesaleSale") {
+            that.wSaleRatio = (item.saleRatio * 100).toFixed(2)
+            that.wSaleRatioYoy = (item.saleRatioYoy * 100).toFixed(2)
+            that.wSaleRatioMom = (item.saleRatioMom * 100).toFixed(2)
+            that.wholesaleSale.series[0].data = that.formatterAreaDate(item.lastMonthsRatio)
+            that.wholesaleSale.series[1].data = that.formatterLineDate(item.currentMonthsRatio)
+          }
+          if(item.salesWay === "retail") {
+            that.rSaleRatio = (item.saleRatio * 100).toFixed(2)
+            that.rSaleRatioYoy = (item.saleRatioYoy * 100).toFixed(2)
+            that.rSaleRatioMom = (item.saleRatioMom * 100).toFixed(2)
+            that.retail.series[0].data = that.formatterAreaDate(item.lastMonthsRatio)
+            that.retail.series[1].data = that.formatterLineDate(item.currentMonthsRatio)
+          }
+        })
+      })
+    },
       mounted(){
         this._initScorll();
       },
       methods:{
         _initScorll(){
           new BScroll(this.$refs['content-wrapper'],{click:true});
+        },
+        formatterLineDate(lastMonthsRatio){
+         return lastMonthsRatio.map(function(item,index){
+            return {y:Number((item*100).toFixed(2))}
+          })
+        },
+        formatterAreaDate(lastMonthsRatio){
+          return lastMonthsRatio.map(function(item,index){
+            return {'color':'rgb(218,223,236)',y:Number((item*100).toFixed(2))}
+          })
         }
       },
       components:{

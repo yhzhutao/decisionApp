@@ -21,11 +21,17 @@
       }
     },
     mounted() {
-      this.initChart();
+        this.initChart();
+    },
+    watch:{
+      'options.series':function(newQuestion,oldQuestion){
+        setTimeout(()=>{
+          this.chart.update({series:newQuestion})
+        },0)
+      }
     },
     methods: {
       initChart() {
-        // console.log(this.$el);
         this.$el.style.width = (this.styles.width || 100) + '%';
         this.$el.style.height = (this.styles.height || 90) + 'px';
         this.chart = new Highcharts.Chart(this.$el, this.options);
