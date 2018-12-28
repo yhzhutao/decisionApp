@@ -57,6 +57,9 @@
         }
       }
     },
+    props:[
+      'selectDate'
+    ],
     components: {
       'v-indicator': Indicator
     },
@@ -65,7 +68,8 @@
     },
     methods:{
       _initScorll(){
-        this.$http.post('/indicators?date='+20180510).then((response)=>{
+        // console.log(this.selectDate);
+        this.$http.post('/indicators?date='+this.selectDate).then((response)=>{
           // console.log(response);
           this.indicators = Object.assign({},this.indicators,response.body.data);
           // console.log(this.indicators);

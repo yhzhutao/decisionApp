@@ -51,7 +51,7 @@
   import Asset from '@/components/assetCard/assetCard';
   import HighchartsComponent from '@/components/highchartsComponent/HighchartsComponent';
   import BScroll from 'better-scroll';
-  import bus from '@/components/base/bus.js'
+  import Bus from '@/components/base/bus.js'
 
   export default {
     name: "assets",
@@ -99,6 +99,9 @@
         }
       }
     },
+    props:[
+      'selectDate'
+    ],
     methods: {
       _initScroll() {
         new BScroll(this.$refs['assets-wrapper'], {
@@ -148,7 +151,8 @@
         }
       },
       init() {
-        this.$http.post('/assetsScale?date='+20180510).then((response)=>{
+        console.log(this.selectDate);
+        this.$http.post('/assetsScale?date='+this.selectDate).then((response)=>{
           this.assetsScale = Object.assign({},this.assetsScale,response.body.data);
           this.wholesalePercent = this.assetsScale.salesAmount/this.assetsScale.totalAssetsAmount;
           this.retailPercent = this.assetsScale.retailAmount/this.assetsScale.totalAssetsAmount;

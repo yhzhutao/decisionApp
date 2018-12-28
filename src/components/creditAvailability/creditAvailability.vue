@@ -32,6 +32,9 @@
         list:[]
       }
     },
+    props:[
+      'selectDate'
+    ],
     components:{
       'v-creditCart':CreditCart
     },
@@ -40,10 +43,11 @@
     },
     methods:{
       _initScorll(){
-        Bus.$on('selectDate',function(val){
-          this.date = val;
-        });
-        this.$http.post('/creditInjection?date='+this.date).then((response)=>{
+        // Bus.$on('selectDate',function(val){
+        //   this.date = val;
+        // });
+        // console.log(this.selectDate);
+        this.$http.post('/creditInjection?date='+this.selectDate).then((response)=>{
           this.list = response.body.data;
         });
         new BScroll(this.$refs['creditAvailability-wrapper'],{click:true});
