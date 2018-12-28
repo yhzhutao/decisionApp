@@ -164,8 +164,7 @@
   export default {
     name: "conditionIndividualLoanSituation",
     props:{
-      brandCode:String,
-      sDate:String
+      selectDate:String
     },
     data(){
       return {
@@ -623,57 +622,30 @@
         applyRatio:0,
         loanCurrentMonth:0,
         loanChain:0,
-        loanRatio:0
+        loanRatio:0,
+        brandCode:0,
+        regionCOde:0
       }
     },
     created(){
       let that = this
+      this.getProgress(this.selectDate)
+      this.createHttp(this.selectDate)
       bus.$on('selectDate',function(date){
         that.getProgress(date)
+        that.createHttp(that.selectDate)
       })
       bus.$on('getBrandCode',function(brandCode){
+        that.brandCode = brandCode
         console.log(brandCode)
       })
       bus.$on('getRegion',function(code){
+        that.brandCode = brandCode
         if(code !== '1'){
           that.regionFlag = false
         }else{
           that.regionFlag = true
         }
-      })
-      this.$http.post('/individualLoanFilter').then(function(res){
-        let data = res.body
-        this.yearlyRatio = Number((data.yearlyReach/data.yearlyTarget*100).toFixed(2))
-        this.yearlyReach=osc.formatterCount(data.yearlyReach)
-        this.yearlyTarget=osc.formatterCount(data.yearlyTarget)
-        this.monthlyRatio = Number((data.currentMonthReach/data.currentMonthTarget*100).toFixed(2))
-        this.currentMonthTarget=osc.formatterCount(data.currentMonthTarget)
-        this.currentMonthReach=osc.formatterCount(data.currentMonthReach)
-        if(data.yearRegions.length >0){
-          this.optionsYear.series[0].data = this.sortRegion(data.yearRegions)
-        }
-        if(data.monthRegions.length>0){
-          this.optionsMonth.series[0].data = this.sortRegion(data.monthRegions)
-        }
-        this.monthSales = osc.formatterCount(data.monthSales)
-        this.chainSales = osc.formatterCount(data.chainSales)
-        this.salesRatio = Math.round((data.monthSales-data.chainSales)/data.chainSales*100)
-        data.salesData.forEach(function(item,index){
-         if(item.salesWay === 'apply'){
-           that.applyCurrentMonth = osc.formatterCount(item.cumulativeMonth)
-           that.applyChain = osc.formatterCount(item.currentSy)
-           that.applyRatio = Math.round((item.cumulativeMonth-item.chainSales)/item.chainSales*100)
-           that.optionsMonthSales.series[0].data = item.currentData
-           that.optionsMonthSales.series[1].data = item.chainData
-         }
-          if(item.salesWay === 'loan'){
-            that.loanCurrentMonth = osc.formatterCount(item.cumulativeMonth)
-            that.loanChain = osc.formatterCount(item.currentSy)
-            that.loanRatio = Math.round((item.cumulativeMonth-item.chainSales)/item.chainSales*100)
-            that.optionsMonthLoan.series[0].data = item.currentData
-            that.optionsMonthLoan.series[1].data = item.chainData
-          }
-        })
       })
     },
     methods:{
@@ -706,6 +678,43 @@
           scrollY: true,
           scrollX: false,
           click: true
+        })
+      },
+      createHttp(date,brandCode,regionCode){
+        let that = this
+        this.$http.post('/individualLoanFilter').then(function(res){
+          let data = res.body
+          this.yearlyRatio = Number((data.yearlyReach/data.yearlyTarget*100).toFixed(2))
+          this.yearlyReach=osc.formatterCount(data.yearlyReach)
+          this.yearlyTarget=osc.formatterCount(data.yearlyTarget)
+          this.monthlyRatio = Number((data.currentMonthReach/data.currentMonthTarget*100).toFixed(2))
+          this.currentMonthTarget=osc.formatterCount(data.currentMonthTarget)
+          this.currentMonthReach=osc.formatterCount(data.currentMonthReach)
+          if(data.yearRegions.length >0){
+            this.optionsYear.series[0].data = this.sortRegion(data.yearRegions)
+          }
+          if(data.monthRegions.length>0){
+            this.optionsMonth.series[0].data = this.sortRegion(data.monthRegions)
+          }
+          this.monthSales = osc.formatterCount(data.monthSales)
+          this.chainSales = osc.formatterCount(data.chainSales)
+          this.salesRatio = Math.round((data.monthSales-data.chainSales)/data.chainSales*100)
+          data.salesData.forEach(function(item,index){
+            if(item.salesWay === 'apply'){
+              that.applyCurrentMonth = osc.formatterCount(item.cumulativeMonth)
+              that.applyChain = osc.formatterCount(item.currentSy)
+              that.applyRatio = Math.round((item.cumulativeMonth-item.chainSales)/item.chainSales*100)
+              that.optionsMonthSales.series[0].data = item.currentData
+              that.optionsMonthSales.series[1].data = item.chainData
+            }
+            if(item.salesWay === 'loan'){
+              that.loanCurrentMonth = osc.formatterCount(item.cumulativeMonth)
+              that.loanChain = osc.formatterCount(item.currentSy)
+              that.loanRatio = Math.round((item.cumulativeMonth-item.chainSales)/item.chainSales*100)
+              that.optionsMonthLoan.series[0].data = item.currentData
+              that.optionsMonthLoan.series[1].data = item.chainData
+            }
+          })
         })
       },
       getMonthProgress(year,month,day){
@@ -780,7 +789,7 @@
     },
     mounted(){
       this._initScorll();
-      // console.log(this.optionsYear.series[0].data)
+
     },
   }
 </script>

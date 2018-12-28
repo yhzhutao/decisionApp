@@ -1,7 +1,7 @@
 <template>
   <div class="marketShare"  ref="content-wrapper">
     <div>
-      <div v-for="(item,index) in marketData" class="changan" :class="{ double:index % 2 === 0 }">
+      <div v-for="(item,index) in marketData" v-show="index < showNumber" class="changan" :class="{ double:index % 2 === 0 }">
         <div class="title">
           <div class="title-left">
             <span class="icon"></span>
@@ -42,6 +42,16 @@
           </div>
         </div>
       </div>
+      <div class="bottom" v-show="bottomFlag">
+        <div class="line"></div>
+        <p>{{pullText}}</p>
+        <div class="line"></div>
+      </div>
+      <div class="tip" v-show="bottomFlag === false">下拉载入更多数据</div>
+      <div class="triangleBox" v-show="bottomFlag === false">
+        <div class="triangle"></div>
+      </div>
+
     </div>
   </div>
 </template>
@@ -66,11 +76,6 @@
             text: null,
             style: {
               fontWeight: 'bold'
-            }
-          },
-          events: {
-            click: function (e) {
-              console.log(e)
             }
           },
           xAxis: {
@@ -183,11 +188,15 @@
             }]
         },
         stylesYear: {width: 95, height: 180},
-        marketData:[]
+        marketData:[],
+        showNumber:4,
+        bottomFlag:false
       }
     },
     mounted() {
-      this._initScorll();
+      this.$nextTick(()=>{
+        this._initScorll();
+      })
     },
     created(){
       let that = this
@@ -198,7 +207,19 @@
     },
     methods: {
       _initScorll() {
-        new BScroll(this.$refs['content-wrapper'], {click: true});
+         this.scroll = new BScroll(this.$refs['content-wrapper'], {click: true, probeType: 3});
+         let flag = false
+        this.scroll.on('scroll',(pos)=>{
+          if(pos.y<this.scroll.maxScrollY-50){
+            if(flag!==true){
+              flag = true
+              this.showNumber = 6
+              this.scroll.refresh()
+              this.pullText="没有更多数据了"
+              this.bottomFlag = true
+            }
+          }
+        })
       },
       formatterLineDate(lastMonthsRatio){
         return lastMonthsRatio.map(function(item,index){
@@ -257,6 +278,39 @@
     width: 100%;
     overflow: hidden;
     background-color: #2F3543;
+    .bottom {
+      margin: 0 32px;
+      padding: 24px 0 48px 0;
+      display: flex;
+      p {
+        padding: 0 10px;
+        font-size: 24px;
+        color: #cccccc;
+      }
+      .line {
+        flex: 1;
+        border-top: 1px dashed rgb(151, 151, 151);
+        margin-top: 12px;
+      }
+    }
+    .tip{
+      text-align: center;
+      color: #cccccc;
+      margin-top: 30px;
+    }
+    .triangleBox{
+      margin-bottom: 20px;
+      .triangle{
+        width:0;
+        height:0;
+        border-width:30px 30px 0;
+        border-style:solid;
+        border-color:#cccccc transparent transparent;
+        margin:40px auto;
+        margin-bottom: 20px;
+        /*position:relative;*/
+      }
+    }
   }
   .changan{
     height: 1020px;

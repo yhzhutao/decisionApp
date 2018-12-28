@@ -54,7 +54,6 @@
     },
     methods: {
       selectRegion(event) {
-        console.log(event)
         this.region = event.target.innerText
         bus.$emit('getRegion',event.target.dataset.code)
       },
