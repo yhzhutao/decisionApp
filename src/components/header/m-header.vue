@@ -20,6 +20,9 @@
   import { DatetimePicker } from 'mint-ui';
   import Vue from 'vue'
   import bus from '@/components/base/bus'
+
+
+
   Vue.component(DatetimePicker.name, DatetimePicker);
   export default {
     name: "m-header",

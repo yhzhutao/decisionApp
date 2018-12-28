@@ -396,7 +396,7 @@
               fontSize:'18px',
               fontWeight:'700'
             },
-            pointFormat:'<p>{point.y}</p>',
+            pointFormat:'<p>{point.y}</p>'
           },
           series: [{
             enableMouseTracking:false,

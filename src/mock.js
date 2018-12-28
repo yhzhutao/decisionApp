@@ -81,13 +81,56 @@ Mock.mock('/defectiveRatio',[{
   'saleRatio':0.0021,
   'saleRatioYoy':-0.002,
   'saleRatioMom':-0.01,
-  'currentMonthsRatio':[0.01,0.011,0.03,0.014,0.04,0.03,0.05,0.001,0.01,0.011,0.03,0.014],
+  'currentMonthsRatio':[0.03,0.011,0.03,0.014,0.04,0.03,0.05,0.001,0.01,0.011,0.03,0.014],
   'lastMonthsRatio':[0.05,0.001,0.03,0.011,0.03,0.012,0.01,0.011,0.03,0.014,0.04,0.03]
-},{
+}, {
   'salesWay':'retail',
   'saleRatio':0.0011,
-  'saleRatioYoy':-0.002,
-  'saleRatioMom':-0.01,
+  'saleRatioYoy':-0.003,
+  'saleRatioMom':-0.02,
   'currentMonthsRatio':[0.01,0.011,0.03,0.014,0.04,0.03,0.05,0.001,0.01,0.011,0.03,0.014],
+  'lastMonthsRatio':[0.05,0.001,0.03,0.011,0.03,0.012,0.01,0.011,0.03,0.014,0.04,0.03]
+}])
+Mock.mock('/marketShareRatio',[{
+  'brandName':'长安轿车',
+  'currentMonthChainRatio':-0.001,
+  'currentYearMarketShare':0.32,
+  'currentYearChainRatio':0.0012,
+  'monthsRatio':[0.03,0.011,0.03,0.014,0.04,0.03,0.05,0.001,0.01,0.011,0.03,0.014],
+  'lastMonthsRatio':[0.05,0.001,0.03,0.011,0.03,0.012,0.01,0.011,0.03,0.014,0.04,0.03]
+},{
+  'brandName':'长安福特',
+  'currentMonthChainRatio':-0.003,
+  'currentYearMarketShare':0.31,
+  'currentYearChainRatio':0.0012,
+  'monthsRatio':[0.01,0.011,0.03,0.014,0.04,0.03,0.05,0.001,0.01,0.011,0.03,0.014],
+  'lastMonthsRatio':[0.05,0.001,0.03,0.011,0.03,0.012,0.01,0.011,0.03,0.014,0.04,0.03]
+},{
+  'brandName':'长安铃木',
+  'currentMonthChainRatio':-0.003,
+  'currentYearMarketShare':0.31,
+  'currentYearChainRatio':0.0012,
+  'monthsRatio':[0.01,0.011,0.03,0.014,0.04,0.03,0.05,0.001,0.01,0.011,0.03,0.014],
+  'lastMonthsRatio':[0.05,0.001,0.03,0.011,0.03,0.012,0.01,0.011,0.03,0.014,0.04,0.03]
+},{
+  'brandName':'长安马自达',
+  'currentMonthChainRatio':-0.003,
+  'currentYearMarketShare':0.31,
+  'currentYearChainRatio':0.0012,
+  'monthsRatio':[0.01,0.011,0.03,0.014,0.04,0.03,0.05,0.001,0.01,0.011,0.03,0.014],
+  'lastMonthsRatio':[0.05,0.001,0.03,0.011,0.03,0.012,0.01,0.011,0.03,0.014,0.04,0.03]
+},{
+  'brandName':'长安欧尚',
+  'currentMonthChainRatio':-0.003,
+  'currentYearMarketShare':0.31,
+  'currentYearChainRatio':0.0012,
+  'monthsRatio':[0.01,0.011,0.03,0.014,0.04,0.03,0.05,0.001,0.01,0.011,0.03,0.014],
+  'lastMonthsRatio':[0.05,0.001,0.03,0.011,0.03,0.012,0.01,0.011,0.03,0.014,0.04,0.03]
+},{
+  'brandName':'长安DS',
+  'currentMonthChainRatio':-0.003,
+  'currentYearMarketShare':0.31,
+  'currentYearChainRatio':0.0012,
+  'monthsRatio':[0.01,0.011,0.03,0.014,0.04,0.03,0.05,0.001,0.01,0.011,0.03,0.014],
   'lastMonthsRatio':[0.05,0.001,0.03,0.011,0.03,0.012,0.01,0.011,0.03,0.014,0.04,0.03]
 }])

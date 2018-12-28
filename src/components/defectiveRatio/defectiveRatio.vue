@@ -356,7 +356,6 @@
         let that = this
         let data = res.body
         data.forEach(function (item, index) {
-
           if (item.salesWay === "wholesaleSale") {
             that.wSaleRatio = (item.saleRatio * 100).toFixed(2)
             that.wSaleRatioYoy = (item.saleRatioYoy * 100).toFixed(2)

@@ -5,7 +5,7 @@
       <tab v-show="tabFlag"></tab>
       <conditionSelect @getBrandCode='sendBrandCode' v-if="selecetFlag"></conditionSelect>
     </div>
-    <router-view :brandCode="brandCode"></router-view>
+    <router-view :selectDate="selectDate" :brandCode="brandCode"></router-view>
   </div>
 </template>
 
@@ -13,13 +13,13 @@
   import mHeader from './components/header/m-header.vue'
   import tab from './components/tab/tab'
   import conditionSelect from './components/conditionSelect/conditionSelect'
-
+  import bus from './components/base/bus'
   export default {
     name: 'App',
     components: {
       mHeader,
       tab,
-      conditionSelect
+      conditionSelect,
     },
     data() {
       return {
@@ -28,6 +28,7 @@
         backFlag: true,
         selecetFlag: false,
         brandCode:'',
+        selectDate:''
       }
     },
     methods: {
@@ -51,6 +52,9 @@
     },
     created() {
       let that = this
+      bus.$on('selectDate',function(date){
+        that.selectDate = date
+      })
       let path = this.$router.currentRoute.path
       if (path === '/assetsSituation' || path === '/individualIoanSituation' || path === '/variousIndicators' || path === '/creditAvailability') {
         this.tabFlag = true

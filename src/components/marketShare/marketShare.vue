@@ -1,11 +1,11 @@
 <template>
   <div class="marketShare"  ref="content-wrapper">
     <div>
-      <div v-for="(item,index) in names" class="changan" :class="{ double:index % 2 === 0 }">
+      <div v-for="(item,index) in marketData" class="changan" :class="{ double:index % 2 === 0 }">
         <div class="title">
           <div class="title-left">
             <span class="icon"></span>
-            <span class="t-l-text">{{ item }}市占率</span>
+            <span class="t-l-text">{{ item.brandName }}市占率</span>
           </div>
         </div>
         <div class="chartIcon">
@@ -17,20 +17,28 @@
           </div>
         </div>
         <div class="charts">
-          <monthsCharts :options="optionsYear" :styles="stylesYear"></monthsCharts>
+          <monthsCharts :options="item.options" :styles="stylesYear"></monthsCharts>
         </div>
         <div class="ratio">
           <div>
-            <div class="itemColor1">10%</div>
-            <div>当月环比</div>
-          </div>
-          <div class="rlborder itemColor2">
-            <div>-10%</div>
-            <div>当年市占率</div>
+            <div>
+              <div class="itemColor1">10%</div>
+              <div>当月市占率</div>
+            </div>
+            <div>
+              <div class="itemColor1">{{item.currentYearMarketShare}}%</div>
+              <div>当年累计市占率</div>
+            </div>
           </div>
           <div>
-            <div class="itemColor3">-10%</div>
-            <div>当年环比</div>
+            <div class="lborder itemColor2">
+              <div>{{item.currentMonthChainRatio}}%</div>
+              <div>当月环比变化</div>
+            </div>
+            <div class="lborder">
+              <div class="itemColor3">{{item.currentYearChainRatio}}%</div>
+              <div>当年同比变化</div>
+            </div>
           </div>
         </div>
       </div>
@@ -41,11 +49,15 @@
 <script>
   import monthsCharts from '@/components/highchartsComponent/HighchartsComponent'
   import BScroll from 'better-scroll';
+  import bus from '@/components/base/bus'
   export default {
     name: "marketShare",
+    props:[
+      'selectDate'
+    ],
     data() {
       return {
-        optionsYear: {
+        options: {
           chart: {
             backgroundColor: '#2F3543'
           },
@@ -171,16 +183,65 @@
             }]
         },
         stylesYear: {width: 95, height: 180},
-        names:['长安轿车','长安福特','长安铃木','长安马自达','长安欧尚','长安DS']
+        marketData:[]
       }
     },
     mounted() {
       this._initScorll();
     },
+    created(){
+      let that = this
+      that.createHttp(this.selectDate)
+      bus.$on('selectDate',function(date){
+       that.createHttp(date)
+      })
+    },
     methods: {
       _initScorll() {
         new BScroll(this.$refs['content-wrapper'], {click: true});
-      }
+      },
+      formatterLineDate(lastMonthsRatio){
+        return lastMonthsRatio.map(function(item,index){
+          return {y:Number((item*100).toFixed(2))}
+        })
+      },
+      formatterAreaDate(lastMonthsRatio){
+        return lastMonthsRatio.map(function(item,index){
+          return {'color':'rgb(218,223,236)',y:Number((item*100).toFixed(2))}
+        })
+      },
+      createHttp(date){
+        let that = this
+        let month =Number(date.substr(4,2))
+        that.$http.post('/marketShareRatio').then(function (res) {
+          let data = res.body
+          let optionsSelect = []
+          that.marketData =data.map(function (item, index) {
+            let currentMonthChainRatio = Number((item.currentMonthChainRatio*100).toFixed(2))
+            let currentYearChainRatio = Number((item.currentYearChainRatio*100).toFixed(2))
+            let currentYearMarketShare = Number((item.currentYearMarketShare*100).toFixed(2))
+            let options = JSON.parse(JSON.stringify(that.options))
+            options.chart.backgroundColor = index % 2 === 0 ?'#2f3543':'#353d51'
+            options.series[0].data = that.formatterAreaDate(item.lastMonthsRatio)
+            options.series[1].data = that.formatterLineDate(item.monthsRatio)
+            return {
+              brandName:item.brandName,
+              currentMonthChainRatio:currentMonthChainRatio,
+              currentYearChainRatio:currentYearChainRatio,
+              currentYearMarketShare:currentYearMarketShare,
+              currentMonthMarketShare:item.monthsRatio[month],
+              options:options
+            }
+          })
+        })
+      },
+      getProgress(date){
+        let year = date.substr(0,4)
+        let month = date.substr(4,2)
+        let day = date.substr(6,2)
+        this.getYearProgress(year,month,day)
+        this.getMonthProgress(year,month,day)
+      },
     },
     components: {
       monthsCharts
@@ -198,7 +259,7 @@
     background-color: #2F3543;
   }
   .changan{
-    height: 770px;
+    height: 1020px;
     background-color: #353D51;
     overflow: hidden;
     &.double{
@@ -269,6 +330,7 @@
           font-size: 32px;
           color: #FFFFFF;
           margin-top: 16px;
+          line-height: 84px;
         }
       }
       .itemColor1 {
@@ -280,9 +342,8 @@
       .itemColor3 {
         color: #30AA2D;
       }
-      .rlborder {
+      .lborder {
         border-left: 2px solid #ccc;
-        border-right: 2px solid #ccc;
       }
     }
   }
