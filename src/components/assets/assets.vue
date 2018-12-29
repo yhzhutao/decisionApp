@@ -99,6 +99,9 @@
         }
       }
     },
+    props:[
+      'selectDate'
+    ],
     methods: {
       _initScroll() {
         new BScroll(this.$refs['assets-wrapper'], {

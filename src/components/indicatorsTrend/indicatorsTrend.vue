@@ -24,15 +24,15 @@
           </div>
           <div class="content-bottom">
             <div class="left">
-              <p>10%</p>
+              <p>{{currentMonthDefectiveRate+'%'}}</p>
               <span>当月不良率</span>
             </div>
             <div class="center">
-              <p>+10%</p>
+              <p :class="baseYearRateShow>0?'top':'low'">{{baseYearRateShow+'%'}}</p>
               <span>同比变动</span>
             </div>
             <div class="right">
-              <p>-10%</p>
+              <p :class="baseMonthRate>0?'top':'low'">{{baseMonthRateShow+'%'}}</p>
               <span>环比变动</span>
             </div>
           </div>
@@ -56,25 +56,25 @@
             <ul>
               <li>
                 <div class="vary">
-                  <p>10%</p>
+                  <p>{{currentMonthMarketShare+'%'}}</p>
                   <span>当月市占率</span>
                 </div>
               </li>
               <li>
                 <div class="vary">
-                  <p>-10%</p>
+                  <p :class="baseMonthMarketShareRate>0?'top':'low'">{{baseMonthMarketShareRate+'%'}}</p>
                   <span>当月环比变化</span>
                 </div>
               </li>
               <li>
                 <div class="vary">
-                  <p>10%</p>
+                  <p>{{currentMonthMarketShareSum+'%'}}</p>
                   <span>当月累计市占率</span>
                 </div>
               </li>
               <li>
                 <div class="vary">
-                  <p>+10%</p>
+                  <p :class="baseYearMarketShareRate>0?'top':'low'">{{baseYearMarketShareRate+'%'}}</p>
                   <span>当年同比变化</span>
                 </div>
               </li>
@@ -177,15 +177,15 @@
     name: "indicatorsTrend",
     data() {
       return {
-        date:0,
+        date: 0,
         defectiveRateOptions: {
           title: {
             text: ''
           },
           xAxis: {
-            title:{
-              text:'(月)',
-              align:'high'
+            title: {
+              text: '(月)',
+              align: 'high'
             },
             categories: [
               '01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'
@@ -193,7 +193,7 @@
             crosshair: {
               color: 'rgb(110,90,200)',
               width: '2px',
-              zIndex:5
+              zIndex: 5
             },
             tickPosition: 'inside',
             tickmarkPlacement: 'on',
@@ -221,13 +221,13 @@
           credits: {enabled: false},
           exporting: {enabled: false},
           series: [{
-            data: [30,82,90,44,35,16,50,9,56,44,25,96],
+            data: [30, 82, 90, 44, 35, 16, 50, 9, 56, 44, 25, 96],
             color: 'rgb(238,238,238)',
-            marker:{
-              enabled:false,
-              states:{
-                hover:{
-                  enabled:false
+            marker: {
+              enabled: false,
+              states: {
+                hover: {
+                  enabled: false
                 }
               }
             },
@@ -235,15 +235,15 @@
             type: 'area'
           },
             {
-              data: [ 35,62,23,64,78,56,60,22,43,64,85,86],
-              color:'rgb(48,194,174)',
-              marker:{
-                enabled:false,
-                symbol:'circle',
-                fillColor:'rgb(110,90,200)',
-                states:{
-                  hover:{
-                    enabled:true
+              data: [35, 62, 23, 64, 78, 56, 60, 22, 43, 64, 85, 86],
+              color: 'rgb(48,194,174)',
+              marker: {
+                enabled: false,
+                symbol: 'circle',
+                fillColor: 'rgb(110,90,200)',
+                states: {
+                  hover: {
+                    enabled: true
                   }
                 }
               }
@@ -254,9 +254,9 @@
             text: ''
           },
           xAxis: {
-            title:{
-              text:'(月)',
-              align:'high'
+            title: {
+              text: '(月)',
+              align: 'high'
             },
             categories: [
               '01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'
@@ -264,7 +264,7 @@
             crosshair: {
               color: 'rgb(110,90,200)',
               width: '2px',
-              zIndex:5
+              zIndex: 5
             },
             tickPosition: 'inside',
             tickmarkPlacement: 'on',
@@ -282,7 +282,7 @@
             backgroundColor: 'rgb(58,195,177)',
             headerFormat: '{point.y}%',
             pointFormat: '',
-            shared:true
+            shared: true
           },
           legend: {
             enabled: false
@@ -292,13 +292,13 @@
           credits: {enabled: false},
           exporting: {enabled: false},
           series: [{
-            data: [30,82,90,44,35,16,50,9,56,44,25,96],
+            data: [30, 82, 90, 44, 35, 16, 50, 9, 56, 44, 25, 96],
             color: 'rgb(238,238,238)',
-            marker:{
-              enabled:false,
-              states:{
-                hover:{
-                  enabled:false
+            marker: {
+              enabled: false,
+              states: {
+                hover: {
+                  enabled: false
                 }
               }
             },
@@ -306,15 +306,15 @@
             type: 'area'
           },
             {
-              data: [ 35,62,23,64,78,56,60,22,43,64,85,86],
-              color:'rgb(48,194,174)',
-              marker:{
-                enabled:false,
-                symbol:'circle',
-                fillColor:'rgb(110,90,200)',
-                states:{
-                  hover:{
-                    enabled:true
+              data: [35, 62, 23, 64, 78, 56, 60, 22, 43, 64, 85, 86],
+              color: 'rgb(48,194,174)',
+              marker: {
+                enabled: false,
+                symbol: 'circle',
+                fillColor: 'rgb(110,90,200)',
+                states: {
+                  hover: {
+                    enabled: true
                   }
                 }
               }
@@ -324,42 +324,88 @@
           width: 100,
           height: 193
         },
-        marketShareRatioBrands:[],//10个品牌的当月市占率和上月市占率
-        monthsDefectiveRatios:[],//图标中的数据
+        marketShareRatioBrands: [],//10个品牌的当月市占率和上月市占率
+        monthsDefectiveRatios: [],//图标中的数据
+        currentMonthDefectiveRate: 0,//当月不良率
+        baseYearRate: 0,//当年不良率同比变动值
+        baseMonthRate: 0,//当月不良率环比变动值
+        currentMonthMarketShare: 0,//当月市占率
+        currentMonthMarketShareSum: 0,//当月累计市占率
+        baseYearMarketShareRate:0,//当年市占率同比变动值
+        baseMonthMarketShareRate:0//当月市占率环比变动值
       }
     },
+    created() {
+      let that = this;
+      that.init(this.selectDate)
+      Bus.$on('selectDate', function (date) {
+        that.init(date);
+      })
+    },
+    props: [
+      'selectDate'
+    ],
     mounted() {
-      this.init();
+      this.Scroll = new BScroll(this.$refs['indicatorsTrend-content-wrapper'], {click: true});
     },
     methods: {
-      init() {
-        Bus.$on('selectDate',function(val){
-            this.date = val;
-          });
-        // console.log(this.date);
-        this.$http.post('/indicatorsClass?date='+this.date).then((response)=>{
-          this.marketShareRatioBrands =response.body.data.marketShareRatioBrands;
+      init(date) {
+        let month = date.substring(4, 6);
+        this.$http.post('/indicatorsClass?date=' + date).then((response) => {
+          this.marketShareRatioBrands = response.body.data.marketShareRatioBrands;
           this.monthsDefectiveRatios = response.body.data.monthsDefectiveRatios;
           this.initChart();
+          this.initNum(month);
         });
-        this.Scroll = new BScroll(this.$refs['indicatorsTrend-content-wrapper'], {click: true});
       },
-      initChart(){
-        console.log(11);
-        if(this.monthsDefectiveRatios){
-          console.log(12);
-          this.monthsDefectiveRatios.forEach((monthsDefectiveRatio)=>{
-            if(monthsDefectiveRatio.indexName=='defectiveRate'){
+      //初始化两条折线图
+      initChart() {
+        if (this.monthsDefectiveRatios) {
+          this.monthsDefectiveRatios.forEach((monthsDefectiveRatio) => {
+            if (monthsDefectiveRatio.indexName == 'defectiveRate') {
               this.defectiveRateOptions.series[0].data = monthsDefectiveRatio.lastYearRatio;
               this.defectiveRateOptions.series[1].data = monthsDefectiveRatio.currentRatio;
-              console.log(this.defectiveRateOptions.series[0].data);
-            }else if(monthsDefectiveRatio.indexName=='marketShare'){
+            } else if (monthsDefectiveRatio.indexName == 'marketShare') {
               this.marketShareOptions.series[0].data = monthsDefectiveRatio.lastYearRatio;
               this.marketShareOptions.series[1].data = monthsDefectiveRatio.currentRatio;
             }
           })
         }
 
+      },
+      //初始化上面三个框和下面四个框的数据
+      initNum(month) {
+        // console.log(123);
+        if (this.monthsDefectiveRatios) {
+          this.monthsDefectiveRatios.forEach((monthsDefectiveRatio) => {
+            if (monthsDefectiveRatio.indexName == 'defectiveRate') {
+              // this.defectiveRateOptions.series[0].data = monthsDefectiveRatio.lastYearRatio;
+              // console.log(monthsDefectiveRatio.currentRatio[month - 1]);
+              this.currentMonthDefectiveRate = monthsDefectiveRatio.currentRatio[month - 1];
+              let currentSum = 0;//从第一个月到当前月的累计值（当年不良率）
+              let lastYearSum = 0;//从第一个月到当前月的累计值（去年不良率）
+              for (let i = 0; i < month; i++) {
+                currentSum += monthsDefectiveRatio.currentRatio[i];
+                lastYearSum += monthsDefectiveRatio.lastYearRatio[i];
+              }
+              this.baseYearRate = ((currentSum - lastYearSum) / lastYearSum * 100).toFixed(0);
+              this.baseMonthRate = +((monthsDefectiveRatio.currentRatio[month - 1] - monthsDefectiveRatio.currentRatio[month - 2]) / monthsDefectiveRatio.currentRatio[month - 2] * 100).toFixed(0)
+            } else if (monthsDefectiveRatio.indexName == 'marketShare') {
+              this.currentMonthMarketShare = monthsDefectiveRatio.currentRatio[month - 1];
+              let currentmarketShareSum = 0;//从第一个月到当前月的累计值（当年市占率）
+              let lastYearmarketShareSum = 0;//从第一个月到当前月的累计值（去年市占率）
+              for (let i = 0; i < month; i++) {
+                currentmarketShareSum += monthsDefectiveRatio.currentRatio[i];
+                lastYearmarketShareSum +=monthsDefectiveRatio.lastYearRatio[i];
+              }
+              this.baseYearMarketShareRate=+((currentmarketShareSum-lastYearmarketShareSum)/lastYearmarketShareSum*100).toFixed(0);
+              this.baseMonthMarketShareRate =
+                +((monthsDefectiveRatio.currentRatio[month - 1]-monthsDefectiveRatio.currentRatio[month - 2])/monthsDefectiveRatio.currentRatio[month - 2]*100).toFixed(0);
+              this.currentMonthMarketShareSum = currentmarketShareSum;
+              // console.log(this.baseMonthMarketShareRate);
+            }
+          })
+        }
       },
       selectIndicators(index) {
         if (index == 0) {
@@ -371,132 +417,148 @@
         }
       }
     },
-    computed:{
+    computed: {
       //长安轿车当月市占率
-      currentCar:function(){
-        let currentSum=0;
-        this.marketShareRatioBrands.forEach((marketShareRatioBrand)=>{
-          if(marketShareRatioBrand&&(marketShareRatioBrand.brandName=='BRAND20180128'||marketShareRatioBrand.brandName=='carBrand9879')){
-            currentSum+=marketShareRatioBrand.current
+      currentCar: function () {
+        let currentSum = 0;
+        this.marketShareRatioBrands.forEach((marketShareRatioBrand) => {
+          if (marketShareRatioBrand && (marketShareRatioBrand.brandName == 'BRAND20180128' || marketShareRatioBrand.brandName == 'carBrand9879')) {
+            currentSum += marketShareRatioBrand.current
           }
         });
         return currentSum;
       },
       //长安轿车当月环比变动值
-      comparedCar:function(){
+      comparedCar: function () {
         let synchronSum = 0;
-        this.marketShareRatioBrands.forEach((marketShareRatioBrand)=>{
-          if(marketShareRatioBrand&&(marketShareRatioBrand.brandName=='BRAND20180128'||marketShareRatioBrand.brandName=='carBrand9879')){
-            synchronSum+=marketShareRatioBrand.synchron;
+        this.marketShareRatioBrands.forEach((marketShareRatioBrand) => {
+          if (marketShareRatioBrand && (marketShareRatioBrand.brandName == 'BRAND20180128' || marketShareRatioBrand.brandName == 'carBrand9879')) {
+            synchronSum += marketShareRatioBrand.synchron;
           }
         });
-        let middle = +((this.currentCar - synchronSum)/synchronSum*100).toFixed(0);
-        return middle>=0?'+'+middle:'-'+middle;
+        let middle = +((this.currentCar - synchronSum) / synchronSum * 100).toFixed(0);
+        return middle >= 0 ? '+' + middle : '-' + middle;
       },
       //长安福特当月市占率
-      currentFord:function(){
-        let currentSum=0;
-        this.marketShareRatioBrands.forEach((marketShareRatioBrand)=>{
-          if(marketShareRatioBrand&&(marketShareRatioBrand.brandName=='carBrand9876')){
-            currentSum+=marketShareRatioBrand.current
+      currentFord: function () {
+        let currentSum = 0;
+        this.marketShareRatioBrands.forEach((marketShareRatioBrand) => {
+          if (marketShareRatioBrand && (marketShareRatioBrand.brandName == 'carBrand9876')) {
+            currentSum += marketShareRatioBrand.current
           }
         });
         return currentSum;
       },
       //长安福特当月环比变动值
-      comparedFord:function(){
+      comparedFord: function () {
         let synchronSum = 0;
-        this.marketShareRatioBrands.forEach((marketShareRatioBrand)=>{
-          if(marketShareRatioBrand&&(marketShareRatioBrand.brandName=='carBrand9876')){
-            synchronSum+=marketShareRatioBrand.synchron;
+        this.marketShareRatioBrands.forEach((marketShareRatioBrand) => {
+          if (marketShareRatioBrand && (marketShareRatioBrand.brandName == 'carBrand9876')) {
+            synchronSum += marketShareRatioBrand.synchron;
           }
         });
-        let middle = +((this.currentFord - synchronSum)/synchronSum*100).toFixed(0);
-        return middle>=0?'+'+middle:'-'+middle;
+        let middle = +((this.currentFord - synchronSum) / synchronSum * 100).toFixed(0);
+        return middle >= 0 ? '+' + middle : '-' + middle;
       },
       //长安欧尚当月市占率
-      currentOs:function(){
-        let currentSum=0;
-        this.marketShareRatioBrands.forEach((marketShareRatioBrand)=>{
-          if(marketShareRatioBrand&&(marketShareRatioBrand.brandName=='BRAND20180093'||marketShareRatioBrand.brandName=='BRAND20180094'||marketShareRatioBrand.brandName=='carBrand9875')){
+      currentOs: function () {
+        let currentSum = 0;
+        this.marketShareRatioBrands.forEach((marketShareRatioBrand) => {
+          if (marketShareRatioBrand && (marketShareRatioBrand.brandName == 'BRAND20180093' || marketShareRatioBrand.brandName == 'BRAND20180094' || marketShareRatioBrand.brandName == 'carBrand9875')) {
             currentSum += marketShareRatioBrand.current;
           }
         });
         return currentSum;
       },
       //长安欧尚当月环比变动值
-      comparedOs:function(){
+      comparedOs: function () {
         let synchronSum = 0;
-        this.marketShareRatioBrands.forEach((marketShareRatioBrand)=>{
-          if(marketShareRatioBrand&&(marketShareRatioBrand.brandName=='BRAND20180093'||marketShareRatioBrand.brandName=='BRAND20180094'||marketShareRatioBrand.brandName=='carBrand9875')){
-            synchronSum+=marketShareRatioBrand.synchron;
+        this.marketShareRatioBrands.forEach((marketShareRatioBrand) => {
+          if (marketShareRatioBrand && (marketShareRatioBrand.brandName == 'BRAND20180093' || marketShareRatioBrand.brandName == 'BRAND20180094' || marketShareRatioBrand.brandName == 'carBrand9875')) {
+            synchronSum += marketShareRatioBrand.synchron;
           }
         });
-        let middle = +((this.currentOs - synchronSum)/synchronSum*100).toFixed(0);
-        return middle>=0?'+'+middle:'-'+middle;
+        let middle = +((this.currentOs - synchronSum) / synchronSum * 100).toFixed(0);
+        return middle >= 0 ? '+' + middle : '-' + middle;
       },
       //长安马自达当月市占率
-      currentMazda:function(){
-        let currentSum=0;
-        this.marketShareRatioBrands.forEach((marketShareRatioBrand)=>{
-          if(marketShareRatioBrand&&(marketShareRatioBrand.brandName=='carBrand9877')){
-            currentSum+=marketShareRatioBrand.current
+      currentMazda: function () {
+        let currentSum = 0;
+        this.marketShareRatioBrands.forEach((marketShareRatioBrand) => {
+          if (marketShareRatioBrand && (marketShareRatioBrand.brandName == 'carBrand9877')) {
+            currentSum += marketShareRatioBrand.current
           }
         });
         return currentSum;
       },
       //长安马自达当月环比变动值
-      comparedMazda:function(){
+      comparedMazda: function () {
         let synchronSum = 0;
-        this.marketShareRatioBrands.forEach((marketShareRatioBrand)=>{
-          if(marketShareRatioBrand&&(marketShareRatioBrand.brandName=='carBrand9877')){
-            synchronSum+=marketShareRatioBrand.synchron;
+        this.marketShareRatioBrands.forEach((marketShareRatioBrand) => {
+          if (marketShareRatioBrand && (marketShareRatioBrand.brandName == 'carBrand9877')) {
+            synchronSum += marketShareRatioBrand.synchron;
           }
         });
-        let middle = +((this.currentMazda - synchronSum)/synchronSum*100).toFixed(0);
-        return middle>=0?'+'+middle:'-'+middle;
+        let middle = +((this.currentMazda - synchronSum) / synchronSum * 100).toFixed(0);
+        return middle >= 0 ? '+' + middle : '-' + middle;
       },
       //长安DS当月市占率
-      currentDs:function(){
-        let currentSum=0;
-        this.marketShareRatioBrands.forEach((marketShareRatioBrand)=>{
-          if(marketShareRatioBrand&&(marketShareRatioBrand.brandName=='carSeries0029')){
-            currentSum+=marketShareRatioBrand.current
+      currentDs: function () {
+        let currentSum = 0;
+        this.marketShareRatioBrands.forEach((marketShareRatioBrand) => {
+          if (marketShareRatioBrand && (marketShareRatioBrand.brandName == 'carSeries0029')) {
+            currentSum += marketShareRatioBrand.current
           }
         });
         return currentSum;
       },
       //长安DS当月环比变动值
-      comparedDs:function(){
+      comparedDs: function () {
         let synchronSum = 0;
-        this.marketShareRatioBrands.forEach((marketShareRatioBrand)=>{
-          if(marketShareRatioBrand&&(marketShareRatioBrand.brandName=='carSeries0029')){
-            synchronSum+=marketShareRatioBrand.synchron;
+        this.marketShareRatioBrands.forEach((marketShareRatioBrand) => {
+          if (marketShareRatioBrand && (marketShareRatioBrand.brandName == 'carSeries0029')) {
+            synchronSum += marketShareRatioBrand.synchron;
           }
         });
-        let middle = +((this.currentDs - synchronSum)/synchronSum*100).toFixed(0);
-        return middle>=0?'+'+middle:'-'+middle;
+        let middle = +((this.currentDs - synchronSum) / synchronSum * 100).toFixed(0);
+        return middle >= 0 ? '+' + middle : '-' + middle;
       },
       //长安铃木当月市占率
-      currentSuzuki:function(){
-        let currentSum=0;
-        this.marketShareRatioBrands.forEach((marketShareRatioBrand)=>{
-          if(marketShareRatioBrand&&(marketShareRatioBrand.brandName=='carBrand9878')){
-            currentSum+=marketShareRatioBrand.current
+      currentSuzuki: function () {
+        let currentSum = 0;
+        this.marketShareRatioBrands.forEach((marketShareRatioBrand) => {
+          if (marketShareRatioBrand && (marketShareRatioBrand.brandName == 'carBrand9878')) {
+            currentSum += marketShareRatioBrand.current
           }
         });
         return currentSum;
       },
       //长安铃木当月环比变动值
-      comparedSuzuki:function(){
+      comparedSuzuki: function () {
         let synchronSum = 0;
-        this.marketShareRatioBrands.forEach((marketShareRatioBrand)=>{
-          if(marketShareRatioBrand&&(marketShareRatioBrand.brandName=='carBrand9878')){
-            synchronSum+=marketShareRatioBrand.synchron;
+        this.marketShareRatioBrands.forEach((marketShareRatioBrand) => {
+          if (marketShareRatioBrand && (marketShareRatioBrand.brandName == 'carBrand9878')) {
+            synchronSum += marketShareRatioBrand.synchron;
           }
         });
-        let middle = +((this.currentSuzuki - synchronSum)/synchronSum*100).toFixed(0);
-        return middle>=0?'+'+middle:'-'+middle;
+        let middle = +((this.currentSuzuki - synchronSum) / synchronSum * 100).toFixed(0);
+        return middle >= 0 ? '+' + middle : '-' + middle;
+      },
+      //当年不良率同比变动值(展示，添加了'+')
+      baseYearRateShow: function () {
+        return this.baseYearRate > 0 ? '+' + this.baseYearRate : this.baseYearRate;
+      },
+      //当月不良率环比变动值(展示，添加了'+')
+      baseMonthRateShow: function () {
+        return this.baseMonthRate > 0 ? '+' + this.baseMonthRate : this.baseMonthRate;
+      },
+      //当年市占率同比变动值(展示，添加了'+')
+      baseYearMarketShareRateShow:function(){
+        return this.baseYearMarketShareRate>0? '+'+this.baseYearMarketShareRate:this.baseYearMarketShareRate;
+      },
+      //当月不良率环比变动值(展示，添加了'+')
+      baseMonthMarketShareRateShow:function(){
+        return this.baseMonthMarketShareRate>0? '+'+this.baseMonthMarketShareRate:this.baseMonthMarketShareRate;
       }
     },
     components: {
@@ -607,74 +669,91 @@
           }
 
         }
-        .rejection-rate-content{
-          .content-bottom{
+        .rejection-rate-content {
+          .content-bottom {
             display: flex;
             margin-top: 40px;
             .left, .center, .right {
-            text-align: center;
-            width: 33.3%;
+              text-align: center;
+              width: 33.3%;
             }
             .left {
-            color: rgb(58, 195, 177);
-            border-right: 1px solid rgb(151, 151, 151);
-            p {
-            font-size: 60px;
-            line-height: 84px;
-            margin-bottom: 16px;
-            }
-            span {
-            font-size: 32px;
-            }
+              color: rgb(58, 195, 177);
+              border-right: 1px solid rgb(151, 151, 151);
+              p {
+                font-size: 60px;
+                line-height: 84px;
+                margin-bottom: 16px;
+              }
+              span {
+                font-size: 32px;
+              }
             }
             .center {
-            border-right: 1px solid rgb(151, 151, 151);
-            p {
-            font-size: 60px;
-            line-height: 84px;
-            margin-bottom: 16px;
-            color: rgb(208, 2, 27);
-            }
-            span {
-            font-size: 32px;
-            color: rgb(155, 155, 155);
-            }
+              border-right: 1px solid rgb(151, 151, 151);
+              p {
+                font-size: 60px;
+                line-height: 84px;
+                margin-bottom: 16px;
+                &.top {
+                  color: rgb(208, 2, 27);
+                }
+                &.low {
+                  color: rgb(48, 170, 45);
+                }
+              }
+              span {
+                font-size: 32px;
+                color: rgb(155, 155, 155);
+              }
             }
             .right {
-            color: rgb(48, 170, 45);
-            p {
-            font-size: 60px;
-            line-height: 84px;
-            margin-bottom: 16px;
-            }
-            span {
-            font-size: 32px;
-            }
+              p {
+                font-size: 60px;
+                line-height: 84px;
+                margin-bottom: 16px;
+                &.top {
+                  color: rgb(208, 2, 27);
+                }
+                &.low {
+                  color: rgb(48, 170, 45);
+                }
+              }
+              span {
+                font-size: 32px;
+                color: rgb(155, 155, 155);
+              }
             }
           }
         }
-        .market-share-content{
+        .market-share-content {
           .content-bottom {
             /*margin-top: 40px;*/
-            ul{
+            ul {
               display: flex;
               flex-wrap: wrap;
-              li{
+              li {
                 width: 50%;
                 box-sizing: border-box;
                 padding: 20px;
-                .vary{
+                .vary {
                   margin: 0 auto;
                   border: 1px dashed #9f9f9f;
                   height: 160px;
                   width: 280px;
                   text-align: center;
-                  p{
+                  p {
                     font-size: 60px;
                     line-height: 100px;
                     color: #3ac3b1;
+                    &.top {
+                      color: rgb(208, 2, 27);
+                    }
+                    &.low {
+                      color: rgb(48, 170, 45);
+                    }
                   }
-                  span{
+                  span {
                     font-size: 32px;
                     line-height: 50px;
                     color: #9b9b9b;
