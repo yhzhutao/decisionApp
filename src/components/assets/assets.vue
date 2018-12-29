@@ -51,7 +51,7 @@
   import Asset from '@/components/assetCard/assetCard';
   import HighchartsComponent from '@/components/highchartsComponent/HighchartsComponent';
   import BScroll from 'better-scroll';
-  import bus from '@/components/base/bus.js'
+  import bus from '@/common/base/bus.js'
 
   export default {
     name: "assets",

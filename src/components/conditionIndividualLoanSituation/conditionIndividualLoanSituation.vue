@@ -159,8 +159,8 @@
   import Indicator from '@/components/indicator/indicator'
   import monthsCharts from '@/components/highchartsComponent/HighchartsComponent'
   import BScroll from 'better-scroll'
-  import osc from '@/components/base/osc_common'
-  import bus from '@/components/base/bus'
+  import osc from '@/common/base/osc_common'
+  import bus from '@/common/base/bus'
   export default {
     name: "conditionIndividualLoanSituation",
     props:{
@@ -752,7 +752,7 @@
       },
       //区域排序并添加颜色
       sortRegion(arr){
-        let regionValue = []
+        let regionValue = [0,0,0,0,0]
         let maxValueObj = {max:0,index:0}
          arr.forEach(function(item){
            switch (item.region) {

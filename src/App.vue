@@ -13,7 +13,7 @@
   import mHeader from './components/header/m-header.vue'
   import tab from './components/tab/tab'
   import conditionSelect from './components/conditionSelect/conditionSelect'
-  import bus from './components/base/bus'
+  import bus from './common/base/bus'
   export default {
     name: 'App',
     components: {

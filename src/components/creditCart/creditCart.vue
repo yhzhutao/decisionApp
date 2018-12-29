@@ -28,7 +28,7 @@
 </template>
 
 <script>
-  import osc from '@/components/base/osc_common.js';
+  import osc from '@/common/base/osc_common.js';
   const actions = () => {
     return new Map([
       [{

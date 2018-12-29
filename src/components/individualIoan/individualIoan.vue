@@ -93,10 +93,10 @@
 </template>
 
 <script>
-  import bus from '../base/osc_common';
+  import bus from '../../common/base/osc_common';
   import Indicator from '@/components/indicator/indicator';
   import BScroll from 'better-scroll';
-  import Bus from '@/components/base/bus.js';
+  import Bus from '@/common/base/bus.js';
   export default {
         name: "individualIoan",
         data(){

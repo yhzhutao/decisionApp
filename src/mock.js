@@ -134,3 +134,84 @@ Mock.mock('/marketShareRatio',[{
   'monthsRatio':[0.01,0.011,0.03,0.014,0.04,0.03,0.05,0.001,0.01,0.011,0.03,0.014],
   'lastMonthsRatio':[0.05,0.001,0.03,0.011,0.03,0.012,0.01,0.011,0.03,0.014,0.04,0.03]
 }])
+Mock.mock('/brand',[{
+  brandName:'BRAND20180093',
+  'yearTarget|10000-15000':100,
+  'yearReached|10000-15000':100,
+  'monthTarget|1000-1500':100,
+  'monthReached|1000-1500':100,
+  'monthlyApplication|500-600':100,
+  'monthlyLoanitems|500-600':100
+}, {
+    brandName:'BRAND20180094',
+    'yearTarget|10000-15000':100,
+    'yearReached|10000-15000':100,
+    'monthTarget|1000-1500':100,
+    'monthReached|1000-1500':100,
+    'monthlyApplication|500-600':100,
+    'monthlyLoanitems|500-600':100
+  },{
+    brandName:'BRAND20180128',
+    'yearTarget|10000-15000':100,
+    'yearReached|10000-15000':100,
+    'monthTarget|1000-1500':100,
+    'monthReached|1000-1500':100,
+    'monthlyApplication|500-600':100,
+    'monthlyLoanitems|500-600':100
+  },{
+  brandName:'BRAND20140199',
+  'yearTarget|10000-15000':100,
+  'yearReached|10000-15000':100,
+  'monthTarget|1000-1500':100,
+  'monthReached|1000-1500':100,
+  'monthlyApplication|500-600':100,
+  'monthlyLoanitems|500-600':100
+},{
+  brandName:'carBrand9877',
+  'yearTarget|10000-15000':100,
+  'yearReached|10000-15000':100,
+  'monthTarget|1000-1500':100,
+  'monthReached|1000-1500':100,
+  'monthlyApplication|500-600':100,
+  'monthlyLoanitems|500-600':100
+},{
+  brandName:'carBrand9876',
+  'yearTarget|10000-15000':100,
+  'yearReached|10000-15000':100,
+  'monthTarget|1000-1500':100,
+  'monthReached|1000-1500':100,
+  'monthlyApplication|500-600':100,
+  'monthlyLoanitems|500-600':100
+},{
+  brandName:'carBrand9878',
+  'yearTarget|10000-15000':100,
+  'yearReached|10000-15000':100,
+  'monthTarget|1000-1500':100,
+  'monthReached|1000-1500':100,
+  'monthlyApplication|500-600':100,
+  'monthlyLoanitems|500-600':100
+},{
+  brandName:'carBrand9879',
+  'yearTarget|10000-15000':100,
+  'yearReached|10000-15000':100,
+  'monthTarget|1000-1500':100,
+  'monthReached|1000-1500':100,
+  'monthlyApplication|500-600':100,
+  'monthlyLoanitems|500-600':100
+},{
+  brandName:'carBrand9875',
+  'yearTarget|10000-15000':100,
+  'yearReached|10000-15000':100,
+  'monthTarget|1000-1500':100,
+  'monthReached|1000-1500':100,
+  'monthlyApplication|500-600':100,
+  'monthlyLoanitems|500-600':100
+},{
+  brandName:'carSeries0029',
+  'yearTarget|10000-15000':100,
+  'yearReached|10000-15000':100,
+  'monthTarget|1000-1500':100,
+  'monthReached|1000-1500':100,
+  'monthlyApplication|500-600':100,
+  'monthlyLoanitems|500-600':100
+}])

@@ -59,7 +59,7 @@
 <script>
   import monthsCharts from '@/components/highchartsComponent/HighchartsComponent'
   import BScroll from 'better-scroll';
-  import bus from '@/components/base/bus'
+  import bus from '@/common/base/bus'
   export default {
     name: "marketShare",
     props:[

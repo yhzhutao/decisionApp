@@ -172,7 +172,7 @@
 <script>
   import Highchart from '@/components/highchartsComponent/HighchartsComponent';
   import BScroll from 'better-scroll';
-  import Bus from '@/components/base/bus.js';
+  import Bus from '@/common/base/bus.js';
   export default {
     name: "indicatorsTrend",
     data() {

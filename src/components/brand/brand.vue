@@ -37,10 +37,13 @@
 <script>
   import Highchart from '@/components/highchartsComponent/HighchartsComponent';
   import BScroll from 'better-scroll';
-  import Vue from 'vue';
+  import bus from '@/common/base/bus'
 
   export default {
     name: "brand",
+    props:{
+      selectDate:String
+    },
     data() {
       return {
         brandList:['长安轿车', '长安福特', '长安欧尚', '长安马自达', '长安DS', '长安铃木'],
@@ -90,15 +93,6 @@
                 enabled: true,
               }
             },
-            series: {
-              events: {
-                show: function (event) {
-                  // console.log(1);
-                  // console.log(event)
-                  // event.target.setAttribute('fill', 'rgb(241,155,58)');
-                }
-              }
-            }
           },
           series: [{
             data: [
@@ -107,27 +101,23 @@
                 'y':12
               },
               {
-                'selected':false,
                 'y':24
               },
               {
-                'selected':true,
                 'y':36
               },
               {
-                'selected':false,
                 'y':35
               },
               {
-                'selected':false,
                 'y':80
               },
               {
-                'selected':false,
                 'y':70
               }
             ],
-            color: 'rgb(218,223,236)'
+            enableMouseTracking:false,
+            color: 'rgb(218,223,236)',
           }]
         },
         optionsMonth: {
@@ -184,7 +174,8 @@
           },
           series: [{
             data: [70, 12, 13, 14, 15, 16],
-            color: 'rgb(218,223,236)'
+            color: 'rgb(218,223,236)',
+            enableMouseTracking:false
           }]
         },
         optionsApplication:{
@@ -241,7 +232,8 @@
           },
           series: [{
             data: [70, 12, 13, 14, 15, 16],
-            color: 'rgb(218,223,236)'
+            color: 'rgb(218,223,236)',
+            enableMouseTracking:false,
           }]
         },
         optionsLoan:{
@@ -298,7 +290,8 @@
           },
           series: [{
             data: [70, 12, 13, 14, 15, 16],
-            color: 'rgb(218,223,236)'
+            color: 'rgb(218,223,236)',
+            enableMouseTracking:false
           }]
         },
         stylesYear: {width: 100, height: 250}
@@ -307,11 +300,54 @@
     components: {
       'v-highchart': Highchart
     },
+    created(){
+      let that = this
+      this.createHttp(this.selectDate)
+      bus.$on('selectDate',function(date){
+        that.createHttp(date)
+      })
+    },
     mounted() {
       this._initHighcharts();
       this._initScorll();
     },
     methods: {
+      createHttp(date){
+        let that = this
+        let month =Number(date.substr(4,2))
+        that.$http.post('/brand').then(function (res) {
+          let data = res.body
+          let newDate = that.dataHand(data)
+          let yearlyReachRatio = []
+          let monthlyReachRatio= []
+          let monthlyApplication = []
+          let monthlyLoan = []
+          newDate.forEach(function(item,index){
+            console.log(item)
+            yearlyReachRatio.push(Math.round(item.yearReached/item.yearTarget*100));
+            monthlyReachRatio.push(Math.round(item.monthReached/item.monthTarget*100));
+            monthlyApplication.push(item.monthlyApplication);
+            monthlyLoan.push(item.monthlyLoanitems)
+          })
+          that.optionsYear.series[0].data = that.formatterColumanData(yearlyReachRatio)
+          that.optionsMonth.series[0].data = that.formatterColumanData(monthlyReachRatio)
+          that.optionsApplication.series[0].data = that.formatterColumanData(monthlyApplication)
+          that.optionsLoan.series[0].data = that.formatterColumanData(monthlyLoan)
+        })
+      },
+      formatterColumanData(arr){
+        let maxValueObj = {max:0,index:0};
+        let formatterArr = []
+        arr.forEach(function(item,index){
+          formatterArr.push({'y':item})
+          if(maxValueObj.max < item){
+            maxValueObj.max = item
+            maxValueObj.index = index
+          }
+        })
+        formatterArr[maxValueObj.index].color = "#F19938"
+        return formatterArr
+      },
       getOptions(index) {
         if(index==0){
           return this.optionsYear;
@@ -341,7 +377,69 @@
       },
       _initScorll() {
         new BScroll(this.$refs['brand-content-wrapper'], {click: true});
-      }
+      },
+      dataHand(data){
+        let newData = [0,0,0,0,0,0]
+        let carBrand9879 = [0,0]
+        let BRAND20180093 = [0,0,0]
+        data.forEach(function (item, index) {
+          switch (item.brandName) {
+            case 'carBrand9879':
+              carBrand9879.splice(0,1,item)
+              break;
+            case 'BRAND20180128':
+              carBrand9879.splice(1,1,item)
+              break;
+            case 'BRAND20180093':
+              BRAND20180093.splice(0,1,item)
+              break;
+            case 'BRAND20180094':
+              BRAND20180093.splice(1,1,item)
+              break;
+            case 'carBrand9875':
+              BRAND20180093.splice(2,1,item)
+              break;
+            case 'carBrand9876':
+              newData.splice(1,1,item)
+              break;
+            case 'carBrand9877':
+              newData.splice(3,1,item)
+              break;
+            case 'carSeries0029':
+              newData.splice(4,1,item)
+              break
+            case 'carBrand9878':
+              newData.splice(5,1,item)
+          }
+        })
+        newData.splice(0,1,this.arrMerge(carBrand9879))
+        newData.splice(2,1,this.arrMerge(BRAND20180093))
+        return newData
+      },
+      arrMerge(args){
+        let obj = {}
+        obj.brandName = args[0].brandName
+        obj.monthReached =0
+        obj.monthTarget =0
+        obj.monthlyApplication =0
+        obj.monthlyLoanitems =0
+        obj.yearReached =0
+        obj.yearTarget =0
+        for(let i=0;i<args.length;i++){
+          obj.monthReached=obj.monthReached+args[i].monthReached
+          obj.monthTarget=obj.monthTarget+args[i].monthTarget
+          obj.monthlyApplication=obj.monthlyApplication+args[i].monthlyApplication
+          obj.monthlyLoanitems=obj.monthlyLoanitems+args[i].monthlyLoanitems
+          obj.yearReached=obj.yearReached+args[i].yearReached
+          obj.yearTarget=obj.yearTarget+args[i].yearTarget
+        }
+        return obj
+      },
+      formatterAreaDate(lastMonthsRatio){
+        return lastMonthsRatio.map(function(item,index){
+          return {'color':'rgb(218,223,236)',y:Number((item*100).toFixed(2))}
+        })
+      },
     }
   }
 </script>

@@ -35,7 +35,7 @@
 </template>
 
 <script>
-  import bus from '@/components/base/bus'
+  import bus from '@/common/base/bus'
   export default {
     name: "conditionSelect",
     data() {

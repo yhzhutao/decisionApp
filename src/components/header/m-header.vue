@@ -19,7 +19,7 @@
 <script>
   import { DatetimePicker } from 'mint-ui';
   import Vue from 'vue'
-  import bus from '@/components/base/bus'
+  import bus from '@/common/base/bus'
 
 
 

@@ -20,7 +20,7 @@
 <script>
   import CreditCart from '@/components/creditCart/creditCart';
   import BScroll from 'better-scroll';
-  import Bus from '@/components/base/bus.js';
+  import Bus from '@/common/base/bus.js';
   export default {
     name: "creditAvailability",
     data(){
