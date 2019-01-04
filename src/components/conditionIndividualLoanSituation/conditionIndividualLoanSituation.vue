@@ -757,19 +757,19 @@
          arr.forEach(function(item){
            switch (item.region) {
              case 'norhRegion':
-               regionValue.splice(0,0,{y:Math.round(item.regionalReach/item.regionalGoals*100)})
+               regionValue.splice(0,1,{y:Math.round(item.regionalReach/item.regionalGoals*100)})
                break;
              case 'eastRegion':
-               regionValue.splice(1,0,{y:Math.round(item.regionalReach/item.regionalGoals*100)})
+               regionValue.splice(1,1,{y:Math.round(item.regionalReach/item.regionalGoals*100)})
                break;
              case 'southRegion':
-               regionValue.splice(2,0,{y:Math.round(item.regionalReach/item.regionalGoals*100)})
+               regionValue.splice(2,1,{y:Math.round(item.regionalReach/item.regionalGoals*100)})
                break;
              case 'westRegion':
-               regionValue.splice(3,0,{y:Math.round(item.regionalReach/item.regionalGoals*100)})
+               regionValue.splice(3,1,{y:Math.round(item.regionalReach/item.regionalGoals*100)})
                break;
              case 'middleRegion':
-               regionValue.splice(4,0,{y:Math.round(item.regionalReach/item.regionalGoals*100)})
+               regionValue.splice(4,1,{y:Math.round(item.regionalReach/item.regionalGoals*100)})
                break;
            }
          })

@@ -6,6 +6,7 @@
       <conditionSelect @getBrandCode='sendBrandCode' v-if="selecetFlag"></conditionSelect>
     </div>
     <router-view :selectDate="selectDate" :brandCode="brandCode"></router-view>
+    <loading v-show="loadingFlag"></loading>
   </div>
 </template>
 
@@ -14,12 +15,14 @@
   import tab from './components/tab/tab'
   import conditionSelect from './components/conditionSelect/conditionSelect'
   import bus from './common/base/bus'
+  import loading from './components/loading/loading'
   export default {
     name: 'App',
     components: {
       mHeader,
       tab,
       conditionSelect,
+      loading
     },
     data() {
       return {
@@ -28,7 +31,8 @@
         backFlag: true,
         selecetFlag: false,
         brandCode:'',
-        selectDate:''
+        selectDate:'',
+        loadingFlag:true
       }
     },
     methods: {
@@ -55,6 +59,9 @@
       bus.$on('selectDate',function(date){
         that.selectDate = date
       })
+      bus.$on('loading',function(flag){
+          that.loadingFlag = flag
+      })
       let path = this.$router.currentRoute.path
       if (path === '/assetsSituation' || path === '/individualIoanSituation' || path === '/variousIndicators' || path === '/creditAvailability') {
         this.tabFlag = true
@@ -74,21 +81,11 @@
           let path = that.$router.currentRoute.path
           if (message ==="outApp" && responseCallback) {
             if (path === '/assetsSituation' || path === '/individualIoanSituation' || path === '/variousIndicators' || path === '/creditAvailability') {
-              responseCallback('0');
+              responseCallback('0')
             } else {
-              responseCallback('1');
+              responseCallback('1')
             }
           }
-        });
-        bridge.registerHandler("outApp",function(data, responseCallback){
-            alert(path);
-            if (path === '/assetsSituation' || path === '/individualIoanSituation' || path === '/variousIndicators' || path === '/creditAvailability') {
-              alert('传值0')
-              responseCallback('0');
-            } else {
-              alert('传值1')
-              responseCallback('1');
-            }
         })
       })
     },

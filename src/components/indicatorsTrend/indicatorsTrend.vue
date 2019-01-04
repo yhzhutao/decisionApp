@@ -62,7 +62,7 @@
               </li>
               <li>
                 <div class="vary">
-                  <p :class="baseMonthMarketShareRate>0?'top':'low'">{{baseMonthMarketShareRate+'%'}}</p>
+                  <p :class="baseMonthMarketShareRate>0?'top':'low'">{{baseMonthMarketShareRate>0?'+':''}}{{baseMonthMarketShareRate+'%'}}</p>
                   <span>当月环比变化</span>
                 </div>
               </li>
@@ -402,7 +402,6 @@
               this.baseMonthMarketShareRate =
                 +((monthsDefectiveRatio.currentRatio[month - 1]-monthsDefectiveRatio.currentRatio[month - 2])/monthsDefectiveRatio.currentRatio[month - 2]*100).toFixed(0);
               this.currentMonthMarketShareSum = currentmarketShareSum;
-              // console.log(this.baseMonthMarketShareRate);
             }
           })
         }

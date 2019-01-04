@@ -64,12 +64,21 @@
     },
     methods: {
       gotoPersonal(){
+        if(this.isIos){
+          this.setupWebViewJavascriptBridge(function(bridge){
+            bridge.callHandler(
+              'gotoPersonal', {},
+              function(res) {
+              })
+          })
+        }else{
           this.connectWebViewJavascriptBridge(function(bridge){
             bridge.callHandler(
               'gotoPersonal', {},
               function(res) {
               })
           })
+        }
       },
       //注册事件监听
       connectWebViewJavascriptBridge(callback) {
@@ -84,6 +93,22 @@
             false
           );
         }
+      },
+      setupWebViewJavascriptBridge(callback) {
+        if(window.WebViewJavascriptBridge) {
+          return callback(WebViewJavascriptBridge);
+        }
+        if(window.WVJBCallbacks) {
+          return window.WVJBCallbacks.push(callback);
+        }
+        window.WVJBCallbacks = [callback];
+        var WVJBIframe = document.createElement('iframe');
+        WVJBIframe.style.display = 'none';
+        WVJBIframe.src = 'wvjbscheme://__BRIDGE_LOADED__';
+        document.documentElement.appendChild(WVJBIframe);
+        setTimeout(function() {
+          document.documentElement.removeChild(WVJBIframe)
+        }, 0)
       },
       formatDate(date) {
         var o = {

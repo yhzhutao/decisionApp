@@ -28,11 +28,11 @@
            <div>当月不良率</div>
          </div>
          <div class="rlborder itemColor2">
-           <div :style='{color:wSaleRatioYoy>0?"#d0021b":"#30aa2d"}'>{{wSaleRatioYoy}}%</div>
+           <div :style='{color:wSaleRatioYoy>0?"#d0021b":"#30aa2d"}'>{{wSaleRatioYoy>0?"+":""}}{{wSaleRatioYoy}}%</div>
            <div>同比变动</div>
          </div>
          <div>
-           <div class="itemColor3" :style='{color:wSaleRatioMom>0?"#d0021b":"#30aa2d"}'>{{wSaleRatioMom}}%</div>
+           <div class="itemColor3" :style='{color:wSaleRatioMom>0?"#d0021b":"#30aa2d"}'>{{wSaleRatioMom>0?"+":""}}{{wSaleRatioMom}}%</div>
            <div>环比变动</div>
          </div>
        </div>
@@ -64,11 +64,11 @@
            <div>当月不良率</div>
          </div>
          <div class="rlborder itemColor2">
-           <div :style='{color:rSaleRatioYoy>0?"#d0021b":"#30aa2d"}'>{{rSaleRatioYoy}}%</div>
+           <div :style='{color:rSaleRatioYoy>0?"#d0021b":"#30aa2d"}'>{{rSaleRatioYoy>0?"+":""}}{{rSaleRatioYoy}}%</div>
            <div>同比变动</div>
          </div>
          <div>
-           <div class="itemColor3" :style='{color:rSaleRatioMom>0?"#d0021b":"#30aa2d"}'>{{rSaleRatioMom}}%</div>
+           <div class="itemColor3" :style='{color:rSaleRatioMom>0?"#d0021b":"#30aa2d"}'>{{rSaleRatioMom>0?"+":""}}{{rSaleRatioMom}}%</div>
            <div>环比变动</div>
          </div>
        </div>

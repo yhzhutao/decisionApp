@@ -32,11 +32,11 @@
           </div>
           <div>
             <div class="lborder itemColor2">
-              <div>{{item.currentMonthChainRatio}}%</div>
+              <div :style='{color:item.currentMonthChainRatio>0?"#d0021b":"#30aa2d"}'>{{item.currentMonthChainRatio>0?"+":""}}{{item.currentMonthChainRatio}}%</div>
               <div>当月环比变化</div>
             </div>
             <div class="lborder">
-              <div class="itemColor3">{{item.currentYearChainRatio}}%</div>
+              <div class="itemColor3" :style='{color:item.currentYearChainRatio>0?"#d0021b":"#30aa2d"}'>{{item.currentYearChainRatio>0?"+":""}}{{item.currentYearChainRatio}}%</div>
               <div>当年同比变化</div>
             </div>
           </div>

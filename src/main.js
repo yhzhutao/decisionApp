@@ -3,11 +3,16 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
-import {DatePicker} from 'element-ui'
 import VueResource from 'vue-resource'
-
+import bus from '@/common/base/bus'
 Vue.config.productionTip = false
 Vue.use(VueResource);
+Vue.http.interceptors.push((request, next) => {
+  bus.$emit('loading',true)
+  next((response) => {
+    bus.$emit('loading',false)
+  })
+})
 require('./mock.js')
 /* eslint-disable no-new */
 new Vue({
