@@ -80,8 +80,15 @@
 <script>
   import monthsCharts from '@/components/highchartsComponent/HighchartsComponent'
   import BScroll from 'better-scroll';
+  import { host } from "@/common/base/baseHttp.js"
+  import bus from '@/common/base/bus'
+  import tokenInvalid from '@/common/base/tokenInvalid'
+  import { Toast } from 'mint-ui';
   export default {
         name: "defectiveRatio",
+      props:[
+        'selectDate'
+      ],
       data(){
         return{
           wholesaleSale:{
@@ -153,18 +160,18 @@
             series: [{
               enableMouseTracking:false,
               allowPointSelect: false,
-              data: [{'y':5},
-                {'y':12},
-                {'y':13},
-                {'y':14},
-                {'y':15},
-                {'y':16},
-                {'y':30},
-                {'y':12},
-                {'y':13},
-                {'y':14},
-                {'y':15},
-                {'y':16}],
+              data: [{'y':null},
+                {'y':null},
+                {'y':null},
+                {'y':null},
+                {'y':null},
+                {'y':null},
+                {'y':null},
+                {'y':null},
+                {'y':null},
+                {'y':null},
+                {'y':null},
+                {'y':null}],
               marker:{
                 enabled:false,
                 states:{
@@ -184,18 +191,18 @@
             },
               {
                 allowPointSelect: false,
-                data: [{'color':'rgb(218,223,236)','y':7},
-                  {'color':'rgb(218,223,236)','y':15},
-                  {'color':'rgb(218,223,236)','y':23},
-                  {'color':'rgb(218,223,236)','y':15},
-                  {'color':'rgb(218,223,236)','y':16},
-                  {'color':'rgb(218,223,236)','y':20},
-                  {'color':'rgb(218,223,236)','y':16},
-                  {'color':'rgb(218,223,236)','y':12},
-                  {'color':'rgb(218,223,236)','y':16},
-                  {'color':'rgb(218,223,236)','y':16},
-                  {'color':'rgb(218,223,236)','y':12},
-                  {'color':'rgb(218,223,236)','y':18}],
+                data: [{'color':'rgb(218,223,236)','y':null},
+                  {'color':'rgb(218,223,236)','y':null},
+                  {'color':'rgb(218,223,236)','y':null},
+                  {'color':'rgb(218,223,236)','y':null},
+                  {'color':'rgb(218,223,236)','y':null},
+                  {'color':'rgb(218,223,236)','y':null},
+                  {'color':'rgb(218,223,236)','y':null},
+                  {'color':'rgb(218,223,236)','y':null},
+                  {'color':'rgb(218,223,236)','y':null},
+                  {'color':'rgb(218,223,236)','y':null},
+                  {'color':'rgb(218,223,236)','y':null},
+                  {'color':'rgb(218,223,236)','y':null}],
                 pointStart: 0,
                 type:'line',
                 marker:{
@@ -282,18 +289,18 @@
             series: [{
               enableMouseTracking:false,
               allowPointSelect: false,
-              data: [{'y':5},
-                {'y':12},
-                {'y':13},
-                {'y':14},
-                {'y':15},
-                {'y':16},
-                {'y':30},
-                {'y':12},
-                {'y':13},
-                {'y':14},
-                {'y':15},
-                {'y':16}],
+              data: [{'y':null},
+                {'y':null},
+                {'y':null},
+                {'y':null},
+                {'y':null},
+                {'y':null},
+                {'y':null},
+                {'y':null},
+                {'y':null},
+                {'y':null},
+                {'y':null},
+                {'y':null}],
               marker:{
                 enabled:false,
                 states:{
@@ -313,18 +320,18 @@
             },
               {
                 allowPointSelect: false,
-                data: [{'color':'rgb(218,223,236)','y':7},
-                  {'color':'rgb(218,223,236)','y':15},
-                  {'color':'rgb(218,223,236)','y':23},
-                  {'color':'rgb(218,223,236)','y':15},
-                  {'color':'rgb(218,223,236)','y':16},
-                  {'color':'rgb(218,223,236)','y':20},
-                  {'color':'rgb(218,223,236)','y':16},
-                  {'color':'rgb(218,223,236)','y':12},
-                  {'color':'rgb(218,223,236)','y':16},
-                  {'color':'rgb(218,223,236)','y':16},
-                  {'color':'rgb(218,223,236)','y':12},
-                  {'color':'rgb(218,223,236)','y':18}],
+                data: [{'color':'rgb(218,223,236)','y':null},
+                  {'color':'rgb(218,223,236)','y':null},
+                  {'color':'rgb(218,223,236)','y':null},
+                  {'color':'rgb(218,223,236)','y':null},
+                  {'color':'rgb(218,223,236)','y':null},
+                  {'color':'rgb(218,223,236)','y':null},
+                  {'color':'rgb(218,223,236)','y':null},
+                  {'color':'rgb(218,223,236)','y':null},
+                  {'color':'rgb(218,223,236)','y':null},
+                  {'color':'rgb(218,223,236)','y':null},
+                  {'color':'rgb(218,223,236)','y':null},
+                  {'color':'rgb(218,223,236)','y':null}],
                 pointStart: 0,
                 type:'line',
                 marker:{
@@ -352,31 +359,50 @@
         }
       },
     created() {
-      this.$http.post('/defectiveRatio').then(function (res) {
-        let that = this
-        let data = res.body
-        data.forEach(function (item, index) {
-          if (item.salesWay === "wholesaleSale") {
-            that.wSaleRatio = (item.saleRatio * 100).toFixed(2)
-            that.wSaleRatioYoy = (item.saleRatioYoy * 100).toFixed(2)
-            that.wSaleRatioMom = (item.saleRatioMom * 100).toFixed(2)
-            that.wholesaleSale.series[0].data = that.formatterAreaDate(item.lastMonthsRatio)
-            that.wholesaleSale.series[1].data = that.formatterLineDate(item.currentMonthsRatio)
-          }
-          if(item.salesWay === "retail") {
-            that.rSaleRatio = (item.saleRatio * 100).toFixed(2)
-            that.rSaleRatioYoy = (item.saleRatioYoy * 100).toFixed(2)
-            that.rSaleRatioMom = (item.saleRatioMom * 100).toFixed(2)
-            that.retail.series[0].data = that.formatterAreaDate(item.lastMonthsRatio)
-            that.retail.series[1].data = that.formatterLineDate(item.currentMonthsRatio)
-          }
-        })
+       this.createHttp(this.selectDate)
+      let that = this
+      bus.$off('selectDate')
+      bus.$on('selectDate',function(date){
+        that.createHttp(date)
       })
     },
       mounted(){
         this._initScorll();
       },
       methods:{
+        createHttp(date){
+          let urlHost = host||'/api'
+          this.$http.post(urlHost+'/Decision/defectiveRatio',{date:date}).then(function (res) {
+            let that = this
+            let data = JSON.parse(res.bodyText).result
+            let code = JSON.parse(res.bodyText).code
+            if(code ==0){
+              data.forEach(function (item, index) {
+                if (item.salesWay === "wholesaleSale") {
+                  that.wSaleRatio = (item.saleRatio * 100).toFixed(2)
+                  that.wSaleRatioYoy = (item.saleRatioYoy * 100).toFixed(2)
+                  that.wSaleRatioMom = (item.saleRatioMom * 100).toFixed(2)
+                  that.wholesaleSale = JSON.parse(JSON.stringify(that.wholesaleSale))
+                  that.wholesaleSale.series[0].data = that.formatterAreaDate(item.lastMonthsRatio)
+                  that.wholesaleSale.series[1].data = that.formatterLineDate(item.currentMonthsRatio)
+                }
+                if(item.salesWay === "retail") {
+                  that.rSaleRatio = (item.saleRatio * 100).toFixed(2)
+                  that.rSaleRatioYoy = (item.saleRatioYoy * 100).toFixed(2)
+                  that.rSaleRatioMom = (item.saleRatioMom * 100).toFixed(2)
+                  that.retail = JSON.parse(JSON.stringify(that.retail))
+                  that.retail.series[0].data = that.formatterAreaDate(item.lastMonthsRatio)
+                  that.retail.series[1].data = that.formatterLineDate(item.currentMonthsRatio)
+                }
+              })
+            }else if(code ==20){
+              tokenInvalid()
+            }else{
+              Toast(JSON.parse(res.bodyText).message)
+            }
+
+          })
+        },
         _initScorll(){
           new BScroll(this.$refs['content-wrapper'],{click:true});
         },
@@ -479,6 +505,7 @@
         top:50%;
         left: 50%;
         transform: translate(-50%,-50%);
+        -webkit-transform: translate(-50%,-50%);
       }
     }
     .ratio{

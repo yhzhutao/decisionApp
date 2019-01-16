@@ -7,11 +7,12 @@
       </div>
       <div class="brandName" v-show="visible" ref="main">
         <ul>
-          <li @click="selectBrand">长安轿车</li>
-          <li @click="selectBrand">长安福特</li>
-          <li @click="selectBrand">长安铃木</li>
-          <li @click="selectBrand">长安DS</li>
-          <li @click="selectBrand">长安轿车</li>
+          <li @click="selectBrand" data-code="carBrand9879">长安轿车</li>
+          <li @click="selectBrand" data-code="carBrand9876">长安福特</li>
+          <li @click="selectBrand" data-code="BRAND20180093">长安欧尚</li>
+          <li @click="selectBrand" data-code="carBrand9877">长安马自达</li>
+          <li @click="selectBrand" data-code="carSeries0029">长安DS</li>
+          <li @click="selectBrand" data-code="carBrand9879">长安轿车</li>
         </ul>
       </div>
     </div>
@@ -22,7 +23,7 @@
       </div>
       <div class="brandName" v-show="visible2" ref="main2">
         <ul>
-          <li @click="selectRegion" data-code="1">全区域</li>
+          <li @click="selectRegion" data-code="0">全区域</li>
           <li @click="selectRegion" data-code="7247">北区</li>
           <li @click="selectRegion" data-code="4473">东区</li>
           <li @click="selectRegion" data-code="7245">南区</li>
@@ -59,7 +60,7 @@
       },
       selectBrand(event) {
         this.brandName = event.target.innerText
-        bus.$emit('getBrandCode',event.target.innerText)
+        bus.$emit('getBrandCode',event.target.dataset.code)
       },
       togglePanel() {
         this.visible ? this.hide() : this.show()
@@ -134,6 +135,7 @@
     .brandSelect, .region {
       position: relative;
       width: 30%;
+      font-size: 32px;
       input {
         width: 100%;
         height: 100%;
@@ -142,6 +144,7 @@
         outline: none;
         list-style: none;
         border: none;
+        font-size: 32px;
       }
       &:after {
         content: "";
@@ -155,7 +158,7 @@
       }
       .brandName {
         background-color: #2F3543;
-        width: 60%;
+        width: 75%;
         ul{
           border-left:1px solid #ccc;
           border-right:1px solid #ccc;

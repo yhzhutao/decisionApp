@@ -51,7 +51,9 @@
 
     },
     mounted() {
-      bus.$emit('selectDate',this.formatDate(new Date()).replace(/\//g,''))
+      let data = this.formatDate(new Date()).replace(/\//g,'')
+      bus.$emit('selectDate',data)
+      bus.$emit('getDate',data)
     },
     watch:{
       $route(to,from){
@@ -114,7 +116,7 @@
         var o = {
           y: date.getFullYear(),
           m: date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1,
-          d: date.getDate()
+          d: date.getDate() < 10 ? '0' + date.getDate() : date.getDate(),
         }
         return o.y + '\/' + o.m + '\/' + o.d
       },
@@ -128,6 +130,7 @@
         let selectDate = this.formatDate(date)
         this.selectDate = selectDate
         bus.$emit('selectDate',selectDate.replace(/\//g,''))
+        bus.$emit('getDate',selectDate.replace(/\//g,''))
       },
     }
   }
@@ -138,7 +141,7 @@
     position: relative
     height: 80px
     width: 100%
-    .header-top
+    line-height: 80px
     .login_logo
       width: 136px
       height: 54px
@@ -152,7 +155,11 @@
        left: 50%
        top: 50%
        transform: translate(-50%,-50%)
+       -webkit-transform: translate(-50%,-50%)
        color: #ffffff
+       img
+        height: 32px
+        width: 32px
     .back
       height: 42px
       width: 24px
@@ -167,14 +174,14 @@
       img
         width: 48px
         height: 48px
-        margin-top: 13px
         margin-right: 16px
+        vertical-align: middle
 
 
 </style>
 <style lang="sass">
   .picker-toolbar
-    height: 70px
+    height: 75px!important
     span
      line-height: 75px
   .picker-items
@@ -183,9 +190,11 @@
      font-size: 32px
      height: 40px
   .mint-datetime-action
-   font-size: 32px
-   height: 44px
+   font-size: 40px!important
+   height: 75px
   .picker-center-highlight:before,.picker-center-highlight:after
     background-color: #ccc
     height: 4px
+  .mint-popup-bottom
+   -webkit-transform: translate3d(-50%,0,0)
 </style>

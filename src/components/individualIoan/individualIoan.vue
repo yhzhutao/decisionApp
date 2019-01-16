@@ -24,15 +24,15 @@
           </ul>
           <div class="target-num">
             <div class="year-target">
-              <p>{{individualLoanSituation.yearlyTarget}}</p>
+              <p>{{individualLoanSituation.yearlyTarget||'—'}}</p>
               <span>全年目标</span>
-              <p>{{individualLoanSituation.yearlyReach}}</p>
+              <p>{{individualLoanSituation.yearlyReach||'—'}}</p>
               <span>全年达成</span>
             </div>
             <div class="month-target">
-              <p>{{individualLoanSituation.currentMonthTarget}}</p>
+              <p>{{individualLoanSituation.currentMonthTarget||'—'}}</p>
               <span>当月目标</span>
-              <p>{{individualLoanSituation.currentMonthReach}}</p>
+              <p>{{individualLoanSituation.currentMonthReach||'—'}}</p>
               <span>当月达成</span>
             </div>
           </div>
@@ -49,37 +49,37 @@
           <ul>
             <li>
                 <span>
-                  <p>{{individualLoanSituation.todayApplication}}</p>
+                  <p>{{individualLoanSituation.todayApplication||'—'}}</p>
                   <p>本日申请</p>
                 </span>
             </li>
             <li>
                 <span>
-                  <p>{{individualLoanSituation.todayApproval}}</p>
+                  <p>{{individualLoanSituation.todayApproval||'—'}}</p>
                   <p>本日审批</p>
                 </span>
             </li>
             <li>
                 <span>
-                  <p>{{individualLoanSituation.pendingApproval}}</p>
+                  <p>{{individualLoanSituation.pendingApproval||'—'}}</p>
                   <p>待审批</p>
                 </span>
             </li>
             <li>
                 <span>
-                  <p>{{individualLoanSituation.monthApplication}}</p>
+                  <p>{{individualLoanSituation.monthApplication||'—'}}</p>
                   <p>当月申请</p>
                 </span>
             </li>
             <li>
                 <span>
-                  <p>{{individualLoanSituation.monthApproval}}</p>
+                  <p>{{individualLoanSituation.monthApproval||'—'}}</p>
                   <p>当月审批</p>
                 </span>
             </li>
             <li>
                 <span>
-                  <p>{{individualLoanSituation.monthCheck}}</p>
+                  <p>{{individualLoanSituation.monthCheck||'—'}}</p>
                   <p>当月核准</p>
                 </span>
             </li>
@@ -94,10 +94,12 @@
 </template>
 
 <script>
-  import bus from '../../common/base/osc_common';
   import Indicator from '@/components/indicator/indicator';
   import BScroll from 'better-scroll';
-  import Bus from '@/common/base/bus.js';
+  import { host } from "@/common/base/baseHttp.js"
+  import bus from '@/common/base/bus.js';
+  import tokenInvalid from '@/common/base/tokenInvalid'
+  import { Toast } from 'mint-ui';
   export default {
     name: "individualIoan",
     data() {
@@ -115,20 +117,45 @@
         Indicator
       }
     ,
+    created(){
+      let that = this
+      bus.$off('selectDate')
+      bus.$on('selectDate',function(date){
+        that._initScroll(date);
+      })
+    },
     mounted() {
-      this._initScroll();
+      this._initScroll(this.selectDate)
     }
     ,
     methods: {
-      _initScroll() {
-        // console.log(this.selectDate);
-        this.$http.post('/individualLoanSituation?date=' + this.selectDate).then((response) => {
-          this.individualLoanSituation = Object.assign({}, this.individualLoanSituation, response.body.data);
-          this.yearRate = this.individualLoanSituation.yearlyReach / this.individualLoanSituation.yearlyTarget * 100;
-          // this.yearRate = parseFloat(this.yearRate.toFixed(2));
-          this.yearRate = this.yearRate.toFixed(2);
-          this.monthRate = this.individualLoanSituation.currentMonthReach / this.individualLoanSituation.currentMonthTarget * 100;
-          this.monthRate = parseFloat(this.monthRate.toFixed(2));
+      _initScroll(date) {
+        let urlHost = host||'/api'
+        this.$http.post(urlHost+'/Decision/individualLoanSituation',{date:date}).then((response) => {
+          let code = JSON.parse(response.bodyText).code
+          if(code==0){
+            this.individualLoanSituation = Object.assign({}, this.individualLoanSituation, JSON.parse(response.bodyText).result);
+            //判断不为Infinity
+            if(this.individualLoanSituation.yearlyTarget == 0||this.individualLoanSituation.yearlyTarget==null){
+              this.yearRate='—'
+            }else{
+              this.yearRate = this.individualLoanSituation.yearlyReach / this.individualLoanSituation.yearlyTarget * 100||0;
+              this.yearRate = parseFloat(this.yearRate.toFixed(2));
+            }
+
+            if(this.individualLoanSituation.currentMonthTarget==0||this.individualLoanSituation.currentMonthTarget==null){
+              this.monthRate='—'
+            }else{
+              this.monthRate = this.individualLoanSituation.currentMonthReach / this.individualLoanSituation.currentMonthTarget * 100||0;
+              this.monthRate = parseFloat(this.monthRate.toFixed(2));
+            }
+
+
+          }else if(code ==20){
+            tokenInvalid()
+          }else{
+            Toast(JSON.parse(response.bodyText).message)
+          }
         });
         new BScroll(this.$refs['individualIoan-wrapper'], {click: true});
       }
@@ -186,6 +213,7 @@
               border-top: 1px solid rgb(155, 155, 155);
               border-right: 1px solid rgb(155, 155, 155);
               transform: rotate(45deg);
+              -webkit-transform: rotate(45deg);
             }
             span {
               font-size: 32px;

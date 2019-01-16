@@ -12,15 +12,15 @@ const portfinder = require('portfinder')
 
 //引入各个文件,定义变量
 const express = require('express');
-const app = express();
-const router = express.Router();
-const appData = require('../mock/data.json');
-const assetsScale = appData.assetsScale;
-const individualLoanSituation = appData.individualLoanSituation;
-const indicators = appData.indicators;
-const creditInjection = appData.creditInjection;
-const indicatorsClass = appData.indicatorsClass;
-app.use('/api', router);
+// const app = express();
+// const router = express.Router();
+// const appData = require('../mock/data.json');
+// const assetsScale = appData.assetsScale;
+// const individualLoanSituation = appData.individualLoanSituation;
+// const indicators = appData.indicators;
+// const creditInjection = appData.creditInjection;
+// const indicatorsClass = appData.indicatorsClass;
+// app.use('/api', router);
 
 const HOST = process.env.HOST
 const PORT = process.env.PORT && Number(process.env.PORT)
@@ -34,38 +34,38 @@ const devWebpackConfig = merge(baseWebpackConfig, {
 
   // these devServer options should be customized in /config/index.js
   devServer: {
-    before(app) {
-      app.post('/assetsScale', (req, res, next) => {
-        res.json({
-          errno:0,
-          data:assetsScale
-        })
-      });
-      app.post('/individualLoanSituation',(req,res,next)=>{
-        res.json({
-          errno:0,
-          data:individualLoanSituation
-        })
-      });
-      app.post('/indicators',(req,res,next)=>{
-        res.json({
-          errno:0,
-          data:indicators
-        })
-      });
-      app.post('/creditInjection',(req,res,next)=>{
-        res.json({
-          errno:0,
-          data:creditInjection
-        })
-      });
-      app.post('/indicatorsClass',(req,res,next)=>{
-        res.json({
-          errno:0,
-          data:indicatorsClass
-        })
-      });
-    },
+    // before(app) {
+    //   app.post('/assetsScale', (req, res, next) => {
+    //     res.json({
+    //       errno:0,
+    //       data:assetsScale
+    //     })
+    //   });
+    //   app.post('/individualLoanSituation',(req,res,next)=>{
+    //     res.json({
+    //       errno:0,
+    //       data:individualLoanSituation
+    //     })
+    //   });
+    //   app.post('/indicators',(req,res,next)=>{
+    //     res.json({
+    //       errno:0,
+    //       data:indicators
+    //     })
+    //   });
+    //   app.post('/creditInjection',(req,res,next)=>{
+    //     res.json({
+    //       errno:0,
+    //       data:creditInjection
+    //     })
+    //   });
+    //   app.post('/indicatorsClass',(req,res,next)=>{
+    //     res.json({
+    //       errno:0,
+    //       data:indicatorsClass
+    //     })
+    //   });
+    // },
     clientLogLevel: 'warning',
     historyApiFallback: {
       rewrites: [

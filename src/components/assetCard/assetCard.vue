@@ -5,7 +5,7 @@
         <span>{{title}}</span><img :src="url" alt="">
       </div>
       <div class="asset-content">
-        <p class="unit">单位：亿元</p>
+        <p class="unit">单位：{{unit}}元</p>
         <div class="current">
           <span>当前</span>
           <div class="progress">
@@ -13,7 +13,7 @@
               <div class="progress_bar" :style="{'width':percentCurrent+'%'}"></div>
             </div>
             <div class="progress_btn" :style="{'left':percentCurrent*0.96+'%'}">
-              <div class="percent">{{percentCurrent+'%'}}</div>
+              <div class="percent">{{percentCurrent}}%</div>
             </div>
           </div>
         </div>
@@ -27,7 +27,7 @@
             <span>{{text}}</span>
           </div>
           <div class="center">
-            <p :class="fluctuation>0?'top':'low'">{{fluctuation+'%'}}</p>
+            <p :class="[fluctuation<0?'low':'top',{fontColor:fluctuation=='—'}]" >{{fluctuation}}</p>
             <span>同比变动</span>
           </div>
           <div class="right">
@@ -57,11 +57,11 @@
       },
       props:{
           titleCode:Number,
-          assetsScale:Object
+          assetsScale:Object,
+          unit:String
       },
       mounted(){
         this.getTitle(this.titleCode);
-        // console.log(this.$parent.assetsScale);
       },
       methods:{
         getTitle(titleCode){
@@ -70,13 +70,24 @@
             this.url=require('../../image/income_icon@2x.png');
             this.text='当前收入';
             this.currentSum = this.assetsScale.currentIncome;
-            this.fluctuation =
-              ((this.assetsScale.currentIncome-this.assetsScale.syIncome)/this.assetsScale.syIncome*100).toFixed(0);
-            if(this.fluctuation>0){
-              this.fluctuation='+'+this.fluctuation
+            if(this.assetsScale.syIncome != 0){
+              this.fluctuation =
+                ((this.assetsScale.currentIncome-this.assetsScale.syIncome)/this.assetsScale.syIncome*100).toFixed(0);
+              if(this.fluctuation>0){
+                this.fluctuation='+'+this.fluctuation+'%'
+              }else{
+                this.fluctuation=this.fluctuation+'%'
+              }
+
+            }else{
+              this.fluctuation = '—'
             }
             this.index = this.assetsScale.groupIncomeIndex;
-            this.percent = (this.assetsScale.currentIncome/this.assetsScale.groupIncomeIndex*100).toFixed(0);
+            if((this.assetsScale.currentIncome/this.assetsScale.groupIncomeIndex*100).toFixed(0)=='NaN'){
+              this.percent = 0
+            }else{
+              this.percent = (this.assetsScale.currentIncome/this.assetsScale.groupIncomeIndex*100).toFixed(0);
+            }
             this.percentCurrent = this.percent>100?100:this.percent;
             this.percentSynchronism = (this.assetsScale.syIncome/this.assetsScale.groupIncomeIndex*100).toFixed(0);
           }else if(titleCode==1){
@@ -84,14 +95,24 @@
             this.url=require('../../image/profit_icon@2x.png');
             this.text = '当前利润';
             this.currentSum = this.assetsScale.currentProfit;
-            this.fluctuation =
-              ((this.assetsScale.currentProfit-this.assetsScale.syProfit)/this.assetsScale.syProfit*100).toFixed(0);
-            if(this.fluctuation>0){
-              this.fluctuation='+'+this.fluctuation
+            if(this.assetsScale.syIncome != 0){
+              this.fluctuation =
+                ((this.assetsScale.currentProfit-this.assetsScale.syProfit)/this.assetsScale.syProfit*100).toFixed(0);
+              if(this.fluctuation>0){
+                this.fluctuation='+'+this.fluctuation+'%'
+              }else{
+                this.fluctuation=this.fluctuation+'%'
+              }
+            }else{
+              this.fluctuation = '—'
             }
             this.index = this.assetsScale.groupProfitIndex;
-            this.percent = (this.assetsScale.currentProfit/this.assetsScale.groupProfitIndex*100).toFixed(0);
-            this.percentCurrent = this.percent>100?100:this.percent;
+            if((this.assetsScale.currentIncome/this.assetsScale.groupIncomeIndex*100).toFixed(0)=='NaN'){
+              this.percent = 0
+            }else{
+              this.percent = (this.assetsScale.currentIncome/this.assetsScale.groupIncomeIndex*100).toFixed(0);
+            }
+            this.percentCurrent = this.percent>100?100:this.percent || 0;
             this.percentSynchronism = (this.assetsScale.syProfit/this.assetsScale.groupProfitIndex*100).toFixed(0);
           }else{
             return;
@@ -100,7 +121,6 @@
       },
       watch:{
         assetsScale:function(){
-          // console.log(111);
           this.getTitle(this.titleCode);
         }
       }
@@ -140,6 +160,7 @@
   .asset-content{
     margin-top: 16px;
     .unit{
+      float: right;
       margin-left: 18px;
       font-size: 24px;
       color: rgb(155,155,155);
@@ -157,7 +178,7 @@
       .progress {
         display: inline-block;
         position: relative;
-        width: 85%;
+        width: 65%;
         .progress_bg {
           height: 8px;
           border-radius: 5px;

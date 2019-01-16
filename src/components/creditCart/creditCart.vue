@@ -6,7 +6,7 @@
     </div>
     <div class="cart-content clearfix">
       <div class="content-left">
-        <p class="unit">单位: 万元</p>
+        <p class="unit">单位: {{unit}}元</p>
         <div class="img">
           <img src="../../image/Group 6@2x.png" alt="">
           <span class="totalNum">{{currentReleases}}</span>
@@ -21,7 +21,7 @@
           <canvas class="histogram-one" ref="histogram-one" width="40" height="100"></canvas>
           <canvas class="histogram-two" ref="histogram-two" width="20" height="100"></canvas>
         </div>
-        <p>同期对比<span>{{syPercent+'%'}}</span></p>
+        <p>同期对比<span :style='{color:syPercent<0?"#30aa2d":"#d0021b"}'>{{syPercent+'%'}}</span></p>
       </div>
     </div>
   </div>
@@ -60,7 +60,8 @@
     },
     props: {
       titleCode: Number,
-      list: Array
+      list: Array,
+      unit:String
     },
     mounted() {
       this.getTitle(this.titleCode);
@@ -87,9 +88,39 @@
           canvas_2 = this.$refs['histogram-two'];
           var ctx_1 = canvas_1.getContext('2d');
           var ctx_2 = canvas_2.getContext('2d');
-          ctx_1.lineWidth = 80;
+          let windowWidth = document.body.clientWidth;
+          if(windowWidth<330){
+            canvas_1.width = 40;
+            canvas_2.width = 20;
+            ctx_1.lineWidth = 80;
+            ctx_2.lineWidth = 40;
+          }else if(windowWidth<370){
+            canvas_1.width = 40;
+            canvas_2.width = 20;
+            ctx_1.lineWidth = 80;
+            ctx_2.lineWidth = 40;
+          }else if(windowWidth<380){
+            canvas_1.width = 45;
+            canvas_2.width = 23;
+            ctx_1.lineWidth = 90;
+            ctx_2.lineWidth = 45;
+          }else if(windowWidth<420){
+            canvas_1.width = 50;
+            canvas_2.width = 25;
+            ctx_1.lineWidth = 100;
+            ctx_2.lineWidth = 50;
+          }else if(windowWidth<770){
+            canvas_1.width = 100;
+            canvas_2.width = 50;
+            ctx_1.lineWidth = 200;
+            ctx_2.lineWidth = 100;
+          }else{
+            canvas_1.width = 100;
+            canvas_2.width = 50;
+            ctx_1.lineWidth = 200;
+            ctx_2.lineWidth = 100;
+          }
           ctx_1.strokeStyle = "rgb(89,129,198)";
-          ctx_2.lineWidth = 40;
           ctx_2.strokeStyle = "rgb(218,223,236)"
           let heightOne = 100;
           let heightTwo = 100;
@@ -164,7 +195,7 @@
           this.init(this.endPointOne, this.endPointTwo);
           return percent;
         } else {
-          return '--';
+          return '—';
         }
       }
     }
@@ -216,7 +247,6 @@
           margin-top: 20px;
           width: 300px;
           height: 240px;
-          /*background-image: url("../../image/Group 6@2x.png");*/
           img {
             width: 100%;
             height: 100%;
@@ -226,6 +256,8 @@
             position: absolute;
             top: 50%;
             left: 50%;
+            font-size: 48px;
+            -webkit-transform: translate(-50%, -50%);
             transform: translate(-50%, -50%);
           }
         }
@@ -275,38 +307,16 @@
           }
         }
         .histogram {
-          margin-top: 60px;
+          margin-top: 20px;
+          margin-left:30px;
           display: flex;
-          /*position: absolute;*/
-          /*bottom: 0px;*/
-          /*.histogram-one {*/
-          /*display: inline-block;*/
-          /*width: 80px;*/
-          /*height: 180px;*/
-          /*background: rgb(89, 129, 198);*/
-          /*animation:mymove-one 0.8s;*/
-          /*}*/
-          /*@keyframes mymove-one {*/
-          /*0%{height: 0}*/
-          /*100%{height:180px}*/
-          /*}*/
-          /*@keyframes mymove-two {*/
-          /*0%{height: 0}*/
-          /*100%{height:112px}*/
-          /*}*/
-          /*.histogram-two {*/
-          /*display: inline-block;*/
-          /*width: 40px;*/
-          /*height: 112px;*/
-          /*background: rgb(218, 223, 236);*/
-          /*animation:mymove-two 0.8s;*/
-          /*}*/
-
+          height: 240px;
         }
         p {
           margin-top: 32px;
           font-size: 32px;
           color: #000;
+          white-space: nowrap;
           span {
             color: rgb(208, 2, 27);
           }

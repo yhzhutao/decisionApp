@@ -16,22 +16,22 @@
       <div class="content">
         <ul>
           <li>
-            <v-indicator :fontcolor="'#3ac5b2'" :percent="indicators.assetliabilityRatio" :index1="'资产负债率'" :lineFirstColor="'#008572'" :lineEndColor="'#57C2B3'"></v-indicator>
+            <v-indicator :fontcolor="'#3ac5b2'" :percent="indicators.assetliabilityRatio.toFixed(2)" :index1="'资产负债率'" :lineFirstColor="'#008572'" :lineEndColor="'#57C2B3'"></v-indicator>
           </li>
           <li>
-            <v-indicator :fontcolor="'#3ac5b2'" :percent="indicators.defectiveRate" :index1="'不良率'" :lineFirstColor="'#008572'" :lineEndColor="'#57C2B3'"></v-indicator>
+            <v-indicator :fontcolor="'#3ac5b2'" :percent="indicators.defectiveRate.toFixed(2)" :index1="'不良率'" :lineFirstColor="'#008572'" :lineEndColor="'#57C2B3'"></v-indicator>
           </li>
           <li>
-            <v-indicator :fontcolor="'#3ac5b2'" :percent="indicators.marketShare" :index1="'市占率'" :lineFirstColor="'#008572'" :lineEndColor="'#57C2B3'"></v-indicator>
+            <v-indicator :fontcolor="'#3ac5b2'" :percent="indicators.marketShare.toFixed(2)" :index1="'市占率'" :lineFirstColor="'#008572'" :lineEndColor="'#57C2B3'"></v-indicator>
           </li>
           <li>
-            <v-indicator :fontcolor="'#3ac5b2'" :percent="indicators.permeability" :index1="'渗透率'" :lineFirstColor="'#008572'" :lineEndColor="'#57C2B3'"></v-indicator>
+            <v-indicator :fontcolor="'#3ac5b2'" :percent="indicators.permeability.toFixed(2)" :index1="'渗透率'" :lineFirstColor="'#008572'" :lineEndColor="'#57C2B3'"></v-indicator>
           </li>
           <li>
-            <v-indicator :fontcolor="'#3ac5b2'" :percent="indicators.approvalRate" :index1="'核准率'" :lineFirstColor="'#008572'" :lineEndColor="'#57C2B3'"></v-indicator>
+            <v-indicator :fontcolor="'#3ac5b2'" :percent="indicators.approvalRate.toFixed(2)" :index1="'核准率'" :lineFirstColor="'#008572'" :lineEndColor="'#57C2B3'"></v-indicator>
           </li>
           <li>
-            <v-indicator :fontcolor="'#3ac5b2'" :percent="indicators.automaticRate" :index1="'自动审批率'" :lineFirstColor="'#008572'" :lineEndColor="'#57C2B3'"></v-indicator>
+            <v-indicator :fontcolor="'#3ac5b2'" :percent="indicators.automaticRate.toFixed(2)" :index1="'自动审批率'" :lineFirstColor="'#008572'" :lineEndColor="'#57C2B3'"></v-indicator>
           </li>
         </ul>
       </div>
@@ -43,6 +43,10 @@
 <script>
   import Indicator from '@/components/indicator/indicator'
   import BScroll from 'better-scroll';
+  import { host } from "@/common/base/baseHttp.js"
+  import bus from '@/common/base/bus.js';
+  import tokenInvalid from '@/common/base/tokenInvalid'
+  import { Toast } from 'mint-ui';
   export default {
     name: "variousIndicators",
     data(){
@@ -63,16 +67,29 @@
     components: {
       'v-indicator': Indicator
     },
+    created(){
+      let that = this
+      bus.$off('selectDate')
+      bus.$on('selectDate',function(date){
+        that._initScorll(date);
+      })
+    },
     mounted(){
-      this._initScorll();
+      this._initScorll(this.selectDate)
     },
     methods:{
-      _initScorll(){
+      _initScorll(date){
         // console.log(this.selectDate);
-        this.$http.post('/indicators?date='+this.selectDate).then((response)=>{
-          // console.log(response);
-          this.indicators = Object.assign({},this.indicators,response.body.data);
-          // console.log(this.indicators);
+        let urlHost = host||'/api'
+        this.$http.post(urlHost+'/Decision/indicators',{date:date}).then((response)=>{
+          let code = JSON.parse(response.bodyText).code
+          if(code==0){
+            this.indicators = Object.assign({},this.indicators,JSON.parse(response.bodyText).result);
+          }else if(code ==20){
+            tokenInvalid()
+          }else{
+            Toast(JSON.parse(response.bodyText).message)
+          }
         })
         new BScroll(this.$refs['variousIndicators-wrapper'],{click:true});
       }
@@ -135,6 +152,7 @@
               border-top: 2px solid #b0b0b0;
               border-right: 2px solid #b0b0b0;
               transform: rotate(45deg);
+              -webkit-transform: rotate(45deg);
             }
           }
         }
@@ -143,10 +161,9 @@
             display: flex;
             flex-wrap: wrap;
             align-items: stretch;
-            li:nth-child(odd) {
-              margin-right: 88px;
-              /*margin-bottom: 40px;*/
+            li{
               margin-bottom: 10%;
+              width: 50%;
             }
           }
         }

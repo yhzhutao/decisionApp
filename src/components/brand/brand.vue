@@ -37,7 +37,11 @@
 <script>
   import Highchart from '@/components/highchartsComponent/HighchartsComponent';
   import BScroll from 'better-scroll';
-  import bus from '@/common/base/bus'
+  import bus from '@/common/base/bus';
+  import { host } from "@/common/base/baseHttp.js"
+  import osc from '@/common/base/osc_common.js';
+  import tokenInvalid from '@/common/base/tokenInvalid'
+  import { Toast } from 'mint-ui';
 
   export default {
     name: "brand",
@@ -90,7 +94,12 @@
             column: {
               borderWidth: 0,
               dataLabels: {
+                crop:false,
+                overflow:'none',
                 enabled: true,
+                formatter:function(){
+                  return this.y+'%'
+                }
               }
             },
           },
@@ -98,22 +107,22 @@
             data: [
               {
                 'color':'red',
-                'y':12
+                'y':null
               },
               {
-                'y':24
+                'y':null
               },
               {
-                'y':36
+                'y':null
               },
               {
-                'y':35
+                'y':null
               },
               {
-                'y':80
+                'y':null
               },
               {
-                'y':70
+                'y':null
               }
             ],
             enableMouseTracking:false,
@@ -161,19 +170,17 @@
             column: {
               borderWidth: 0,
               dataLabels: {
+                crop:false,
+                overflow:'none',
                 enabled: true,
-              }
-            },
-            series: {
-              events: {
-                click: function (event) {
-                  event.target.setAttribute('fill', 'rgb(241,155,58)');
+                formatter:function(){
+                  return this.y+'%'
                 }
               }
             }
           },
           series: [{
-            data: [70, 12, 13, 14, 15, 16],
+            data: [null, null, null, null, null, null],
             color: 'rgb(218,223,236)',
             enableMouseTracking:false
           }]
@@ -219,19 +226,14 @@
             column: {
               borderWidth: 0,
               dataLabels: {
+                crop:false,
+                overflow:'none',
                 enabled: true,
-              }
-            },
-            series: {
-              events: {
-                click: function (event) {
-                  event.target.setAttribute('fill', 'rgb(241,155,58)');
-                }
               }
             }
           },
           series: [{
-            data: [70, 12, 13, 14, 15, 16],
+            data: [null, null, null, null, null, null],
             color: 'rgb(218,223,236)',
             enableMouseTracking:false,
           }]
@@ -277,19 +279,14 @@
             column: {
               borderWidth: 0,
               dataLabels: {
+                crop:false,
+                overflow:'none',
                 enabled: true,
-              }
-            },
-            series: {
-              events: {
-                click: function (event) {
-                  event.target.setAttribute('fill', 'rgb(241,155,58)');
-                }
               }
             }
           },
           series: [{
-            data: [70, 12, 13, 14, 15, 16],
+            data: [null, null, null, null, null, null],
             color: 'rgb(218,223,236)',
             enableMouseTracking:false
           }]
@@ -303,6 +300,7 @@
     created(){
       let that = this
       this.createHttp(this.selectDate)
+      bus.$off('selectDate')
       bus.$on('selectDate',function(date){
         that.createHttp(date)
       })
@@ -314,32 +312,51 @@
     methods: {
       createHttp(date){
         let that = this
+        let urlHost = host||'/api'
         let month =Number(date.substr(4,2))
-        that.$http.post('/brand').then(function (res) {
-          let data = res.body
-          let newDate = that.dataHand(data)
-          let yearlyReachRatio = []
-          let monthlyReachRatio= []
-          let monthlyApplication = []
-          let monthlyLoan = []
-          newDate.forEach(function(item,index){
-            console.log(item)
-            yearlyReachRatio.push(Math.round(item.yearReached/item.yearTarget*100));
-            monthlyReachRatio.push(Math.round(item.monthReached/item.monthTarget*100));
-            monthlyApplication.push(item.monthlyApplication);
-            monthlyLoan.push(item.monthlyLoanitems)
-          })
-          that.optionsYear.series[0].data = that.formatterColumanData(yearlyReachRatio)
-          that.optionsMonth.series[0].data = that.formatterColumanData(monthlyReachRatio)
-          that.optionsApplication.series[0].data = that.formatterColumanData(monthlyApplication)
-          that.optionsLoan.series[0].data = that.formatterColumanData(monthlyLoan)
+        that.$http.post(urlHost+'/Decision/individualLoanbrand',{date:date}).then(function (res) {
+          let code =JSON.parse(res.bodyText).code
+          if(code == 0){
+            let data =JSON.parse(res.bodyText).result
+            let newData = that.dataHand(data)
+            let yearlyReachRatio = []
+            let monthlyReachRatio= []
+            let monthlyApplication = []
+            let monthlyLoan = []
+            newData.forEach(function(item,index){
+              if(item.yearTarget == 0||item.yearTarget == null){
+                yearlyReachRatio.push(null)
+              }else{
+                yearlyReachRatio.push(Math.round(item.yearReached/item.yearTarget*100));
+              }
+              if(item.monthTarget == 0||item.monthTarget == null){
+                monthlyReachRatio.push(null)
+              }else{
+                monthlyReachRatio.push(Math.round(item.monthReached/item.monthTarget*100));
+              }
+              monthlyApplication.push(item.monthlyApplication);
+              monthlyLoan.push(item.monthlyLoanitems)
+            })
+            that.optionsYear = JSON.parse(JSON.stringify(that.optionsYear))
+            that.optionsMonth = JSON.parse(JSON.stringify(that.optionsMonth))
+            that.optionsApplication = JSON.parse(JSON.stringify(that.optionsApplication))
+            that.optionsLoan = JSON.parse(JSON.stringify(that.optionsLoan))
+            that.optionsYear.series[0].data = that.formatterColumanData(yearlyReachRatio)
+            that.optionsMonth.series[0].data = that.formatterColumanData(monthlyReachRatio)
+            that.optionsApplication.series[0].data = that.formatterColumanData(monthlyApplication)
+            that.optionsLoan.series[0].data = that.formatterColumanData(monthlyLoan)
+          }else if(code == 20){
+            tokenInvalid()
+          }else{
+            Toast(JSON.parse(res.bodyText).message)
+          }
         })
       },
       formatterColumanData(arr){
         let maxValueObj = {max:0,index:0};
         let formatterArr = []
         arr.forEach(function(item,index){
-          formatterArr.push({'y':item})
+          formatterArr.push({'y':item==0?null:item})
           if(maxValueObj.max < item){
             maxValueObj.max = item
             maxValueObj.index = index
@@ -364,7 +381,6 @@
       _initHighcharts(){
         var arrs = this.optionsYear.series[0].data;
         var num = arrs[0].y;
-        // console.log(num);
         var index = 0;
         for(var i=0;i<arrs.length;i++){
           if(num < arrs[i].y){
@@ -373,7 +389,6 @@
           }
         }
         this.optionsYear.series[0].data[index] = Object.assign({},this.optionsYear.series[0].data[index],{'selected':'red'})
-        // console.log(this.optionsYear.series[0].data[index]);
       },
       _initScorll() {
         new BScroll(this.$refs['brand-content-wrapper'], {click: true});
@@ -384,31 +399,31 @@
         let BRAND20180093 = [0,0,0]
         data.forEach(function (item, index) {
           switch (item.brandName) {
-            case 'carBrand9879':
+            case '长安轿车':
               carBrand9879.splice(0,1,item)
               break;
-            case 'BRAND20180128':
+            case '长安新能源':
               carBrand9879.splice(1,1,item)
               break;
-            case 'BRAND20180093':
+            case '长安欧尚汽车':
               BRAND20180093.splice(0,1,item)
               break;
-            case 'BRAND20180094':
+            case '长安轻型车':
               BRAND20180093.splice(1,1,item)
               break;
-            case 'carBrand9875':
+            case '长安微车':
               BRAND20180093.splice(2,1,item)
               break;
-            case 'carBrand9876':
+            case '长安福特':
               newData.splice(1,1,item)
               break;
-            case 'carBrand9877':
+            case '长安马自达':
               newData.splice(3,1,item)
               break;
-            case 'carSeries0029':
+            case '长安DS':
               newData.splice(4,1,item)
               break
-            case 'carBrand9878':
+            case '长安铃木':
               newData.splice(5,1,item)
           }
         })
@@ -465,7 +480,7 @@
           p {
             margin-top: 12px;
             text-align: center;
-            font-size: 10px;
+            font-size: 24px;
           }
         }
       }

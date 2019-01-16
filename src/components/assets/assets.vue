@@ -7,24 +7,24 @@
           <span>当前资产规模</span><img src="../../image/capital_icon@2x.png" alt="">
         </div>
         <div class="currentAssets-content">
-          <p class="unit">单位: 亿元</p>
+          <p class="unit">单位: {{unit}}元</p>
           <p class="num">{{assetsScale.totalAssetsAmount}}</p>
           <div class="line"></div>
           <div class="content-bottom">
             <div class="chart-container">
-              <canvas id="drawing" width="96" height="96"></canvas>
+              <canvas id="drawing" width="80" height="80"></canvas>
             </div>
             <div class="container-right">
               <div class="right-top">
                 <span>{{assetsScale.salesAmount}}</span>
                 <span>批售</span>
-                <span>{{(wholesalePercent*100).toFixed(0)+'%'}}</span>
+                <span>{{wholesalePercent!=='—'?(wholesalePercent*100).toFixed(0)+'%':'—'}}</span>
               </div>
               <div class="right-middle"></div>
               <div class="right-bottom">
                 <span>{{assetsScale.retailAmount}}</span>
                 <span>零售</span>
-                <span>{{(retailPercent*100).toFixed(0)+'%'}}</span>
+                <span>{{retailPercent!=='—'?(retailPercent*100).toFixed(0)+'%':'—'}}</span>
               </div>
             </div>
           </div>
@@ -32,10 +32,10 @@
       </div>
       <ul>
         <li>
-          <v-asset :titleCode="0" :assetsScale="assetsScale"></v-asset>
+          <v-asset :unit="unit" :titleCode="0" :assetsScale="assetsScale"></v-asset>
         </li>
         <li>
-          <v-asset :titleCode="1" :assetsScale="assetsScale"></v-asset>
+          <v-asset :unit="unit" :titleCode="1" :assetsScale="assetsScale"></v-asset>
         </li>
       </ul>
       <div class="bottom">
@@ -51,8 +51,10 @@
   import Asset from '@/components/assetCard/assetCard';
   import HighchartsComponent from '@/components/highchartsComponent/HighchartsComponent';
   import BScroll from 'better-scroll';
-  import bus from '@/common/base/bus.js'
-
+  import { host } from "@/common/base/baseHttp.js"
+  import bus from '@/common/base/bus'
+  import tokenInvalid from '@/common/base/tokenInvalid'
+  import { Toast } from 'mint-ui';
   export default {
     name: "assets",
     data() {
@@ -96,37 +98,76 @@
           currentProfit:0,
           syProfit:0,
           groupProfitIndex:0
-        }
+        },
+        unit:'万',
+        emitDate:''
       }
     },
     props:[
       'selectDate'
     ],
+    created(){
+      let that = this
+      let urlHost = host||'/api'
+         this.$http.post(urlHost+'/Decision/user/login',{'userId':'HUYY','password':'1'}).then((res)=>{
+           document.cookie = 'token='+JSON.parse(res.bodyText).result.token+';'
+         })
+      this.init(this.selectDate)
+      bus.$off('selectDate')
+      bus.$on('selectDate',function(date){
+        that.init(date)
+        that.emitDate = date
+      })
+    },
     methods: {
       _initScroll() {
         new BScroll(this.$refs['assets-wrapper'], {
           click: true
         });
       },
+      dataFormate(data){
+        if(Math.round(data.totalAssetsAmount).toString().length>8){
+          this.unit = '亿'
+          data.totalAssetsAmount = Math.round(data.totalAssetsAmount/10e5)/100
+          data.salesAmount = Math.round(data.salesAmount/10e5)/100
+          data.retailAmount = Math.round(data.retailAmount/10e5)/100
+          data.currentIncome = Math.round(data.currentIncome/10e5)/100
+          data.currentProfit = Math.round(data.currentProfit/10e5)/100
+          data.syIncome =  Math.round(data.syIncome/10e5)/100
+          data.syProfit =  Math.round(data.syProfit/10e5)/100
+        }else if(Math.round(data.totalAssetsAmount).toString().length>4){
+          this.unit = '万'
+          data.totalAssetsAmount = Math.round(data.totalAssetsAmount/100)/100
+          data.salesAmount = Math.round(data.salesAmount/100)/100
+          data.retailAmount = Math.round(data.retailAmount/100)/100
+          data.currentIncome = Math.round(data.currentIncome/100)/100
+          data.currentProfit = Math.round(data.currentProfit/100)/100
+          data.syIncome =  Math.round(data.syIncome/100)/100
+          data.syProfit =  Math.round(data.syProfit/100)/100
+        }else{
+          this.unit = ''
+        }
+        return data
+      },
       //绘制饼图
       drawCircle(canvasId, data_arr, color_arr) {
         var drawing = document.getElementById(canvasId);
         let windowWidth = document.body.clientWidth;
         if(windowWidth<330){
-          drawing.width = 81;
-          drawing.height = 81;
+          drawing.width = 65;
+          drawing.height = 65;
         }else if(windowWidth<370){
-          drawing.width = 92;
-          drawing.height = 92;
+          drawing.width = 70;
+          drawing.height = 70;
         }else if(windowWidth<380){
-          drawing.width = 96;
-          drawing.height = 96;
+          drawing.width = 75;
+          drawing.height = 75;
         }else if(windowWidth<420){
-          drawing.width = 106;
-          drawing.height = 106;
+          drawing.width = 80;
+          drawing.height = 80;
         }else if(windowWidth<770){
-          drawing.width = 196;
-          drawing.height = 196;
+          drawing.width = 135;
+          drawing.height = 135;
         }else{
           drawing.width = 262;
           drawing.height = 262;
@@ -150,14 +191,28 @@
 
         }
       },
-      init() {
-        this.$http.post('/assetsScale?date='+20180510).then((response)=>{
-          this.assetsScale = Object.assign({},this.assetsScale,response.body.data);
-          this.wholesalePercent = this.assetsScale.salesAmount/this.assetsScale.totalAssetsAmount;
-          this.retailPercent = this.assetsScale.retailAmount/this.assetsScale.totalAssetsAmount;
-          let data_arr = [this.wholesalePercent, this.retailPercent,1-this.wholesalePercent-this.retailPercent];
-          let color_arr = ['#3A404D', '#6E5AC8','#DADFEC'];
-          this.drawCircle('drawing', data_arr, color_arr);
+      init(date) {
+        let urlHost = host||'/api'
+        this.$http.post(urlHost+'/Decision/assetsScale',{date:date}).then((response)=>{
+          let code = JSON.parse(response.bodyText).code
+          if(code ==0 ){
+            this.assetsScale = this.dataFormate(Object.assign({},this.assetsScale,JSON.parse(response.bodyText).result));
+            //判断是否为Infinity
+            if(this.assetsScale.totalAssetsAmount == 0){
+              this.wholesalePercent = '—'
+              this.retailPercent = '—'
+            }else{
+              this.wholesalePercent = this.assetsScale.salesAmount/this.assetsScale.totalAssetsAmount||'—';
+              this.retailPercent = this.assetsScale.retailAmount/this.assetsScale.totalAssetsAmount||'—';
+            }
+            let data_arr = [this.wholesalePercent, this.retailPercent,1-this.wholesalePercent-this.retailPercent||'_'];
+            let color_arr = ['#3A404D', '#6E5AC8','#DADFEC'];
+            this.drawCircle('drawing', data_arr, color_arr);
+          }else if(code ==20){
+            tokenInvalid()
+          }else{
+            Toast(JSON.parse(response.bodyText).message)
+          }
         })
       }
     },
@@ -166,7 +221,6 @@
       'v-highchart': HighchartsComponent
     },
     mounted() {
-      this.init();
       this.$nextTick(() => {
         this._initScroll();
       })
@@ -235,8 +289,8 @@
             padding-left: 10px;
             .chart-container {
               display: inline-block;
-              width: 192px;
-              height: 192px;
+              width: 160px;
+              height: 160px;
               vertical-align: middle;
             }
             .container-right {

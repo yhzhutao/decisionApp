@@ -56,7 +56,7 @@
     },
     created() {
       let that = this
-      bus.$on('selectDate',function(date){
+      bus.$on('getDate',function(date){
         that.selectDate = date
       })
       bus.$on('loading',function(flag){
@@ -117,4 +117,9 @@
   .topArea {
     background-image: url("./image/home_header_back.svg")
   }
+  .fontColor{
+    color: #9b9b9b!important;
+  }
+  body{font-family:"PingFang SC", "Helvetica Neue", Helvetica, "Nimbus Sans L", Arial, "Liberation Sans", "Hiragino Sans GB", "Source Han Sans CN Normal", "Microsoft YaHei", "Wenquanyi Micro Hei", "WenQuanYi Zen Hei", "ST Heiti", SimHei, "WenQuanYi Zen Hei Sharp", sans-serif;}
+
 </style>

@@ -24,15 +24,15 @@
           </div>
           <div class="content-bottom">
             <div class="left">
-              <p>{{currentMonthDefectiveRate+'%'}}</p>
+              <p>{{currentMonthDefectiveRate+(currentMonthDefectiveRate !=='—' ?'%':'')}}</p>
               <span>当月不良率</span>
             </div>
             <div class="center">
-              <p :class="baseYearRateShow>0?'top':'low'">{{baseYearRateShow+'%'}}</p>
+              <p :class="baseYearRateShow>0?'top':'low'">{{baseYearRateShow+(baseYearRateShow !=='—' ?'%':'')}}</p>
               <span>同比变动</span>
             </div>
             <div class="right">
-              <p :class="baseMonthRate>0?'top':'low'">{{baseMonthRateShow+'%'}}</p>
+              <p :class="baseMonthRate>0?'top':'low'">{{baseMonthRateShow+(baseMonthRateShow !=='—' ?'%':'')}}</p>
               <span>环比变动</span>
             </div>
           </div>
@@ -56,25 +56,25 @@
             <ul>
               <li>
                 <div class="vary">
-                  <p>{{currentMonthMarketShare+'%'}}</p>
+                  <p>{{currentMonthMarketShare+(currentMonthMarketShare !=='—' ?'%':'')}}</p>
                   <span>当月市占率</span>
                 </div>
               </li>
               <li>
                 <div class="vary">
-                  <p :class="baseMonthMarketShareRate>0?'top':'low'">{{baseMonthMarketShareRate>0?'+':''}}{{baseMonthMarketShareRate+'%'}}</p>
+                  <p :class="[baseMonthMarketShareRate>0?'top':'low',{fontColor:baseMonthMarketShareRate=='—'}]">{{baseMonthMarketShareRate>0?'+':''}}{{baseMonthMarketShareRate+(baseMonthMarketShareRate !=='—' ?'%':'')}}</p>
                   <span>当月环比变化</span>
                 </div>
               </li>
               <li>
                 <div class="vary">
-                  <p>{{currentMonthMarketShareSum+'%'}}</p>
-                  <span>当月累计市占率</span>
+                  <p>{{currentMonthMarketShareSum+(currentMonthMarketShareSum !=='—' ?'%':'')}}</p>
+                  <span>当年累计市占率</span>
                 </div>
               </li>
               <li>
                 <div class="vary">
-                  <p :class="baseYearMarketShareRate>0?'top':'low'">{{baseYearMarketShareRate+'%'}}</p>
+                  <p :class="[baseYearMarketShareRate>0?'top':'low',{fontColor:baseYearMarketShareRate=='—'}]">{{baseYearMarketShareRate+(baseYearMarketShareRate !=='—' ?'%':'')}}</p>
                   <span>当年同比变化</span>
                 </div>
               </li>
@@ -87,78 +87,78 @@
                 <span class="single-item">
                   <div class="circle">
                     <div class="content">
-                      <div class="top">{{currentCar+'%'}}</div>
+                      <div class="top">{{currentCar+(currentCar !=='—' ?'%':'')}}</div>
                       <div class="line"></div>
                       <div class="bottom">当月</div>
                     </div>
                   </div>
                   <span>长安轿车</span>
-                  <p>{{comparedCar+'%'}}</p>
+                  <p :class="{fontColor:comparedCar=='—'}" :style='{color:comparedCar>0?"#d0021b":"#30aa2d"}'>{{comparedCar+(comparedCar !=='—' ?'%':'')}}</p>
                 </span>
             </li>
             <li>
                 <span class="single-item">
                   <div class="circle">
                     <div class="content">
-                      <div class="top">{{currentFord+'%'}}</div>
+                      <div class="top">{{currentFord+(currentFord !=='—' ?'%':'')}}</div>
                       <div class="line"></div>
                       <div class="bottom">当月</div>
                     </div>
                   </div>
                   <span>长安福特</span>
-                  <p>{{comparedFord+'%'}}</p>
+                  <p :style='{color:comparedFord>0?"#d0021b":"#30aa2d"}'>{{comparedFord+(comparedFord !=='—' ?'%':'')}}</p>
                 </span>
             </li>
             <li>
                 <span class="single-item">
                   <div class="circle">
                     <div class="content">
-                      <div class="top">{{currentOs+'%'}}</div>
+                      <div class="top">{{currentOs+(currentOs !=='—' ?'%':'')}}</div>
                       <div class="line"></div>
                       <div class="bottom">当月</div>
                     </div>
                   </div>
                   <span>长安欧尚</span>
-                  <p>{{comparedOs+'%'}}</p>
+                  <p :style='{color:comparedOs>0?"#d0021b":"#30aa2d"}'>{{comparedOs+(comparedOs !=='—' ?'%':'')}}</p>
                 </span>
             </li>
             <li>
                 <span class="single-item">
                   <div class="circle">
                     <div class="content">
-                      <div class="top">{{currentMazda+'%'}}</div>
+                      <div class="top">{{currentMazda+(currentMazda !=='—' ?'%':'')}}</div>
                       <div class="line"></div>
                       <div class="bottom">当月</div>
                     </div>
                   </div>
                   <span>长安马自达</span>
-                  <p>{{comparedMazda+'%'}}</p>
+                  <p :style='{color:comparedMazda>0?"#d0021b":"#30aa2d"}'>{{comparedMazda+(comparedMazda !=='—' ?'%':'')}}</p>
                 </span>
             </li>
             <li>
                 <span class="single-item">
                   <div class="circle">
                     <div class="content">
-                      <div class="top">{{currentDs+'%'}}</div>
+                      <div class="top">{{currentDs+(currentDs !=='—' ?'%':'')}}</div>
                       <div class="line"></div>
                       <div class="bottom">当月</div>
                     </div>
                   </div>
                   <span>长安DS</span>
-                  <p>{{comparedDs+'%'}}</p>
+                  <p :class="{fontColor:comparedCar=='—'}" :style='{color:comparedDs>0?"#d0021b":"#30aa2d"}'>{{comparedDs+(comparedDs !=='—' ?'%':'')}}</p>
                 </span>
             </li>
             <li>
                 <span class="single-item">
                   <div class="circle">
                     <div class="content">
-                      <div class="top">{{currentSuzuki+'%'}}</div>
+                      <div class="top">{{currentSuzuki+(currentSuzuki !=='—' ?'%':'')}}</div>
                       <div class="line"></div>
                       <div class="bottom">当月</div>
                     </div>
                   </div>
                   <span>长安铃木</span>
-                  <p>{{comparedSuzuki+'%'}}</p>
+                  <p :style='{color:comparedSuzuki>0?"#d0021b":"#30aa2d"}'>{{comparedSuzuki+(comparedSuzuki !=='—' ?'%':'')}}</p>
                 </span>
             </li>
           </ul>
@@ -172,7 +172,10 @@
 <script>
   import Highchart from '@/components/highchartsComponent/HighchartsComponent';
   import BScroll from 'better-scroll';
-  import Bus from '@/common/base/bus.js';
+  import { host } from "@/common/base/baseHttp.js"
+  import bus from '@/common/base/bus'
+  import tokenInvalid from '@/common/base/tokenInvalid'
+  import { Toast } from 'mint-ui';
   export default {
     name: "indicatorsTrend",
     data() {
@@ -221,7 +224,7 @@
           credits: {enabled: false},
           exporting: {enabled: false},
           series: [{
-            data: [30, 82, 90, 44, 35, 16, 50, 9, 56, 44, 25, 96],
+            data: [null, null, null, null, null, null, null, null, null, null, null, null],
             color: 'rgb(238,238,238)',
             marker: {
               enabled: false,
@@ -235,7 +238,7 @@
             type: 'area'
           },
             {
-              data: [35, 62, 23, 64, 78, 56, 60, 22, 43, 64, 85, 86],
+              data: [null, null, null, null, null, null, null, null, null, null, null, null],
               color: 'rgb(48,194,174)',
               marker: {
                 enabled: false,
@@ -292,7 +295,7 @@
           credits: {enabled: false},
           exporting: {enabled: false},
           series: [{
-            data: [30, 82, 90, 44, 35, 16, 50, 9, 56, 44, 25, 96],
+            data: [null, null, null, null, null, null, null, null, null, null, null, null],
             color: 'rgb(238,238,238)',
             marker: {
               enabled: false,
@@ -306,7 +309,7 @@
             type: 'area'
           },
             {
-              data: [35, 62, 23, 64, 78, 56, 60, 22, 43, 64, 85, 86],
+              data: [null, null, null, null, null, null, null, null, null, null, null, null],
               color: 'rgb(48,194,174)',
               marker: {
                 enabled: false,
@@ -338,7 +341,8 @@
     created() {
       let that = this;
       that.init(this.selectDate)
-      Bus.$on('selectDate', function (date) {
+      bus.$off('selectDate')
+      bus.$on('selectDate', function (date) {
         that.init(date);
       })
     },
@@ -350,12 +354,21 @@
     },
     methods: {
       init(date) {
+        let urlHost = host||'/api'
         let month = date.substring(4, 6);
-        this.$http.post('/indicatorsClass?date=' + date).then((response) => {
-          this.marketShareRatioBrands = response.body.data.marketShareRatioBrands;
-          this.monthsDefectiveRatios = response.body.data.monthsDefectiveRatios;
-          this.initChart();
-          this.initNum(month);
+        this.$http.post(urlHost+'/Decision/indicatorsClass',{date:date}).then((response) => {
+          let data =JSON.parse(response.bodyText).result
+          let code = JSON.parse(response.bodyText).code
+          if(code==0){
+            this.marketShareRatioBrands = data.marketShareRatioBrand;
+            this.monthsDefectiveRatios = data.monthsDefectiveRatio;
+            this.initChart();
+            this.initNum(month);
+          }else if(code ==20){
+            tokenInvalid()
+          }else{
+            Toast(JSON.parse(res.bodyText).message)
+          }
         });
       },
       //初始化两条折线图
@@ -363,45 +376,61 @@
         if (this.monthsDefectiveRatios) {
           this.monthsDefectiveRatios.forEach((monthsDefectiveRatio) => {
             if (monthsDefectiveRatio.indexName == 'defectiveRate') {
+              console.log(monthsDefectiveRatio)
+              this.defectiveRateOptions = JSON.parse(JSON.stringify(this.defectiveRateOptions))
               this.defectiveRateOptions.series[0].data = monthsDefectiveRatio.lastYearRatio;
               this.defectiveRateOptions.series[1].data = monthsDefectiveRatio.currentRatio;
             } else if (monthsDefectiveRatio.indexName == 'marketShare') {
+              this.marketShareOptions = JSON.parse(JSON.stringify(this.marketShareOptions))
               this.marketShareOptions.series[0].data = monthsDefectiveRatio.lastYearRatio;
               this.marketShareOptions.series[1].data = monthsDefectiveRatio.currentRatio;
             }
           })
         }
-
       },
       //初始化上面三个框和下面四个框的数据
       initNum(month) {
-        // console.log(123);
         if (this.monthsDefectiveRatios) {
           this.monthsDefectiveRatios.forEach((monthsDefectiveRatio) => {
             if (monthsDefectiveRatio.indexName == 'defectiveRate') {
               // this.defectiveRateOptions.series[0].data = monthsDefectiveRatio.lastYearRatio;
-              // console.log(monthsDefectiveRatio.currentRatio[month - 1]);
-              this.currentMonthDefectiveRate = monthsDefectiveRatio.currentRatio[month - 1];
+              let currentMonthDefectiveRate = monthsDefectiveRatio.currentRatio[month - 1]
+              this.currentMonthDefectiveRate = currentMonthDefectiveRate?currentMonthDefectiveRate.toFixed(2):currentMonthDefectiveRate||'—';
               let currentSum = 0;//从第一个月到当前月的累计值（当年不良率）
               let lastYearSum = 0;//从第一个月到当前月的累计值（去年不良率）
               for (let i = 0; i < month; i++) {
                 currentSum += monthsDefectiveRatio.currentRatio[i];
                 lastYearSum += monthsDefectiveRatio.lastYearRatio[i];
               }
-              this.baseYearRate = ((currentSum - lastYearSum) / lastYearSum * 100).toFixed(0);
-              this.baseMonthRate = +((monthsDefectiveRatio.currentRatio[month - 1] - monthsDefectiveRatio.currentRatio[month - 2]) / monthsDefectiveRatio.currentRatio[month - 2] * 100).toFixed(0)
+              //判断是否为Infinity
+              if(((currentSum - lastYearSum) / lastYearSum * 100).toFixed(0)==Infinity||((currentSum - lastYearSum) / lastYearSum * 100).toFixed(0) =='NaN'){
+                this.baseYearRate = '—';
+              }else{
+                this.baseYearRate = ((currentSum - lastYearSum) / lastYearSum * 100).toFixed(0);
+              }
+              this.baseMonthRate = +((monthsDefectiveRatio.currentRatio[month - 1] - monthsDefectiveRatio.currentRatio[month - 2]) / monthsDefectiveRatio.currentRatio[month - 2] * 100).toFixed(0)||'—'
             } else if (monthsDefectiveRatio.indexName == 'marketShare') {
-              this.currentMonthMarketShare = monthsDefectiveRatio.currentRatio[month - 1];
+              this.currentMonthMarketShare = monthsDefectiveRatio.currentRatio[month - 1].toFixed(2)||"—";
               let currentmarketShareSum = 0;//从第一个月到当前月的累计值（当年市占率）
               let lastYearmarketShareSum = 0;//从第一个月到当前月的累计值（去年市占率）
               for (let i = 0; i < month; i++) {
                 currentmarketShareSum += monthsDefectiveRatio.currentRatio[i];
                 lastYearmarketShareSum +=monthsDefectiveRatio.lastYearRatio[i];
               }
-              this.baseYearMarketShareRate=+((currentmarketShareSum-lastYearmarketShareSum)/lastYearmarketShareSum*100).toFixed(0);
-              this.baseMonthMarketShareRate =
-                +((monthsDefectiveRatio.currentRatio[month - 1]-monthsDefectiveRatio.currentRatio[month - 2])/monthsDefectiveRatio.currentRatio[month - 2]*100).toFixed(0);
-              this.currentMonthMarketShareSum = currentmarketShareSum;
+              if(lastYearmarketShareSum==0){
+                this.baseYearMarketShareRate = '—'
+              }else{
+                this.baseYearMarketShareRate=+((currentmarketShareSum-lastYearmarketShareSum)/lastYearmarketShareSum*100).toFixed(0)||'—';
+              }
+              //判断是否为Infinity和Nan
+              if((monthsDefectiveRatio.currentRatio[month - 2]*100).toFixed(0)==0||(monthsDefectiveRatio.currentRatio[month - 2]*100).toFixed(0)=='NaN'){
+                this.baseMonthMarketShareRate = '—'
+  }else{
+                this.baseMonthMarketShareRate =
+                  +((monthsDefectiveRatio.currentRatio[month - 1]-monthsDefectiveRatio.currentRatio[month - 2])/monthsDefectiveRatio.currentRatio[month - 2]*100).toFixed(0)||'—';
+              }
+
+              this.currentMonthMarketShareSum = currentmarketShareSum == 0 ?'—':currentmarketShareSum.toFixed(2);
             }
           })
         }
@@ -425,7 +454,7 @@
             currentSum += marketShareRatioBrand.current
           }
         });
-        return currentSum;
+        return currentSum==0?'—':currentSum.toFixed(2);
       },
       //长安轿车当月环比变动值
       comparedCar: function () {
@@ -436,7 +465,10 @@
           }
         });
         let middle = +((this.currentCar - synchronSum) / synchronSum * 100).toFixed(0);
-        return middle >= 0 ? '+' + middle : '-' + middle;
+        if(!middle||middle==Infinity){
+          return '—'
+        }
+        return middle >= 0 ? '+' + middle : middle;
       },
       //长安福特当月市占率
       currentFord: function () {
@@ -446,7 +478,7 @@
             currentSum += marketShareRatioBrand.current
           }
         });
-        return currentSum;
+        return currentSum==0?'—':currentSum.toFixed(2);
       },
       //长安福特当月环比变动值
       comparedFord: function () {
@@ -457,7 +489,10 @@
           }
         });
         let middle = +((this.currentFord - synchronSum) / synchronSum * 100).toFixed(0);
-        return middle >= 0 ? '+' + middle : '-' + middle;
+        if(!middle||middle==Infinity){
+          return '—'
+        }
+        return middle >= 0 ? '+' + middle : middle;
       },
       //长安欧尚当月市占率
       currentOs: function () {
@@ -467,7 +502,7 @@
             currentSum += marketShareRatioBrand.current;
           }
         });
-        return currentSum;
+        return currentSum==0?'—':currentSum.toFixed(2);
       },
       //长安欧尚当月环比变动值
       comparedOs: function () {
@@ -478,7 +513,10 @@
           }
         });
         let middle = +((this.currentOs - synchronSum) / synchronSum * 100).toFixed(0);
-        return middle >= 0 ? '+' + middle : '-' + middle;
+        if(!middle||middle==Infinity){
+          return '—'
+        }
+        return middle >= 0 ? '+' + middle : middle;
       },
       //长安马自达当月市占率
       currentMazda: function () {
@@ -488,7 +526,7 @@
             currentSum += marketShareRatioBrand.current
           }
         });
-        return currentSum;
+        return currentSum==0?'—':currentSum.toFixed(2);
       },
       //长安马自达当月环比变动值
       comparedMazda: function () {
@@ -499,7 +537,10 @@
           }
         });
         let middle = +((this.currentMazda - synchronSum) / synchronSum * 100).toFixed(0);
-        return middle >= 0 ? '+' + middle : '-' + middle;
+        if(!middle||middle==Infinity){
+          return '—'
+        }
+        return middle >= 0 ? '+' + middle : middle;
       },
       //长安DS当月市占率
       currentDs: function () {
@@ -509,7 +550,7 @@
             currentSum += marketShareRatioBrand.current
           }
         });
-        return currentSum;
+        return currentSum==0?'—':currentSum.toFixed(2);
       },
       //长安DS当月环比变动值
       comparedDs: function () {
@@ -520,7 +561,10 @@
           }
         });
         let middle = +((this.currentDs - synchronSum) / synchronSum * 100).toFixed(0);
-        return middle >= 0 ? '+' + middle : '-' + middle;
+        if(!middle||middle==Infinity){
+          return '—'
+        }
+        return middle >= 0 ? '+' + middle :  middle;
       },
       //长安铃木当月市占率
       currentSuzuki: function () {
@@ -530,7 +574,7 @@
             currentSum += marketShareRatioBrand.current
           }
         });
-        return currentSum;
+        return currentSum==0?'—':currentSum.toFixed(2);
       },
       //长安铃木当月环比变动值
       comparedSuzuki: function () {
@@ -541,7 +585,10 @@
           }
         });
         let middle = +((this.currentSuzuki - synchronSum) / synchronSum * 100).toFixed(0);
-        return middle >= 0 ? '+' + middle : '-' + middle;
+        if(!middle||middle==Infinity){
+          return '—'
+        }
+        return middle >= 0 ? '+' + middle : middle;
       },
       //当年不良率同比变动值(展示，添加了'+')
       baseYearRateShow: function () {
@@ -628,6 +675,7 @@
                 border-top: 1px solid rgb(155, 155, 155);
                 border-right: 1px solid rgb(155, 155, 155);
                 transform: rotate(45deg);
+                -webkit-transform: rotate(45deg);
               }
             }
           }
@@ -683,6 +731,7 @@
                 font-size: 60px;
                 line-height: 84px;
                 margin-bottom: 16px;
+                word-break: break-word;
               }
               span {
                 font-size: 32px;
@@ -786,6 +835,7 @@
                     top: 50%;
                     left: 50%;
                     transform: translate(-50%, -50%);
+                    -webkit-transform: (-50%,-50%);
                     .top {
                       font-size: 40px;
                     }
@@ -811,7 +861,6 @@
                   width: 160px;
                   height: 48px;
                   background-color: rgb(216, 216, 216);
-                  color: rgb(208, 2, 7);
                   font-size: 28px;
                   line-height: 48px;
                 }

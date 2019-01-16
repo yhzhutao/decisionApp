@@ -4,7 +4,7 @@
       <canvas class="canvas_1" id="canvas_1" width="132" height="132" ref="canvas_1"></canvas>
       <canvas class="canvas_2" id="canvas_2" width="132" height="132" ref="canvas_2"></canvas>
       <div class="content">
-        <span class="top" :style="{color:numcolor}">{{percent}}%</span>
+        <span class="top" :style="{color:numcolor}">{{percent}}{{percent=='—'?'':'%'}}</span>
         <div class="line"></div>
         <span class="bottom" :style="{color:fontcolor}">{{index1}}</span>
       </div>
@@ -29,7 +29,10 @@
     },
     methods: {
       inte(percent) {
-        // console.log(percent);
+        if(isNaN(percent)||percent == Infinity) {
+          percent = 0;
+          this.percent='—'
+        }
         let canvas_1=this.$refs['canvas_1']
         let canvas_2 = this.$refs['canvas_2'];
         let windowWidth = document.body.clientWidth;
@@ -92,9 +95,10 @@
           //百分比圆环
           ctx_2.beginPath();
           ctx_2.arc(canvas_2.width / 2, canvas_2.height / 2, canvas_2.width / 2 - ctx_2.lineWidth / 2, 0, angle * Math.PI / 180, false);
-          angle = angle + 10;
+          angle = angle + 5;
           var percentAge = parseInt((angle / 360) * 100)
           if (angle > (percent / 100 * 360)) {
+
             percentAge = percent;
             window.cancelAnimationFrame(timer);
           }
@@ -110,7 +114,6 @@
     },
     watch:{
       percent:function(){
-        // console.log(111);
         this.inte(this.percent);
       }
     }
@@ -141,12 +144,14 @@
         z-index: 2;
         background: transparent;
         transform:rotate(-90deg);
+        -webkit-transform: rotate(-90deg);
       }
       .content{
         position: absolute;
         left: 50%;
         top: 50%;
         transform: translate(-50%,-50%);
+        -webkit-transform: translate(-50%,-50%);
         .top{
           font-size: 40px;
           font-weight: bold;
@@ -155,6 +160,9 @@
           border-top: 2px solid rgb(151,151,151);
           width: 208px;
           margin: 16px 0;
+        }
+        .bottom{
+          font-size: 40px;
         }
       }
     }

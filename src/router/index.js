@@ -2,7 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 // const AssetsSituation = () => import('@/components/assets/assets')
 const AssetsSituation = () => import('@/components/assets/assets')
-const IndividualIoanSituation = () => import('@/components/variousIndicators/variousIndicators')
+const IndividualIoanSituation = () => import('@/components/individualIoan/individualIoan')
 const VariousIndicators = () => import('@/components/variousIndicators/variousIndicators')
 const CreditAvailability = () => import('@/components/creditAvailability/creditAvailability')
 const Brand = () => import('@/components/brand/brand')

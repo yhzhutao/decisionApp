@@ -60,6 +60,9 @@
   import monthsCharts from '@/components/highchartsComponent/HighchartsComponent'
   import BScroll from 'better-scroll';
   import bus from '@/common/base/bus'
+  import { host } from "@/common/base/baseHttp.js"
+  import tokenInvalid from '@/common/base/tokenInvalid'
+  import { Toast } from 'mint-ui';
   export default {
     name: "marketShare",
     props:[
@@ -127,18 +130,18 @@
           },
           series: [{
             allowPointSelect: false,
-            data: [{'y': 5},
-              {'y': 12},
-              {'y': 13},
-              {'y': 14},
-              {'y': 15},
-              {'y': 16},
-              {'y': 30},
-              {'y': 12},
-              {'y': 13},
-              {'y': 14},
-              {'y': 15},
-              {'y': 16}],
+            data: [{'y': null},
+              {'y': null},
+              {'y': null},
+              {'y': null},
+              {'y': null},
+              {'y': null},
+              {'y': null},
+              {'y': null},
+              {'y': null},
+              {'y': null},
+              {'y': null},
+              {'y': null}],
             marker: {
               enabled: false,
               states: {
@@ -158,18 +161,18 @@
           },
             {
               allowPointSelect: false,
-              data: [{'color': 'rgb(218,223,236)', 'y': 7},
-                {'color': 'rgb(218,223,236)', 'y': 15},
-                {'color': 'rgb(218,223,236)', 'y': 23},
-                {'color': 'rgb(218,223,236)', 'y': 15},
-                {'color': 'rgb(218,223,236)', 'y': 16},
-                {'color': 'rgb(218,223,236)', 'y': 20},
-                {'color': 'rgb(218,223,236)', 'y': 16},
-                {'color': 'rgb(218,223,236)', 'y': 12},
-                {'color': 'rgb(218,223,236)', 'y': 16},
-                {'color': 'rgb(218,223,236)', 'y': 16},
-                {'color': 'rgb(218,223,236)', 'y': 12},
-                {'color': 'rgb(218,223,236)', 'y': 18}],
+              data: [{'color': 'rgb(218,223,236)', 'y': null},
+                {'color': 'rgb(218,223,236)', 'y': null},
+                {'color': 'rgb(218,223,236)', 'y': null},
+                {'color': 'rgb(218,223,236)', 'y': null},
+                {'color': 'rgb(218,223,236)', 'y': null},
+                {'color': 'rgb(218,223,236)', 'y': null},
+                {'color': 'rgb(218,223,236)', 'y': null},
+                {'color': 'rgb(218,223,236)', 'y': null},
+                {'color': 'rgb(218,223,236)', 'y': null},
+                {'color': 'rgb(218,223,236)', 'y': null},
+                {'color': 'rgb(218,223,236)', 'y': null},
+                {'color': 'rgb(218,223,236)', 'y': null}],
               pointStart: 0,
               type: 'line',
               marker: {
@@ -179,18 +182,14 @@
               dataLabels: {
                 enabled: false,
               },
-              color: '#30C2AE',
-              events: {
-                click: function (event) {
-                  // event.target.setAttribute('fill','rgb(241,155,58)');
-                }
-              }
+              color: '#30C2AE'
             }]
         },
         stylesYear: {width: 95, height: 180},
         marketData:[],
         showNumber:4,
-        bottomFlag:false
+        bottomFlag:false,
+        pullText:''
       }
     },
     mounted() {
@@ -201,6 +200,7 @@
     created(){
       let that = this
       that.createHttp(this.selectDate)
+      bus.$off('selectDate')
       bus.$on('selectDate',function(date){
        that.createHttp(date)
       })
@@ -209,12 +209,13 @@
       _initScorll() {
          this.scroll = new BScroll(this.$refs['content-wrapper'], {click: true, probeType: 3});
          let flag = false
+        let that  = this
         this.scroll.on('scroll',(pos)=>{
           if(pos.y<this.scroll.maxScrollY-50){
             if(flag!==true){
               flag = true
               this.showNumber = 6
-              this.scroll.refresh()
+              that.scroll.refresh()
               this.pullText="没有更多数据了"
               this.bottomFlag = true
             }
@@ -234,27 +235,57 @@
       createHttp(date){
         let that = this
         let month =Number(date.substr(4,2))
-        that.$http.post('/marketShareRatio').then(function (res) {
-          let data = res.body
-          let optionsSelect = []
-          that.marketData =data.map(function (item, index) {
-            let currentMonthChainRatio = Number((item.currentMonthChainRatio*100).toFixed(2))
-            let currentYearChainRatio = Number((item.currentYearChainRatio*100).toFixed(2))
-            let currentYearMarketShare = Number((item.currentYearMarketShare*100).toFixed(2))
-            let options = JSON.parse(JSON.stringify(that.options))
-            options.chart.backgroundColor = index % 2 === 0 ?'#2f3543':'#353d51'
-            options.series[0].data = that.formatterAreaDate(item.lastMonthsRatio)
-            options.series[1].data = that.formatterLineDate(item.monthsRatio)
-            return {
-              brandName:item.brandName,
-              currentMonthChainRatio:currentMonthChainRatio,
-              currentYearChainRatio:currentYearChainRatio,
-              currentYearMarketShare:currentYearMarketShare,
-              currentMonthMarketShare:item.monthsRatio[month],
-              options:options
-            }
-          })
+        let urlHost = host||'/api'
+        that.$http.post(urlHost+'/Decision/marketShareRatio',{date:date}).then(function (res) {
+          let data = JSON.parse(res.bodyText).result
+          let code = JSON.parse(res.bodyText).code
+          if(code ==0){
+            let optionsSelect = []
+            that.marketData =data.map(function (item, index) {
+              let currentMonthChainRatio = Number((item.currentMonthChainRatio*100).toFixed(2))
+              let currentYearChainRatio = Number((item.currentYearChainRatio*100).toFixed(2))
+              let currentYearMarketShare = Number((item.currentYearMarketShare*100).toFixed(2))
+              let options = JSON.parse(JSON.stringify(that.options))
+              options.chart.backgroundColor = index % 2 === 0 ?'#2f3543':'#353d51'
+              options.series[0].data = that.formatterAreaDate(item.lastMonthsRatio)
+              options.series[1].data = that.formatterLineDate(item.monthsRatio)
+              return {
+                brandName:that.brandNameFomatter(item.brandName),
+                currentMonthChainRatio:currentMonthChainRatio,
+                currentYearChainRatio:currentYearChainRatio,
+                currentYearMarketShare:currentYearMarketShare,
+                currentMonthMarketShare:item.monthsRatio[month],
+                options:options
+              }
+            })
+          }else if(code ==20){
+            tokenInvalid()
+          }else{
+            Toast(JSON.parse(res.bodyText).message)
+          }
         })
+      },
+      brandNameFomatter(brandName){
+        switch (brandName) {
+          case 'BRAND20180093':
+            return '长安欧尚汽车'
+            break
+          case 'carBrand9876':
+            return '长安福特'
+            break
+          case 'carBrand9877':
+            return '长安马自达'
+            break
+          case 'carSeries0029':
+            return '长安DS'
+            break
+          case 'carBrand9879':
+            return '长安轿车'
+            break
+          case 'carBrand9878':
+            return '长安铃木'
+            break
+        }
       },
       getProgress(date){
         let year = date.substr(0,4)
@@ -312,11 +343,11 @@
       }
     }
   }
-  .changan{
+  .changan {
     height: 1020px;
     background-color: #353D51;
     overflow: hidden;
-    &.double{
+    &.double {
       background-color: #2F3543;
     }
     .title {
@@ -369,7 +400,9 @@
         top: 55%;
         left: 50%;
         transform: translate(-50%, -50%);
+        -webkit-transform: translate(-50%, -50%);
       }
+
     }
     .ratio {
       display: flex;

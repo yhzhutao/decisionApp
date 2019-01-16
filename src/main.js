@@ -7,6 +7,7 @@ import VueResource from 'vue-resource'
 import bus from '@/common/base/bus'
 Vue.config.productionTip = false
 Vue.use(VueResource);
+Vue.http.options.emulateJSON = true;
 Vue.http.interceptors.push((request, next) => {
   bus.$emit('loading',true)
   next((response) => {
