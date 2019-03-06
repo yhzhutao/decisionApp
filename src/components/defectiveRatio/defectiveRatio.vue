@@ -24,15 +24,15 @@
        </div>
        <div class="ratio">
          <div>
-           <div class="itemColor1">{{wSaleRatio}}%</div>
+           <div class="itemColor1">{{wSaleRatio}}{{wSaleRatio=='—'?'':'%'}}</div>
            <div>当月不良率</div>
          </div>
          <div class="rlborder itemColor2">
-           <div :style='{color:wSaleRatioYoy>0?"#d0021b":"#30aa2d"}'>{{wSaleRatioYoy>0?"+":""}}{{wSaleRatioYoy}}%</div>
+           <div :style='{color:wSaleRatioYoy>0?"#d0021b":"#30aa2d"}'>{{wSaleRatioYoy>0?"+":""}}{{wSaleRatioYoy}}{{wSaleRatioYoy=='—'?'':'%'}}</div>
            <div>同比变动</div>
          </div>
          <div>
-           <div class="itemColor3" :style='{color:wSaleRatioMom>0?"#d0021b":"#30aa2d"}'>{{wSaleRatioMom>0?"+":""}}{{wSaleRatioMom}}%</div>
+           <div class="itemColor3" :style='{color:wSaleRatioMom>0?"#d0021b":"#30aa2d"}'>{{wSaleRatioMom>0?"+":""}}{{wSaleRatioMom}}{{wSaleRatioMom=='—'?'':'%'}}</div>
            <div>环比变动</div>
          </div>
        </div>
@@ -60,19 +60,20 @@
        </div>
        <div class="ratio">
          <div>
-           <div class="itemColor1">{{rSaleRatio}}%</div>
+           <div class="itemColor1">{{rSaleRatio}}{{rSaleRatio=='—'?'':'%'}}</div>
            <div>当月不良率</div>
          </div>
          <div class="rlborder itemColor2">
-           <div :style='{color:rSaleRatioYoy>0?"#d0021b":"#30aa2d"}'>{{rSaleRatioYoy>0?"+":""}}{{rSaleRatioYoy}}%</div>
+           <div :style='{color:rSaleRatioYoy>0?"#d0021b":"#30aa2d"}'>{{rSaleRatioYoy>0?"+":""}}{{rSaleRatioYoy}}{{rSaleRatioYoy=='—'?'':'%'}}</div>
            <div>同比变动</div>
          </div>
          <div>
-           <div class="itemColor3" :style='{color:rSaleRatioMom>0?"#d0021b":"#30aa2d"}'>{{rSaleRatioMom>0?"+":""}}{{rSaleRatioMom}}%</div>
+           <div class="itemColor3" :style='{color:rSaleRatioMom>0?"#d0021b":"#30aa2d"}'>{{rSaleRatioMom>0?"+":""}}{{rSaleRatioMom}}{{rSaleRatioMom=='—'?'':'%'}}</div>
            <div>环比变动</div>
          </div>
        </div>
      </div>
+     <div class="bottomBox"></div>
    </div>
  </div>
 </template>
@@ -118,7 +119,7 @@
                 color:"#FFFFFF",
                 dashStyle:'solid',
                 width:1,
-                zIndex:999
+                zIndex:1
               },
               enableMouseTracking:false,
               type:'line',
@@ -247,7 +248,7 @@
                 color:"#FFFFFF",
                 dashStyle:'solid',
                 width:1,
-                zIndex:999
+                zIndex:1
               },
               enableMouseTracking:false,
               type:'line',
@@ -379,17 +380,18 @@
             if(code ==0){
               data.forEach(function (item, index) {
                 if (item.salesWay === "wholesaleSale") {
-                  that.wSaleRatio = (item.saleRatio * 100).toFixed(2)
-                  that.wSaleRatioYoy = (item.saleRatioYoy * 100).toFixed(2)
-                  that.wSaleRatioMom = (item.saleRatioMom * 100).toFixed(2)
+                  that.wSaleRatio = item.saleRatio==null?'—':(item.saleRatio * 100).toFixed(2)
+                  that.wSaleRatioYoy = item.saleRatioYoy==null?'—':(item.saleRatioYoy * 100).toFixed(2)
+                  that.wSaleRatioMom =  item.saleRatioMom==null?'—':(item.saleRatioMom * 100).toFixed(2)
                   that.wholesaleSale = JSON.parse(JSON.stringify(that.wholesaleSale))
                   that.wholesaleSale.series[0].data = that.formatterAreaDate(item.lastMonthsRatio)
+                  console.log(that.formatterLineDate(item.currentMonthsRatio))
                   that.wholesaleSale.series[1].data = that.formatterLineDate(item.currentMonthsRatio)
                 }
                 if(item.salesWay === "retail") {
-                  that.rSaleRatio = (item.saleRatio * 100).toFixed(2)
-                  that.rSaleRatioYoy = (item.saleRatioYoy * 100).toFixed(2)
-                  that.rSaleRatioMom = (item.saleRatioMom * 100).toFixed(2)
+                  that.rSaleRatio =  item.saleRatio==null?'—':(item.saleRatio * 100).toFixed(2)
+                  that.rSaleRatioYoy = item.saleRatioYoy==null?'—':(item.saleRatioYoy * 100).toFixed(2)
+                  that.rSaleRatioMom = item.saleRatioMom==null?'—':(item.saleRatioMom * 100).toFixed(2)
                   that.retail = JSON.parse(JSON.stringify(that.retail))
                   that.retail.series[0].data = that.formatterAreaDate(item.lastMonthsRatio)
                   that.retail.series[1].data = that.formatterLineDate(item.currentMonthsRatio)
@@ -408,12 +410,20 @@
         },
         formatterLineDate(lastMonthsRatio){
          return lastMonthsRatio.map(function(item,index){
-            return {y:Number((item*100).toFixed(2))}
+           if(item==null){
+             return {y:null}
+           }else{
+            return {y:Number((item*100).toFixed(3))}
+           }
           })
         },
         formatterAreaDate(lastMonthsRatio){
           return lastMonthsRatio.map(function(item,index){
-            return {'color':'rgb(218,223,236)',y:Number((item*100).toFixed(2))}
+            if(item==null){
+              return {y:null}
+            }else{
+              return {'color':'rgb(218,223,236)',y:Number(((item)*100).toFixed(3))}
+            }
           })
         }
       },
@@ -514,7 +524,7 @@
         flex: 1;
         text-align: center;
         :first-child{
-          font-size: 60px;
+          font-size: 52px;
           line-height: 84px;
         }
         :last-child{
@@ -539,6 +549,9 @@
     }
   }
   .retail{
+    background-color: #353d51;
+  }
+  .bottomBox{
     background-color: #353d51;
   }
 </style>

@@ -4,7 +4,7 @@
 * */
 osc.formatterCount = function(count){
   let reg = /(?=(\B\d{3})+$)/g
-  if(count){
+  if(count&&count!='—'){
     return (count.toString()).replace(reg,',')
   }else{
     return count

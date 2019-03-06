@@ -5,30 +5,25 @@
         <span>{{title}}</span><img :src="url" alt="">
       </div>
       <div class="asset-content">
-        <p class="unit">单位：{{unit}}元</p>
         <div class="current">
           <span>当前</span>
           <div class="progress">
             <div class="progress_bg">
-              <div class="progress_bar" :style="{'width':percentCurrent+'%'}"></div>
+              <div  class="progress_bar" :style="{'width':percentCurrent+'%'}"></div>
             </div>
             <div class="progress_btn" :style="{'left':percentCurrent*0.96+'%'}">
-              <div class="percent">{{percentCurrent}}%</div>
+              <div v-show="percentCurrent!=0" class="percent">{{percentShow}}%</div>
             </div>
           </div>
         </div>
-        <div class="synchronism">
-          <span>同期</span>
-        </div>
-        <div class="line" :style="{'width':percentSynchronism*0.85+'%'}"></div>
         <div class="content-bottom">
           <div class="left">
-            <p>{{currentSum}}</p>
-            <span>{{text}}</span>
+            <p>{{ currentMonthNumber }}</p>
+            <span>{{text2}}</span>
           </div>
           <div class="center">
-            <p :class="[fluctuation<0?'low':'top',{fontColor:fluctuation=='—'}]" >{{fluctuation}}</p>
-            <span>同比变动</span>
+            <p>{{currentSum}}</p>
+            <span>{{text}}</span>
           </div>
           <div class="right">
             <p>{{index}}</p>
@@ -36,6 +31,7 @@
           </div>
         </div>
       </div>
+      <p class="unit">单位：{{unit}}元</p>
     </div>
 </template>
 
@@ -47,12 +43,15 @@
           title:'',
           url:'',
           text:'',
+          text2:'',
           percent:0,
           percentCurrent:0,
-          percentSynchronism:0,
+          // percentSynchronism:0,  //同期对比
           currentSum:0, //当前收入/利润
-          fluctuation:0, //同比变动
-          index:0  //集团指标
+          currentMonthNumber:'—',
+          // fluctuation:0, //同比变动
+          index:0,  //集团指标
+          percentShow:0
         }
       },
       props:{
@@ -68,52 +67,33 @@
           if(titleCode==0){
             this.title='收入';
             this.url=require('../../image/income_icon@2x.png');
-            this.text='当前收入';
-            this.currentSum = this.assetsScale.currentIncome;
-            if(this.assetsScale.syIncome != 0){
-              this.fluctuation =
-                ((this.assetsScale.currentIncome-this.assetsScale.syIncome)/this.assetsScale.syIncome*100).toFixed(0);
-              if(this.fluctuation>0){
-                this.fluctuation='+'+this.fluctuation+'%'
-              }else{
-                this.fluctuation=this.fluctuation+'%'
-              }
-
-            }else{
-              this.fluctuation = '—'
-            }
-            this.index = this.assetsScale.groupIncomeIndex;
-            if((this.assetsScale.currentIncome/this.assetsScale.groupIncomeIndex*100).toFixed(0)=='NaN'){
+            this.text2 = '当月收入';
+            this.text='当年累计收入';
+            this.currentSum = this.assetsScale.currentIncome||'—';
+            this.currentMonthNumber = this.assetsScale.currentMonthIncome||'—'
+            this.index = this.assetsScale.groupIncomeIndex||'—';
+            if((this.assetsScale.currentIncome/this.assetsScale.groupIncomeIndex*100).toFixed(0)=='NaN'||(this.assetsScale.currentIncome/this.assetsScale.groupIncomeIndex*100).toFixed(0)==Infinity){
               this.percent = 0
             }else{
               this.percent = (this.assetsScale.currentIncome/this.assetsScale.groupIncomeIndex*100).toFixed(0);
             }
+            this.percentShow = this.percent
             this.percentCurrent = this.percent>100?100:this.percent;
-            this.percentSynchronism = (this.assetsScale.syIncome/this.assetsScale.groupIncomeIndex*100).toFixed(0);
           }else if(titleCode==1){
             this.title='利润';
             this.url=require('../../image/profit_icon@2x.png');
-            this.text = '当前利润';
-            this.currentSum = this.assetsScale.currentProfit;
-            if(this.assetsScale.syIncome != 0){
-              this.fluctuation =
-                ((this.assetsScale.currentProfit-this.assetsScale.syProfit)/this.assetsScale.syProfit*100).toFixed(0);
-              if(this.fluctuation>0){
-                this.fluctuation='+'+this.fluctuation+'%'
-              }else{
-                this.fluctuation=this.fluctuation+'%'
-              }
-            }else{
-              this.fluctuation = '—'
-            }
-            this.index = this.assetsScale.groupProfitIndex;
-            if((this.assetsScale.currentIncome/this.assetsScale.groupIncomeIndex*100).toFixed(0)=='NaN'){
+            this.text2 = '当月利润';
+            this.text = '当年累计利润';
+            this.currentSum = this.assetsScale.currentProfit||'—';
+            this.currentMonthNumber = this.assetsScale.currentMonthProfit||'—'
+            this.index = this.assetsScale.groupProfitIndex||'—';
+            if((this.assetsScale.currentProfit/this.assetsScale.groupProfitIndex*100).toFixed(0)=='NaN'||(this.assetsScale.currentProfit/this.assetsScale.groupProfitIndex*100).toFixed(0)==Infinity){
               this.percent = 0
             }else{
-              this.percent = (this.assetsScale.currentIncome/this.assetsScale.groupIncomeIndex*100).toFixed(0);
+              this.percent = (this.assetsScale.currentProfit/this.assetsScale.groupProfitIndex*100).toFixed(0);
             }
+            this.percentShow = this.percent
             this.percentCurrent = this.percent>100?100:this.percent || 0;
-            this.percentSynchronism = (this.assetsScale.syProfit/this.assetsScale.groupProfitIndex*100).toFixed(0);
           }else{
             return;
           }
@@ -130,10 +110,17 @@
 <style lang="scss" scoped>
 .assetCard{
   margin: 0 32px;
-  padding: 32px;
+  padding: 32px 32px 42px 32px;
   background: #fff;
   border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 0px 24px rgba(0, 0, 0, 0.5);
+  .unit{
+    text-align: right;
+    margin-top: 38px;
+    margin-left: 18px;
+    font-size: 24px;
+    color: rgb(155,155,155);
+  }
   .assetCard-head{
     &:before{
       display: inline-block;
@@ -159,14 +146,8 @@
   }
   .asset-content{
     margin-top: 16px;
-    .unit{
-      float: right;
-      margin-left: 18px;
-      font-size: 24px;
-      color: rgb(155,155,155);
-    }
     .current{
-      margin-top: 44px;
+      margin-top: 70px;
       span{
         display: inline-block;
         line-height: 40px;
@@ -178,7 +159,7 @@
       .progress {
         display: inline-block;
         position: relative;
-        width: 65%;
+        width: 85%;
         .progress_bg {
           height: 8px;
           border-radius: 5px;
@@ -195,16 +176,16 @@
         }
         .progress_btn {
           position: relative;
-          width: 40px;
-          height: 40px;
+          width: 36px;
+          height: 36px;
           border-radius: 50%;
           background: rgb(110,90,200);
           position: absolute;
           left: 46%;
           top: -18px;
           cursor: pointer;
-          border: 2px #bbbbbb solid;
           box-sizing: border-box;
+          box-shadow: 0 0px 6px rgba(0,0,0,.5);
           .percent{
             position: absolute;
             line-height: 48px;
@@ -218,35 +199,14 @@
           }
         }
       }
-      /*&:after{*/
-        /*display: inline-block;*/
-        /*content: '';*/
-        /*width: 90%;*/
-        /*border-top: 2px solid rgb(218,223,236);*/
-        /*vertical-align: middle;*/
-      /*}*/
-    }
-    .synchronism{
-      display: inline-block;
-      span{
-        line-height: 40px;
-        font-size: 24px;
-        color: rgb(155,155,155);
-        margin-right: 8px;
-      }
-      /*&:after{*/
-        /*display: inline-block;*/
-        /*content: '';*/
-        /*width: 85%;*/
-        /*border-top: 2px dashed rgb(110,90,200);*/
-        /*vertical-align: middle;*/
-      /*}*/
     }
     .line{
       display: inline-block;
       width: 85%;
-      border-top: 2px dashed rgb(110,90,200);
+      height: 7px;
+      background: #f4a100;
       vertical-align: middle;
+      border-radius: 4px;
     }
     .content-bottom{
       display: flex;
@@ -259,7 +219,7 @@
         color: rgb(110,90,200);
         border-right: 1px solid rgb(151,151,151);
         p{
-          font-size: 60px;
+          font-size: 52px;
           line-height: 84px;
           margin-bottom: 16px;
         }
@@ -270,9 +230,10 @@
       .center{
         border-right: 1px solid rgb(151,151,151);
         p{
-          font-size: 60px;
+          font-size: 52px;
           line-height: 84px;
           margin-bottom: 16px;
+          color: rgb(155,155,155);
           &.top{
             color: rgb(208,2,27);
           }
@@ -288,7 +249,7 @@
       .right{
         color: rgb(155,155,155);
         p{
-          font-size: 60px;
+          font-size: 52px;
           line-height: 84px;
           margin-bottom: 16px;
         }

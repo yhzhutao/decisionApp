@@ -4,7 +4,7 @@
       <canvas class="canvas_1" id="canvas_1" width="132" height="132" ref="canvas_1"></canvas>
       <canvas class="canvas_2" id="canvas_2" width="132" height="132" ref="canvas_2"></canvas>
       <div class="content">
-        <span class="top" :style="{color:numcolor}">{{percent}}{{percent=='—'?'':'%'}}</span>
+        <span class="top" :style="{color:numcolor}">{{percentCopy}}{{percentCopy=='—'?'':'%'}}</span>
         <div class="line"></div>
         <span class="bottom" :style="{color:fontcolor}">{{index1}}</span>
       </div>
@@ -24,6 +24,11 @@
       'lineEndColor',
       'maskBackground'
     ],
+    data(){
+      return {
+        percentCopy:'',
+      }
+    },
     mounted(){
       this.inte(this.percent);
     },
@@ -31,7 +36,9 @@
       inte(percent) {
         if(isNaN(percent)||percent == Infinity) {
           percent = 0;
-          this.percent='—'
+          this.percentCopy = '—'
+        }else{
+          this.percentCopy = percent
         }
         let canvas_1=this.$refs['canvas_1']
         let canvas_2 = this.$refs['canvas_2'];
@@ -82,10 +89,18 @@
         }else if(percent>100){
           percent=100;
         }
+        if(percent>0){
+          ctx_2.lineCap='round'
+        }
         ctx_2.lineWidth = 6;
         var gradient = ctx_2.createLinearGradient(canvas_2.width / 2, 0, canvas_2.width / 2, canvas_2.height);
-        gradient.addColorStop("0", "#F19938");
-        gradient.addColorStop("1.0", "#F9C969");
+        if(this.$router.currentRoute.path=='\/variousIndicators'){
+          gradient.addColorStop("0", "#008572");
+          gradient.addColorStop("1.0", "#56C1B2");
+        }else{
+          gradient.addColorStop("0", "#F19938");
+          gradient.addColorStop("1.0", "#F9C969");
+        }
         ctx_2.strokeStyle = gradient;
         var angle = 0;
         var timer;
@@ -162,7 +177,7 @@
           margin: 16px 0;
         }
         .bottom{
-          font-size: 40px;
+          font-size: 32px;
         }
       }
     }

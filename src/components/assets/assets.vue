@@ -8,7 +8,7 @@
         </div>
         <div class="currentAssets-content">
           <p class="unit">单位: {{unit}}元</p>
-          <p class="num">{{assetsScale.totalAssetsAmount}}</p>
+          <p class="num">{{assetsScale.totalAssetsAmount||'—'}}</p>
           <div class="line"></div>
           <div class="content-bottom">
             <div class="chart-container">
@@ -17,14 +17,18 @@
             <div class="container-right">
               <div class="right-top">
                 <span>{{assetsScale.salesAmount}}</span>
-                <span>批售</span>
-                <span>{{wholesalePercent!=='—'?(wholesalePercent*100).toFixed(0)+'%':'—'}}</span>
+                <span>
+                  <span>批售</span>
+                  <span>{{wholesalePercent!=='—'?(wholesalePercent*100).toFixed(0)+'%':'—'}}</span>
+                </span>
               </div>
               <div class="right-middle"></div>
               <div class="right-bottom">
                 <span>{{assetsScale.retailAmount}}</span>
-                <span>零售</span>
-                <span>{{retailPercent!=='—'?(retailPercent*100).toFixed(0)+'%':'—'}}</span>
+                <span>
+                   <span>零售</span>
+                   <span>{{retailPercent!=='—'?(retailPercent*100).toFixed(0)+'%':'—'}}</span>
+                 </span>
               </div>
             </div>
           </div>
@@ -38,23 +42,19 @@
           <v-asset :unit="unit" :titleCode="1" :assetsScale="assetsScale"></v-asset>
         </li>
       </ul>
-      <div class="bottom">
-        <div class="line"></div>
-        <p>已经到底了</p>
-        <div class="line"></div>
-      </div>
+      <div class="bottomBox"></div>
     </div>
   </div>
 </template>
-
 <script>
   import Asset from '@/components/assetCard/assetCard';
   import HighchartsComponent from '@/components/highchartsComponent/HighchartsComponent';
   import BScroll from 'better-scroll';
-  import { host } from "@/common/base/baseHttp.js"
+  import {host} from "@/common/base/baseHttp.js"
   import bus from '@/common/base/bus'
   import tokenInvalid from '@/common/base/tokenInvalid'
-  import { Toast } from 'mint-ui';
+  import {Toast} from 'mint-ui';
+
   export default {
     name: "assets",
     data() {
@@ -86,35 +86,35 @@
           }]
         },
         styles: {},
-        wholesalePercent:0,
-        retailPercent:0,
-        assetsScale:{
-          totalAssetsAmount:0,
-          salesAmount:0,
-          retailAmount:0,
-          currentIncome:0,
-          syIncome:0,
-          groupIncomeIndex:0,
-          currentProfit:0,
-          syProfit:0,
-          groupProfitIndex:0
+        wholesalePercent: 0,
+        retailPercent: 0,
+        assetsScale: {
+          totalAssetsAmount: 0,
+          salesAmount: 0,
+          retailAmount: 0,
+          currentIncome: 0,
+          syIncome: 0,
+          groupIncomeIndex: 0,
+          currentProfit: 0,
+          syProfit: 0,
+          groupProfitIndex: 0
         },
-        unit:'万',
-        emitDate:''
+        unit: '万',
+        emitDate: ''
       }
     },
-    props:[
+    props: [
       'selectDate'
     ],
-    created(){
+    created() {
       let that = this
-      let urlHost = host||'/api'
-         this.$http.post(urlHost+'/Decision/user/login',{'userId':'HUYY','password':'1'}).then((res)=>{
-           document.cookie = 'token='+JSON.parse(res.bodyText).result.token+';'
-         })
+      let urlHost = host || '/api'
+      this.$http.post(urlHost + '/Decision/user/login', {'userId': 'ZHANGF', 'password': '1'}).then((res) => {
+        document.cookie = 'token=' + JSON.parse(res.bodyText).result.token + ';'
+      })
       this.init(this.selectDate)
       bus.$off('selectDate')
-      bus.$on('selectDate',function(date){
+      bus.$on('selectDate', function (date) {
         that.init(date)
         that.emitDate = date
       })
@@ -125,27 +125,33 @@
           click: true
         });
       },
-      dataFormate(data){
-        if(Math.round(data.totalAssetsAmount).toString().length>8){
+      dataFormate(data) {
+        if (Math.round(data.totalAssetsAmount).toString().length > 8) {
           this.unit = '亿'
-          data.totalAssetsAmount = Math.round(data.totalAssetsAmount/10e5)/100
-          data.salesAmount = Math.round(data.salesAmount/10e5)/100
-          data.retailAmount = Math.round(data.retailAmount/10e5)/100
-          data.currentIncome = Math.round(data.currentIncome/10e5)/100
-          data.currentProfit = Math.round(data.currentProfit/10e5)/100
-          data.syIncome =  Math.round(data.syIncome/10e5)/100
-          data.syProfit =  Math.round(data.syProfit/10e5)/100
-        }else if(Math.round(data.totalAssetsAmount).toString().length>4){
+          data.totalAssetsAmount = Math.round(data.totalAssetsAmount / 10e5) / 100
+          data.salesAmount = Math.round(data.salesAmount / 10e5) / 100
+          data.retailAmount = Math.round(data.retailAmount / 10e5) / 100
+          data.currentIncome = Math.round(data.currentIncome / 10e5) / 100
+          data.currentProfit = Math.round(data.currentProfit / 10e5) / 100
+          data.currentMonthIncome = Math.round(data.currentMonthIncome / 10e5) / 100
+          data.currentMonthProfit = Math.round(data.currentMonthProfit / 10e5) / 100
+          data.groupIncomeIndex = Math.round(data.groupIncomeIndex / 10e1) / 100
+          data.groupProfitIndex = Math.round(data.groupProfitIndex / 10e1) / 100
+          data.syIncome = Math.round(data.syIncome / 10e5) / 100
+          data.syProfit = Math.round(data.syProfit / 10e5) / 100
+        } else {
           this.unit = '万'
-          data.totalAssetsAmount = Math.round(data.totalAssetsAmount/100)/100
-          data.salesAmount = Math.round(data.salesAmount/100)/100
-          data.retailAmount = Math.round(data.retailAmount/100)/100
-          data.currentIncome = Math.round(data.currentIncome/100)/100
-          data.currentProfit = Math.round(data.currentProfit/100)/100
-          data.syIncome =  Math.round(data.syIncome/100)/100
-          data.syProfit =  Math.round(data.syProfit/100)/100
-        }else{
-          this.unit = ''
+          data.totalAssetsAmount = Math.round(data.totalAssetsAmount / 100) / 100
+          data.salesAmount = Math.round(data.salesAmount / 100) / 100
+          data.retailAmount = Math.round(data.retailAmount / 100) / 100
+          data.currentIncome = Math.round(data.currentIncome / 100) / 100
+          data.currentProfit = Math.round(data.currentProfit / 100) / 100
+          data.currentMonthIncome = Math.round(data.currentMonthIncome / 100) / 100
+          data.currentMonthProfit = Math.round(data.currentMonthProfit / 100) / 100
+          data.groupIncomeIndex = data.groupIncomeIndex
+          data.groupProfitIndex = data.groupProfitIndex
+          data.syIncome = Math.round(data.syIncome / 100) / 100
+          data.syProfit = Math.round(data.syProfit / 100) / 100
         }
         return data
       },
@@ -153,22 +159,22 @@
       drawCircle(canvasId, data_arr, color_arr) {
         var drawing = document.getElementById(canvasId);
         let windowWidth = document.body.clientWidth;
-        if(windowWidth<330){
+        if (windowWidth < 330) {
           drawing.width = 65;
           drawing.height = 65;
-        }else if(windowWidth<370){
+        } else if (windowWidth < 370) {
           drawing.width = 70;
           drawing.height = 70;
-        }else if(windowWidth<380){
+        } else if (windowWidth < 380) {
           drawing.width = 75;
           drawing.height = 75;
-        }else if(windowWidth<420){
+        } else if (windowWidth < 420) {
           drawing.width = 80;
           drawing.height = 80;
-        }else if(windowWidth<770){
+        } else if (windowWidth < 770) {
           drawing.width = 135;
           drawing.height = 135;
-        }else{
+        } else {
           drawing.width = 262;
           drawing.height = 262;
         }
@@ -192,26 +198,40 @@
         }
       },
       init(date) {
-        let urlHost = host||'/api'
-        this.$http.post(urlHost+'/Decision/assetsScale',{date:date}).then((response)=>{
+        let urlHost = host || '/api'
+        this.$http.post(urlHost + '/Decision/assetsScale', {date: date}).then((response) => {
           let code = JSON.parse(response.bodyText).code
-          if(code ==0 ){
-            this.assetsScale = this.dataFormate(Object.assign({},this.assetsScale,JSON.parse(response.bodyText).result));
+          if (code == 0) {
+            this.assetsScale = this.dataFormate(Object.assign({}, this.assetsScale, JSON.parse(response.bodyText).result));
             //判断是否为Infinity
-            if(this.assetsScale.totalAssetsAmount == 0){
+            if (this.assetsScale.totalAssetsAmount == 0||this.assetsScale.totalAssetsAmount==null) {
               this.wholesalePercent = '—'
               this.retailPercent = '—'
-            }else{
-              this.wholesalePercent = this.assetsScale.salesAmount/this.assetsScale.totalAssetsAmount||'—';
-              this.retailPercent = this.assetsScale.retailAmount/this.assetsScale.totalAssetsAmount||'—';
+            } else {
+              this.wholesalePercent = this.assetsScale.salesAmount / this.assetsScale.totalAssetsAmount || '—';
+              this.retailPercent = this.assetsScale.retailAmount / this.assetsScale.totalAssetsAmount || '—';
             }
-            let data_arr = [this.wholesalePercent, this.retailPercent,1-this.wholesalePercent-this.retailPercent||'_'];
-            let color_arr = ['#3A404D', '#6E5AC8','#DADFEC'];
+            let data_arr = [this.wholesalePercent, this.retailPercent, 1 - this.wholesalePercent - this.retailPercent || '_'];
+            let color_arr = ['#3A404D', '#6E5AC8', '#DADFEC'];
             this.drawCircle('drawing', data_arr, color_arr);
-          }else if(code ==20){
+          } else if (code == 20) {
             tokenInvalid()
-          }else{
-            Toast(JSON.parse(response.bodyText).message)
+          } else {
+            Toast(JSON.parse(response.bodyText).message);
+            this.assetsScale =  {
+              totalAssetsAmount: 0,
+              salesAmount: 0,
+              retailAmount: 0,
+              currentIncome: 0,
+              syIncome: 0,
+              groupIncomeIndex: 0,
+              currentProfit: 0,
+              syProfit: 0,
+              groupProfitIndex: 0
+            }
+            this.wholesalePercent = 0
+            this.retailPercent = 0
+            this.drawCircle('drawing', [0,0,0], []);
           }
         })
       }
@@ -227,7 +247,6 @@
     }
   }
 </script>
-
 <style lang="scss" scoped>
   .assets {
     position: absolute;
@@ -241,7 +260,7 @@
         padding: 32px;
         background: #fff;
         border-radius: 8px;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+        box-shadow: 0px 0px 24px rgba(0, 0, 0, 0.5);
         .currentAssets-head {
           &:before {
             display: inline-block;
@@ -271,6 +290,7 @@
             font-size: 24px;
             line-height: 34px;
             margin-left: 18px;
+            text-align: right;
           }
           .num {
             text-align: center;
@@ -298,18 +318,19 @@
               margin-left: 30px;
               vertical-align: middle;
               .right-top, .right-bottom {
-                span:first-child {
+                > span:first-child {
                   font-size: 48px;
                   color: rgb(155, 155, 155);
                   margin-right: 32px;
                 }
-                span:nth-child(2), span:nth-child(3) {
+                span:nth-child(2) {
+                  float: right;
                   font-size: 32px;
-                  color: rgb(155, 155, 155)
+                  color: rgb(155, 155, 155);
                 }
               }
               .right-top {
-                span:nth-child(2) {
+                >span:nth-child(2) {
                   &:before {
                     display: inline-block;
                     content: '';
@@ -317,11 +338,13 @@
                     height: 20px;
                     background: rgb(58, 64, 77);
                     margin-right: 9px;
+                    margin-left: 9px;
+
                   }
                 }
               }
               .right-bottom {
-                span:nth-child(2) {
+                >span:nth-child(2) {
                   &:before {
                     display: inline-block;
                     content: '';
@@ -329,6 +352,7 @@
                     height: 20px;
                     background: rgb(110, 90, 200);
                     margin-right: 9px;
+                    margin-left: 9px;
                   }
                 }
               }
@@ -343,20 +367,6 @@
       ul {
         li {
           margin-top: 32px;
-        }
-      }
-      .bottom {
-        margin: 16px 32px;
-        display: flex;
-        p {
-          padding: 0 10px;
-          font-size: 24px;
-          color: rgb(155, 155, 155);
-        }
-        .line {
-          flex: 1;
-          border-top: 1px dashed rgb(151, 151, 151);
-          margin-top: 12px;
         }
       }
       &:after {

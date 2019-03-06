@@ -13,6 +13,7 @@
           <v-creditCart :unit="unit" :titleCode="2" :sum="retailNum" :list="list"></v-creditCart>
         </li>
       </ul>
+      <div class="bottomBox"></div>
     </div>
   </div>
 </template>
@@ -75,19 +76,31 @@
         let that = this
         let carryFlag = 0
         data.forEach(function (item) {
-          if (item.syRelease > 10e3) {
-            that.unit = '万'
+          if (item.syRelease > 10e7||item.currentRelease>10e7) {
+            that.unit = '亿'
             carryFlag = 1
+          }else if(item.syRelease>item.currentRelease>3){
+            that.unit = '万'
+            carryFlag = 2
+          }else{
+            that.unit = ''
+            carryFlag = 0
           }
         })
         return data.map(function (item) {
-          if (carryFlag = 1) {
+          if (carryFlag == 1) {
             return {
-              currentRelease: Math.round(item.currentRelease / 10e3),
+              currentRelease: (item.currentRelease / 10e7).toFixed(2),
               salesWay: item.salesWay,
-              syRelease: Math.round(item.syRelease / 10e3)
+              syRelease: (item.syRelease / 10e7).toFixed(2)
             }
-          } else {
+          } else if(carryFlag==2){
+            return {
+              currentRelease: (item.currentRelease / 10e3).toFixed(2),
+              salesWay: item.salesWay,
+              syRelease: (item.syRelease / 10e3).toFixed(2)
+            }
+          }else{
             return item
           }
         })

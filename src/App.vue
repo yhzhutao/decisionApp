@@ -5,7 +5,7 @@
       <tab v-show="tabFlag"></tab>
       <conditionSelect @getBrandCode='sendBrandCode' v-if="selecetFlag"></conditionSelect>
     </div>
-    <router-view :selectDate="selectDate" :brandCode="brandCode"></router-view>
+      <router-view v-if="routerFlag" :selectDate="selectDate" :brandCode="brandCode"></router-view>
     <loading v-show="loadingFlag"></loading>
   </div>
 </template>
@@ -32,7 +32,8 @@
         selecetFlag: false,
         brandCode:'',
         selectDate:'',
-        loadingFlag:true
+        loadingFlag:true,
+        routerFlag:true
       }
     },
     methods: {
@@ -71,7 +72,7 @@
         this.backFlag = false
       }
       //将date传入view
-      if (path.indexOf('/conditionIndividualLoanSituation') !== -1) {
+      if (path === '/conditionIndividualLoanSituation') {
         this.selecetFlag = true
       } else {
         this.selecetFlag = false
@@ -101,7 +102,7 @@
           this.tabFlag = false
           this.backFlag = false
         }
-        if (to.path.indexOf('/conditionIndividualLoanSituation') !== -1) {
+        if (to.path === '/conditionIndividualLoanSituation') {
           this.selecetFlag = true
         } else {
           this.selecetFlag = false
@@ -115,11 +116,39 @@
   @import url('./common/css/base.scss');
 
   .topArea {
-    background-image: url("./image/home_header_back.svg")
+    width: 100%;
+    background: #313743;
   }
   .fontColor{
     color: #9b9b9b!important;
   }
-  body{font-family:"PingFang SC", "Helvetica Neue", Helvetica, "Nimbus Sans L", Arial, "Liberation Sans", "Hiragino Sans GB", "Source Han Sans CN Normal", "Microsoft YaHei", "Wenquanyi Micro Hei", "WenQuanYi Zen Hei", "ST Heiti", SimHei, "WenQuanYi Zen Hei Sharp", sans-serif;}
+  body{
+    font-family:"PingFang SC", "Helvetica Neue", Helvetica, "Nimbus Sans L", Arial, "Liberation Sans", "Hiragino Sans GB", "Source Han Sans CN Normal", "Microsoft YaHei", "Wenquanyi Micro Hei", "WenQuanYi Zen Hei", "ST Heiti", SimHei, "WenQuanYi Zen Hei Sharp", sans-serif;
+  }
+  *{
 
+    -webkit-touch-callout:none; /*系统默认菜单被禁用*/
+
+    -webkit-user-select:none; /*webkit浏览器*/
+
+    -khtml-user-select:none; /*早期浏览器*/
+
+    -moz-user-select:none;/*火狐*/
+
+    -ms-user-select:none; /*IE10*/
+
+    user-select:none;
+  }
+  @media only screen and (-webkit-device-pixel-ratio: 3) and (device-height: 812px) and (device-width: 375px){
+   .bottomBox{
+     display: block;
+     height: 68px;
+   }
+  }
+  @media only screen and (-webkit-device-pixel-ratio: 3) and (device-height: 896px) and (device-width: 414px){
+    .bottomBox{
+      display: block;
+      height: 68px;
+    }
+  }
 </style>

@@ -24,15 +24,15 @@
           </ul>
           <div class="target-num">
             <div class="year-target">
-              <p>{{individualLoanSituation.yearlyTarget||'—'}}</p>
+              <p>{{osc.formatterCount(individualLoanSituation.yearlyTarget)||'—'}}</p>
               <span>全年目标</span>
-              <p>{{individualLoanSituation.yearlyReach||'—'}}</p>
+              <p>{{osc.formatterCount(individualLoanSituation.yearlyReach)||'—'}}</p>
               <span>全年达成</span>
             </div>
             <div class="month-target">
-              <p>{{individualLoanSituation.currentMonthTarget||'—'}}</p>
+              <p>{{osc.formatterCount(individualLoanSituation.currentMonthTarget)||'—'}}</p>
               <span>当月目标</span>
-              <p>{{individualLoanSituation.currentMonthReach||'—'}}</p>
+              <p>{{osc.formatterCount(individualLoanSituation.currentMonthReach)||'—'}}</p>
               <span>当月达成</span>
             </div>
           </div>
@@ -43,44 +43,62 @@
       </div>
       <div class="examine-card">
         <div class="examine-head">
-          <span>审批日报</span><img src="../../image/day_infomation_icon@2x.png" alt="">
+          <span>个贷日报</span><img src="../../image/day_infomation_icon@2x.png" alt="">
         </div>
         <div class="examine-content">
           <ul>
             <li>
                 <span>
-                  <p>{{individualLoanSituation.todayApplication||'—'}}</p>
+                  <p>{{individualLoanSituation.todayApplication==null?'—':osc.formatterCount(individualLoanSituation.todayApplication)}}</p>
                   <p>本日申请</p>
                 </span>
             </li>
             <li>
                 <span>
-                  <p>{{individualLoanSituation.todayApproval||'—'}}</p>
+                  <p>{{individualLoanSituation.todayApproval==null?'—':osc.formatterCount(individualLoanSituation.todayApproval)}}</p>
                   <p>本日审批</p>
                 </span>
             </li>
             <li>
                 <span>
-                  <p>{{individualLoanSituation.pendingApproval||'—'}}</p>
-                  <p>待审批</p>
+                  <p>{{individualLoanSituation.currentDayLoan==null?'—':osc.formatterCount(individualLoanSituation.currentDayLoan)}}</p>
+                  <p>本日放款</p>
                 </span>
             </li>
             <li>
                 <span>
-                  <p>{{individualLoanSituation.monthApplication||'—'}}</p>
+                  <p>{{individualLoanSituation.monthApplication==null?'—':osc.formatterCount(individualLoanSituation.monthApplication)}}</p>
                   <p>当月申请</p>
                 </span>
             </li>
             <li>
                 <span>
-                  <p>{{individualLoanSituation.monthApproval||'—'}}</p>
+                  <p>{{individualLoanSituation.monthApproval==null?'—':osc.formatterCount(individualLoanSituation.monthApproval)}}</p>
                   <p>当月审批</p>
                 </span>
             </li>
             <li>
                 <span>
-                  <p>{{individualLoanSituation.monthCheck||'—'}}</p>
+                  <p>{{osc.formatterCount(individualLoanSituation.currentMonthReach)||'—'}}</p>
+                  <p>当月放款</p>
+                </span>
+            </li>
+            <li>
+                <span>
+                  <p>{{individualLoanSituation.monthCheck==null?'—':osc.formatterCount(individualLoanSituation.monthCheck)}}</p>
                   <p>当月核准</p>
+                </span>
+            </li>
+            <li>
+                <span>
+                  <p>{{monthCheckRate==null?'—':monthCheckRate}}{{monthCheckRate==null?'':'%'}}</p>
+                  <p>当月核准率</p>
+                </span>
+            </li>
+            <li>
+                <span>
+                  <p>{{individualLoanSituation.pendingApproval==null?'—':osc.formatterCount(individualLoanSituation.pendingApproval)}}</p>
+                  <p>待审批</p>
                 </span>
             </li>
           </ul>
@@ -89,6 +107,7 @@
           </div>
         </div>
       </div>
+      <div class="bottomBox"></div>
     </div>
   </div>
 </template>
@@ -98,6 +117,7 @@
   import BScroll from 'better-scroll';
   import { host } from "@/common/base/baseHttp.js"
   import bus from '@/common/base/bus.js';
+  import osc from '@/common/base/osc_common.js'
   import tokenInvalid from '@/common/base/tokenInvalid'
   import { Toast } from 'mint-ui';
   export default {
@@ -107,6 +127,7 @@
         date: 0,
         yearRate: 0,
         monthRate: 0,
+        monthCheckRate:null,
         individualLoanSituation: {}
       }
     },
@@ -119,6 +140,7 @@
     ,
     created(){
       let that = this
+      this.osc =osc
       bus.$off('selectDate')
       bus.$on('selectDate',function(date){
         that._initScroll(date);
@@ -149,8 +171,10 @@
               this.monthRate = this.individualLoanSituation.currentMonthReach / this.individualLoanSituation.currentMonthTarget * 100||0;
               this.monthRate = parseFloat(this.monthRate.toFixed(2));
             }
-
-
+            //当月核准率
+            if(this.individualLoanSituation.monthApproval!=null&&this.individualLoanSituation.monthApproval!==0){
+              this.monthCheckRate = (this.individualLoanSituation.monthCheck/this.individualLoanSituation.monthApproval*100).toFixed(2)
+            }
           }else if(code ==20){
             tokenInvalid()
           }else{
@@ -176,7 +200,7 @@
         padding: 32px;
         background: #fff;
         border-radius: 8px;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+        box-shadow: 0 0px 24px rgba(0, 0, 0, 0.5);
         .target-head {
           .target-head-left {
             float: left;
@@ -203,21 +227,27 @@
               height: 36px;
             }
           }
-          .target-head-right {
+          a{
+            height: 40px;
             float: right;
-            &:after {
-              display: inline-block;
-              content: '';
-              width: 16px;
-              height: 16px;
-              border-top: 1px solid rgb(155, 155, 155);
-              border-right: 1px solid rgb(155, 155, 155);
-              transform: rotate(45deg);
-              -webkit-transform: rotate(45deg);
-            }
-            span {
-              font-size: 32px;
-              color: rgb(155, 155, 155);
+            .target-head-right {
+              height: 40px;
+              float: right;
+              &:after {
+                display: inline-block;
+                content: '';
+                width: 16px;
+                height: 16px;
+                border-top: 1px solid rgb(155, 155, 155);
+                border-right: 1px solid rgb(155, 155, 155);
+                transform: rotate(45deg);
+                -webkit-transform: rotate(45deg);
+                margin-bottom: 3px;
+              }
+              span {
+                font-size: 32px;
+                color: rgb(155, 155, 155);
+              }
             }
           }
         }
@@ -269,7 +299,7 @@
         padding: 32px;
         background: #fff;
         border-radius: 8px;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+        box-shadow: 0 0px 24px rgba(0, 0, 0, 0.5);
         .examine-head {
           &:before {
             display: inline-block;

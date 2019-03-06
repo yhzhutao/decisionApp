@@ -1,14 +1,12 @@
 <template>
   <div class="brand">
-    <div class="brand-head">
+    <div class="brand-head" ref="brandList">
       <ul>
-          <li v-for="(item,index) in brandList">
-            <router-link :to="'/conditionIndividualLoanSituation/'+index">
+          <li v-for="(item,index) in dataList" @click="goToConditionIndividualLoanSituation(item)">
               <div class="img">
-                <img :src="require('../../image/'+logoImgUrl[index]+'@2x.png')">
+                <img :src="host+'/Decision'+item.brandLogoUrl">
               </div>
-            </router-link>
-            <p>{{item}}</p>
+            <p>{{item.brandName}}</p>
         </li>
       </ul>
     </div>
@@ -20,13 +18,16 @@
               <span>{{item}}</span>
             </div>
             <p v-if="index>1">单位：件</p>
-            <v-highchart :options="getOptions(index)" :styles="stylesYear"></v-highchart>
+            <div class="reportModule" ref="monthCharts">
+              <v-highchart :options="getOptions(index)" :styles="stylesYear"></v-highchart>
+            </div>
           </li>
           <div class="bottom">
             <div class="line"></div>
             <p>已经到底了</p>
             <div class="line"></div>
           </div>
+          <div class="bottomBox"></div>
         </ul>
       </div>
     </div>
@@ -69,14 +70,18 @@
               autoRotation: false,
               formatter: function () {
                 var labelVal = this.value;
+                if(!isNaN(this.value)){
+                  return this.value
+                }
                 var reallyVal = labelVal;
                 var lvl = labelVal.length;
-                if (lvl > 2 && lvl < 5) {
+                if (lvl > 2 && lvl < 7) {
                   reallyVal = labelVal.substr(0, 2) + "<br/>" + labelVal.substring(2, lvl);
                 } else {
-                  reallyVal = labelVal.substr(0, 2) + "<br/>" + labelVal.substr(2, 5) + "<br/>" + labelVal.substring(5, lvl);
+                  reallyVal = labelVal.substr(0, 2) + "<br/>" + labelVal.substring(2, 5) + "<br/>" + labelVal.substring(5, lvl);
                 }
                 return reallyVal;
+
               }
             }
           },
@@ -145,12 +150,15 @@
               autoRotation: false,
               formatter: function () {
                 var labelVal = this.value;
+                if(!isNaN(this.value)){
+                  return this.value
+                }
                 var reallyVal = labelVal;
                 var lvl = labelVal.length;
-                if (lvl > 2 && lvl < 5) {
+                if (lvl > 2 && lvl < 7) {
                   reallyVal = labelVal.substr(0, 2) + "<br/>" + labelVal.substring(2, lvl);
                 } else {
-                  reallyVal = labelVal.substr(0, 2) + "<br/>" + labelVal.substr(2, 5) + "<br/>" + labelVal.substring(5, lvl);
+                  reallyVal = labelVal.substr(0, 2) + "<br/>" + labelVal.substring(2, 5) + "<br/>" + labelVal.substring(5, lvl);
                 }
                 return reallyVal;
               }
@@ -201,12 +209,15 @@
               autoRotation: false,
               formatter: function () {
                 var labelVal = this.value;
+                if(!isNaN(this.value)){
+                  return this.value
+                }
                 var reallyVal = labelVal;
                 var lvl = labelVal.length;
-                if (lvl > 2 && lvl < 5) {
+                if (lvl > 2 && lvl < 7) {
                   reallyVal = labelVal.substr(0, 2) + "<br/>" + labelVal.substring(2, lvl);
                 } else {
-                  reallyVal = labelVal.substr(0, 2) + "<br/>" + labelVal.substr(2, 5) + "<br/>" + labelVal.substring(5, lvl);
+                  reallyVal = labelVal.substr(0, 2) + "<br/>" + labelVal.substring(2, 5) + "<br/>" + labelVal.substring(5, lvl);
                 }
                 return reallyVal;
               }
@@ -254,12 +265,15 @@
               autoRotation: false,
               formatter: function () {
                 var labelVal = this.value;
+                if(!isNaN(this.value)){
+                  return this.value
+                }
                 var reallyVal = labelVal;
                 var lvl = labelVal.length;
-                if (lvl > 2 && lvl < 5) {
+                if (lvl > 2 && lvl < 7) {
                   reallyVal = labelVal.substr(0, 2) + "<br/>" + labelVal.substring(2, lvl);
                 } else {
-                  reallyVal = labelVal.substr(0, 2) + "<br/>" + labelVal.substr(2, 5) + "<br/>" + labelVal.substring(5, lvl);
+                  reallyVal = labelVal.substr(0, 2) + "<br/>" + labelVal.substring(2, 5) + "<br/>" + labelVal.substring(5, lvl);
                 }
                 return reallyVal;
               }
@@ -291,7 +305,9 @@
             enableMouseTracking:false
           }]
         },
-        stylesYear: {width: 100, height: 250}
+        stylesYear: {width: 100, height: 250},
+        dataList:[],
+        host:''
       }
     },
     components: {
@@ -299,6 +315,8 @@
     },
     created(){
       let that = this
+      this.host = host    //prod uat　使用
+      // this.host = 'http://113.204.206.21:7080'   //dev时测试环境
       this.createHttp(this.selectDate)
       bus.$off('selectDate')
       bus.$on('selectDate',function(date){
@@ -318,12 +336,18 @@
           let code =JSON.parse(res.bodyText).code
           if(code == 0){
             let data =JSON.parse(res.bodyText).result
-            let newData = that.dataHand(data)
+            this.dataList = data
             let yearlyReachRatio = []
             let monthlyReachRatio= []
             let monthlyApplication = []
             let monthlyLoan = []
-            newData.forEach(function(item,index){
+            let categories = []
+            let brandStorage = []
+            if(data.length>6){
+              that.stylesYear.width = 100+(data.length-6)*100/6
+            }
+            data.forEach(function(item,index){
+              brandStorage.push({brandName:item.brandName,brandCode:item.brandCode})
               if(item.yearTarget == 0||item.yearTarget == null){
                 yearlyReachRatio.push(null)
               }else{
@@ -334,17 +358,39 @@
               }else{
                 monthlyReachRatio.push(Math.round(item.monthReached/item.monthTarget*100));
               }
+              categories.push(item.brandName)
               monthlyApplication.push(item.monthlyApplication);
               monthlyLoan.push(item.monthlyLoanitems)
             })
+            sessionStorage.setItem('brandStorage',JSON.stringify(brandStorage))
             that.optionsYear = JSON.parse(JSON.stringify(that.optionsYear))
             that.optionsMonth = JSON.parse(JSON.stringify(that.optionsMonth))
             that.optionsApplication = JSON.parse(JSON.stringify(that.optionsApplication))
             that.optionsLoan = JSON.parse(JSON.stringify(that.optionsLoan))
+            that.optionsYear.xAxis.categories = categories
+            that.optionsMonth.xAxis.categories = categories
+            that.optionsApplication.xAxis.categories = categories
+            that.optionsLoan.xAxis.categories = categories
             that.optionsYear.series[0].data = that.formatterColumanData(yearlyReachRatio)
             that.optionsMonth.series[0].data = that.formatterColumanData(monthlyReachRatio)
             that.optionsApplication.series[0].data = that.formatterColumanData(monthlyApplication)
             that.optionsLoan.series[0].data = that.formatterColumanData(monthlyLoan)
+            that.$nextTick(function(){
+              that.$refs['monthCharts'].forEach((item,index) => {
+                item.children[0].style.width = that.stylesYear.width +'%'
+                new BScroll(item, {
+                  scrollX: true,
+                  scrollY: false,
+                  click: true
+                })
+              })
+              that.$refs['brandList'].children[0].style.width =that.$refs['brandList'].children[0].children[0].clientWidth*data.length+ 'px'
+              new BScroll(that.$refs['brandList'], {
+                scrollX: true,
+                scrollY: false,
+                click: true
+              });
+            })
           }else if(code == 20){
             tokenInvalid()
           }else{
@@ -352,11 +398,15 @@
           }
         })
       },
+      //路由跳转方法
+      goToConditionIndividualLoanSituation(item){
+        this.$router.push({path:'/conditionIndividualLoanSituation',query: {brandCode: item.brandCode, brandName: item.brandName}})
+      },
       formatterColumanData(arr){
         let maxValueObj = {max:0,index:0};
         let formatterArr = []
         arr.forEach(function(item,index){
-          formatterArr.push({'y':item==0?null:item})
+          formatterArr.push({'y':item==0||item==Infinity?null:item})
           if(maxValueObj.max < item){
             maxValueObj.max = item
             maxValueObj.index = index
@@ -393,44 +443,6 @@
       _initScorll() {
         new BScroll(this.$refs['brand-content-wrapper'], {click: true});
       },
-      dataHand(data){
-        let newData = [0,0,0,0,0,0]
-        let carBrand9879 = [0,0]
-        let BRAND20180093 = [0,0,0]
-        data.forEach(function (item, index) {
-          switch (item.brandName) {
-            case '长安轿车':
-              carBrand9879.splice(0,1,item)
-              break;
-            case '长安新能源':
-              carBrand9879.splice(1,1,item)
-              break;
-            case '长安欧尚汽车':
-              BRAND20180093.splice(0,1,item)
-              break;
-            case '长安轻型车':
-              BRAND20180093.splice(1,1,item)
-              break;
-            case '长安微车':
-              BRAND20180093.splice(2,1,item)
-              break;
-            case '长安福特':
-              newData.splice(1,1,item)
-              break;
-            case '长安马自达':
-              newData.splice(3,1,item)
-              break;
-            case '长安DS':
-              newData.splice(4,1,item)
-              break
-            case '长安铃木':
-              newData.splice(5,1,item)
-          }
-        })
-        newData.splice(0,1,this.arrMerge(carBrand9879))
-        newData.splice(2,1,this.arrMerge(BRAND20180093))
-        return newData
-      },
       arrMerge(args){
         let obj = {}
         obj.brandName = args[0].brandName
@@ -463,11 +475,16 @@
   .brand {
     .brand-head {
       background-color: rgb(238, 238, 238);
+      overflow: hidden;
+      width: 100%;
       ul {
-        display: flex;
-        justify-content: space-around;
         padding: 16px 0;
+        display: flex;
+        flex:none;
         li {
+          flex:1 0 auto;
+          text-align: center;
+          width: 160px;
           .img {
             display: inline-block;
             width: 104px;
@@ -481,6 +498,7 @@
             margin-top: 12px;
             text-align: center;
             font-size: 24px;
+            white-space:nowrap;
           }
         }
       }
@@ -491,6 +509,7 @@
       top: 256px;
       bottom: 0;
       overflow: hidden;
+      background-color: white;
       .brand-content {
         ul {
           background: #fff;
@@ -533,5 +552,9 @@
         margin-top: 12px;
       }
     }
+  }
+  .reportModule{
+    width: 100%;
+    overflow: hidden;
   }
 </style>

@@ -21,7 +21,7 @@
           <canvas class="histogram-one" ref="histogram-one" width="40" height="100"></canvas>
           <canvas class="histogram-two" ref="histogram-two" width="20" height="100"></canvas>
         </div>
-        <p>同期对比<span :style='{color:syPercent<0?"#30aa2d":"#d0021b"}'>{{syPercent+'%'}}</span></p>
+        <p>同期对比<span :style='{color:syPercent<0?"#30aa2d":"#d0021b"}'>{{syPercent}}{{syPercent!='—'?'%':''}}</span></p>
       </div>
     </div>
   </div>
@@ -170,7 +170,7 @@
               action.forEach(
                 ([key, value]) => {
                   this.currentRelease = currentValue.currentRelease;
-                  this.currentReleases = osc.formatterCount(this.currentRelease);
+                  this.currentReleases = this.currentRelease;
                   this.syRelease = currentValue.syRelease;
                 }
               );
@@ -184,7 +184,7 @@
       syPercent: function () {
         let percent = ((this.currentRelease - this.syRelease) / this.syRelease * 100).toFixed(0);
         percent = percent ? +percent : NaN
-        if (percent >= 0) {
+        if (percent >= 0&&percent!=Infinity&&percent!=-Infinity) {
           this.endPointOne = (100 - (percent + 100) / 100 * 50).toFixed(0);
           this.endPointTwo = 50;
           this.init(this.endPointOne, this.endPointTwo);
@@ -207,7 +207,7 @@
     margin: 0px 32px 0px 32px;
     padding: 32px;
     background: #fff;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 0px 24px rgba(0, 0, 0, 0.5);
     border-radius: 8px;
     .cart-head {
       &:before {

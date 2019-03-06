@@ -1,11 +1,11 @@
 <template>
   <div class="tap">
     <div class="tap-top">
-      <router-link to="/assetsSituation">
-        <span class="tap-item1">资产规模 <img src="../../image/down_arrow_icon.svg" alt=""></span>
-      </router-link>
       <router-link to="/individualIoanSituation" >
         <span class="tap-item2">个贷情况<img src="../../image/orange_down_arrow_icon.svg" alt=""></span>
+      </router-link>
+      <router-link to="/assetsSituation">
+        <span class="tap-item1">资产规模 <img src="../../image/down_arrow_icon.svg" alt=""></span>
       </router-link>
       <router-link to="/variousIndicators">
         <span class="tap-item3">各项指标<img src="../../image/green_down_arrow_icon.svg" alt=""></span>
@@ -52,6 +52,7 @@
         &.router-link-active
           .tap-item1
             background-color: #6E5AC8
+            box-shadow: 0 10px 24px rgba(0,0,0,0.5)
             img
               display: block
               position: absolute
@@ -61,6 +62,7 @@
               width: 20px
           .tap-item2
             background-color: #F4A100
+            box-shadow: 0 10px 24px rgba(0,0,0,0.5)
             img
               display: block
               position: absolute
@@ -70,6 +72,7 @@
               width: 20px
           .tap-item3
             background-color: #30C2AE
+            box-shadow: 0 10px 24px rgba(0,0,0,0.5)
             img
               display: block
               position: absolute
@@ -79,6 +82,7 @@
               width: 20px
           .tap-item4
             background-color: #5981C6
+            box-shadow: 0 10px 24px rgba(0,0,0,0.5)
             img
               display: block
               position: absolute

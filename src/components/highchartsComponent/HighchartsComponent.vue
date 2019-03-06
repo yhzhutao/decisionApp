@@ -26,7 +26,15 @@
     watch:{
       'options.series':function(newQuestion,oldQuestion){
         setTimeout(()=>{
-          this.chart.update({series:newQuestion})
+          if(this.options.chart.type == 'column'){
+            let style = {}
+            style.width =this.$el.clientWidth
+            style.height = this.styles.height
+            this.chart.update({chart:style,xAxis:{categories:this.options.xAxis.categories},series:newQuestion})
+          }else{
+            this.chart.update({series:newQuestion})
+          }
+
         },0)
       }
     },

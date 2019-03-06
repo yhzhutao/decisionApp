@@ -152,6 +152,7 @@
           </div>
         </div>
       </div>
+      <div class="bottomBox"></div>
     </div>
   </div>
 </template>
@@ -363,7 +364,7 @@
               color: "#FFFFFF",
               dashStyle: 'solid',
               width: 1,
-              zIndex: 1
+              zIndex: 5
             },
             enableMouseTracking: false,
             type: 'line',
@@ -504,7 +505,7 @@
               color: "#FFFFFF",
               dashStyle: 'solid',
               width: 1,
-              zIndex: 1
+              zIndex: 5
             },
             enableMouseTracking: false,
             type: 'line',
@@ -639,8 +640,16 @@
     },
     created(){
       let that = this
+      //初始时候判断区域是否显示
+      this.brandCode = this.$router.currentRoute.query.brandCode
+      let routerStr = this.$router.currentRoute.path
+      let index = routerStr.substr(routerStr.length-1,1)
+      bus.$off('isShowRegion')
+      bus.$on('isShowRegion',function(value){
+        that.regionFlag = value
+      })
       this.getProgress(this.selectDate)
-      this.createHttp(this.selectDate,that.getBrandCode(),0)
+      this.createHttp(this.selectDate,this.brandCode ,0)
       bus.$off('selectDate')
       bus.$off('getBrandCode')
       bus.$off('getRegion')
@@ -650,18 +659,18 @@
         let days = Number(date.substr(6,2))
         let width = that.$refs['monthCharts2'].children[0].clientWidth
         let MonthDays = that.getMonsthDays(date)
-
         if(days>10&&days<MonthDays-7){
           that.monthCharts1.scrollTo(-width/MonthDays*(days-7),0)
           that.monthCharts2.scrollTo(-width/MonthDays*(days-7),0)
         }else if(days>=MonthDays-7){
-          that.monthCharts1.scrollTo(-width/MonthDays*20,0)
-          that.monthCharts2.scrollTo(-width/MonthDays*20,0)
+          that.monthCharts1.scrollTo(-width/MonthDays*(MonthDays-11),0)
+          that.monthCharts2.scrollTo(-width/MonthDays*(MonthDays-11),0)
         }
       })
       bus.$on('getBrandCode',function(brandCode){
         that.brandCode = brandCode
-        that.createHttp(that.selectDate,brandCode,that.regionCode)
+        that.regionCode = 0
+        that.createHttp(that.selectDate,brandCode,0)
       })
       bus.$on('getRegion',function(regionCode){
         if(regionCode !== '0'){
@@ -669,6 +678,7 @@
         }else{
           that.regionFlag = true
         }
+        that.regionCode = regionCode
         that.createHttp(that.selectDate,that.brandCode,regionCode)
       })
     },
@@ -708,8 +718,8 @@
           this.monthCharts1.scrollTo(-width/MonthDays*(days-7),0)
           this.monthCharts2.scrollTo(-width/MonthDays*(days-7),0)
         }else if(days>=MonthDays-7){
-          this.monthCharts1.scrollTo(-width/MonthDays*20,0)
-          this.monthCharts2.scrollTo(-width/MonthDays*20,0)
+          this.monthCharts1.scrollTo(-width/MonthDays*(MonthDays-11),0)
+          this.monthCharts2.scrollTo(-width/MonthDays*(MonthDays-11),0)
         }
         new BScroll(this.$refs['wrapper'], {
           scrollY: true,
@@ -732,19 +742,53 @@
           let code = JSON.parse(res.bodyText).code
           let data =JSON.parse(res.bodyText).result
           if(code ==0 ){
+            let categories = []
             this.yearlyRatio = Number((data.yearlyReach/data.yearlyTarget*100).toFixed(2))||'—'
             this.yearlyReach=osc.formatterCount(data.yearlyReach)||'—'
             this.yearlyTarget=osc.formatterCount(data.yearlyTarget)||'—'
             this.monthlyRatio = Number((data.currentMonthReach/data.currentMonthTarget*100).toFixed(2))||'—'
             this.currentMonthTarget=osc.formatterCount(data.currentMonthTarget)||'—'
             this.currentMonthReach=osc.formatterCount(data.currentMonthReach)||'—'
-            if(data.yearRegions !=null){
+            if(data.yearRegions !=null && data.yearRegions.length>1){
               this.optionsYear=JSON.parse(JSON.stringify(this.optionsYear))
-              this.optionsYear.series[0].data = this.sortRegion(data.yearRegions)
+              let yearRegionValue = []
+              data.yearRegions.map(function(item){
+                categories.push(item.region)
+                let maxValueObj = {max:0,index:0}
+                yearRegionValue.push({y:parseFloat((item.regionalReach/item.regionalGoals*100).toFixed(2))})
+                yearRegionValue.forEach(function(item,index){
+                  if(item.y==0||item.y==Infinity||isNaN(item.y)){
+                    item.y = null
+                  }
+                  if(maxValueObj.max < item.y){
+                    maxValueObj.max = item.y
+                    maxValueObj.index = index
+                  }
+                })
+                yearRegionValue[maxValueObj.index].color = "#F19938"
+              })
+              this.optionsYear.xAxis.categories = categories
+              this.optionsYear.series[0].data = yearRegionValue
             }
-            if(data.monthRegions!=null){
+            if(data.monthRegions!=null && data.monthRegions.length>1){
               this.optionsMonth=JSON.parse(JSON.stringify(this.optionsMonth))
-              this.optionsMonth.series[0].data = this.sortRegion(data.monthRegions)
+              let monthRegionValue = []
+              data.yearRegions.map(function(item){
+                let maxValueObj = {max:0,index:0}
+                monthRegionValue.push({y:parseFloat((item.regionalReach/item.regionalGoals*100).toFixed(2))})
+                monthRegionValue.forEach(function(item,index){
+                  if(item.y==0||item.y==Infinity||isNaN(item.y)){
+                    item.y = null
+                  }
+                  if(maxValueObj.max < item.y){
+                    maxValueObj.max = item.y
+                    maxValueObj.index = index
+                  }
+                })
+                monthRegionValue[maxValueObj.index].color = "#F19938"
+              })
+              this.optionsMonth.xAxis.categories = categories
+              this.optionsMonth.series[0].data = monthRegionValue
             }
             this.monthSales = osc.formatterCount(data.monthSales)
             this.chainSales = osc.formatterCount(data.chainSales)
@@ -757,8 +801,8 @@
             }
             data.salesData.forEach(function(item,index){
               if(item.salesWay === 'apply'){
-                that.applyCurrentMonth = osc.formatterCount(item.cumulativeMonth)
-                that.applyChain = osc.formatterCount(item.currentSy)
+                that.applyCurrentMonth = osc.formatterCount(item.cumulativeMonth)||'—'
+                that.applyChain = osc.formatterCount(item.currentSy)||'—'
                 let applyRatio = Math.round((item.cumulativeMonth-item.chainSales)/item.chainSales*100)
                 if(applyRatio==Infinity||applyRatio==-Infinity||isNaN(applyRatio)){
                   that.applyRatio = '—'
@@ -770,8 +814,8 @@
                 that.optionsMonthSales.series[1].data = item.currentData
               }
               if(item.salesWay === 'loan'){
-                that.loanCurrentMonth = osc.formatterCount(item.cumulativeMonth)
-                that.loanChain = osc.formatterCount(item.currentSy)
+                that.loanCurrentMonth = osc.formatterCount(item.cumulativeMonth)||'—'
+                that.loanChain = osc.formatterCount(item.currentSy)||'—'
                 let loanRatio = Math.round((item.cumulativeMonth-item.chainSales)/item.chainSales*100)
                 if(loanRatio==Infinity||loanRatio==-Infinity||isNaN(loanRatio)){
                   that.loanRatio = '—'
@@ -845,41 +889,15 @@
           return false;
         }
       },
-      getBrandCode(){
-        let routerStr = this.$router.currentRoute.path
-        let index = routerStr.substr(routerStr.length-1,1)
-        let brandCodeArr = ['carBrand9879','carBrand9876','BRAND20180093','carBrand9877','carSeries0029','carBrand9879']
-        this.brandCode = brandCodeArr[index]
-        return brandCodeArr[index]
-      },
-      //区域排序并添加颜色
-      sortRegion(arr){
+      //格式化并添加颜色
+      ForChartRegion(arr){
         let regionValue = [0,0,0,0,0]
         let maxValueObj = {max:0,index:0}
-         arr.forEach(function(item){
-           switch (item.region) {
-             case '7247':
-               regionValue.splice(0,1,{y:parseFloat((item.regionalReach/item.regionalGoals*100).toFixed(2))})
-               break;
-             case '4473':
-               regionValue.splice(1,1,{y:parseFloat((item.regionalReach/item.regionalGoals*100).toFixed(2))})
-               break;
-             case '7245':
-               regionValue.splice(2,1,{y:parseFloat((item.regionalReach/item.regionalGoals*100).toFixed(2))})
-               break;
-             case '6830':
-               regionValue.splice(3,1,{y:parseFloat((item.regionalReach/item.regionalGoals*100).toFixed(2))})
-               break;
-             case '5534':
-               regionValue.splice(4,1,{y:parseFloat((item.regionalReach/item.regionalGoals*100).toFixed(2))})
-               break;
-             case '4001':
-               regionValue.splice(5,1,{y:parseFloat((item.regionalReach/item.regionalGoals*100).toFixed(2))})
-               break;
-           }
+        regionValue = arr.map(function(item){
+          return {y:parseFloat((item.regionalReach/item.regionalGoals*100).toFixed(2))}
          })
         regionValue.forEach(function(item,index){
-          if(item.y==0){
+          if(item.y==0||item.y==Infinity||isNaN(item.y)){
             item.y = null
           }
           if(maxValueObj.max < item.y){
@@ -943,7 +961,7 @@
         span {
           display: inline-block;
           color: #FFFFFF;
-          font-size: 12px;
+          font-size: 24px;
           margin-right: 32px;
           margin-top: 32px;
         }
@@ -1031,7 +1049,6 @@
   }
   .application{
     background-color: #353D51;
-    height: 710px;
     .title{
       height: 108px;
       .title-left{
@@ -1077,6 +1094,7 @@
       display: flex;
       margin-left: 32px;
       margin-right: 32px;
+      padding-bottom: 32px;
       height: 176px;
       .rlborder{
         border-left: 2px solid #ccc;
@@ -1105,7 +1123,6 @@
   }
   .loan{
     background-color: #2F3543;
-    height: 710px;
     .title{
       height: 108px;
       .title-left{
@@ -1152,6 +1169,7 @@
       margin-left: 32px;
       margin-right: 32px;
       height: 176px;
+      padding-bottom: 32px;
       .rlborder{
         border-left: 2px solid #ccc;
         border-right: 2px solid #ccc;

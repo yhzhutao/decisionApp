@@ -1,6 +1,9 @@
 <template>
   <div class="marketShare"  ref="content-wrapper">
     <div>
+      <div v-show="contactDate!=null" class="nodeTip">
+        *当年累计市占率截止{{contactDate}}末
+      </div>
       <div v-for="(item,index) in marketData" v-show="index < showNumber" class="changan" :class="{ double:index % 2 === 0 }">
         <div class="title">
           <div class="title-left">
@@ -22,7 +25,7 @@
         <div class="ratio">
           <div>
             <div>
-              <div class="itemColor1">10%</div>
+              <div class="itemColor1">{{item.currentMonthMarketRate}}%</div>
               <div>当月市占率</div>
             </div>
             <div>
@@ -42,17 +45,19 @@
           </div>
         </div>
       </div>
-      <div class="bottom" v-show="bottomFlag">
-        <div class="line"></div>
-        <p>{{pullText}}</p>
-        <div class="line"></div>
+      <div v-show="bottom">
+        <div class="bottom" v-show="bottomFlag">
+          <div class="line"></div>
+          <p>{{pullText}}</p>
+          <div class="line"></div>
+        </div>
+        <div class="tip" v-show="bottomFlag === false">下拉载入更多数据</div>
+        <div class="triangleBox" v-show="bottomFlag === false">
+          <div class="triangle"></div>
+        </div>
       </div>
-      <div class="tip" v-show="bottomFlag === false">下拉载入更多数据</div>
-      <div class="triangleBox" v-show="bottomFlag === false">
-        <div class="triangle"></div>
-      </div>
-
     </div>
+    <div class="bottomBox"></div>
   </div>
 </template>
 
@@ -189,7 +194,9 @@
         marketData:[],
         showNumber:4,
         bottomFlag:false,
-        pullText:''
+        pullText:'',
+        contactDate:null,
+        bottom:false,
       }
     },
     mounted() {
@@ -215,7 +222,9 @@
             if(flag!==true){
               flag = true
               this.showNumber = 6
-              that.scroll.refresh()
+              setTimeout(function(){
+                that.scroll.refresh()
+              },0)
               this.pullText="没有更多数据了"
               this.bottomFlag = true
             }
@@ -224,7 +233,11 @@
       },
       formatterLineDate(lastMonthsRatio){
         return lastMonthsRatio.map(function(item,index){
-          return {y:Number((item*100).toFixed(2))}
+          if(item!==null){
+            return {y:Number((item*100).toFixed(2))}
+          }else{
+            return null
+          }
         })
       },
       formatterAreaDate(lastMonthsRatio){
@@ -240,17 +253,31 @@
           let data = JSON.parse(res.bodyText).result
           let code = JSON.parse(res.bodyText).code
           if(code ==0){
+            if(data.length==0){
+              that.marketData = [];
+              Toast('未查到数据')
+              return
+            }else{
+              this.contactDate = true
+            }
+            if(data[0].contactDate){
+              this.contactDate = data[0].contactDate.substr(0,4)+'年'+data[0].contactDate.substr(4,2)+'月'
+            }else{
+              this.contactDate = data[0].contactDate
+            }
             let optionsSelect = []
             that.marketData =data.map(function (item, index) {
               let currentMonthChainRatio = Number((item.currentMonthChainRatio*100).toFixed(2))
               let currentYearChainRatio = Number((item.currentYearChainRatio*100).toFixed(2))
               let currentYearMarketShare = Number((item.currentYearMarketShare*100).toFixed(2))
               let options = JSON.parse(JSON.stringify(that.options))
+              let currentMonthMarketRate = Number((item.monthsRatio[month-1]*100).toFixed(2))
               options.chart.backgroundColor = index % 2 === 0 ?'#2f3543':'#353d51'
               options.series[0].data = that.formatterAreaDate(item.lastMonthsRatio)
               options.series[1].data = that.formatterLineDate(item.monthsRatio)
               return {
                 brandName:that.brandNameFomatter(item.brandName),
+                currentMonthMarketRate:currentMonthMarketRate,
                 currentMonthChainRatio:currentMonthChainRatio,
                 currentYearChainRatio:currentYearChainRatio,
                 currentYearMarketShare:currentYearMarketShare,
@@ -258,9 +285,12 @@
                 options:options
               }
             })
+            this.bottom = true
           }else if(code ==20){
+            that.marketData = []
             tokenInvalid()
           }else{
+            that.marketData = []
             Toast(JSON.parse(res.bodyText).message)
           }
         })
@@ -294,6 +324,33 @@
         this.getYearProgress(year,month,day)
         this.getMonthProgress(year,month,day)
       },
+      sortArr(data){
+        let arr = []
+        data.forEach(function(item){
+          switch (item.brandName) {
+            case 'carBrand9879':
+              arr.splice(0,0,item)
+              break
+            case 'carBrand9876':
+              arr.splice(1,0,item)
+              break
+            case 'BRAND20180093':
+              arr.splice(2,0,item)
+              break
+            case 'carBrand9877':
+              arr.splice(3,0,item)
+              break
+            case 'carSeries0029':
+              arr.splice(4,0,item)
+              break
+            case 'carBrand9878':
+              arr.splice(5,0,item)
+              break
+
+          }
+        })
+        return arr
+      }
     },
     components: {
       monthsCharts
@@ -309,6 +366,12 @@
     width: 100%;
     overflow: hidden;
     background-color: #2F3543;
+    .nodeTip{
+      font-size: 24px;
+      text-align: left;
+      padding: 20px 40px 0px;
+      color: red;
+    }
     .bottom {
       margin: 0 32px;
       padding: 24px 0 48px 0;
