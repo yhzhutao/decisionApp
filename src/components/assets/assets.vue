@@ -108,10 +108,10 @@
     ],
     created() {
       let that = this
-      let urlHost = host || '/api'
-      this.$http.post(urlHost + '/Decision/user/login', {'userId': 'ZHANGF', 'password': '1'}).then((res) => {
-        document.cookie = 'token=' + JSON.parse(res.bodyText).result.token + ';'
-      })
+      // let urlHost = host || '/api'
+      // this.$http.post(urlHost + '/Decision/user/login', {'userId': 'ZHANGF', 'password': '1'}).then((res) => {
+      //   document.cookie = 'token=' + JSON.parse(res.bodyText).result.token + ';'
+      // })
       this.init(this.selectDate)
       bus.$off('selectDate')
       bus.$on('selectDate', function (date) {
@@ -128,30 +128,78 @@
       dataFormate(data) {
         if (Math.round(data.totalAssetsAmount).toString().length > 8) {
           this.unit = '亿'
-          data.totalAssetsAmount = Math.round(data.totalAssetsAmount / 10e5) / 100
-          data.salesAmount = Math.round(data.salesAmount / 10e5) / 100
-          data.retailAmount = Math.round(data.retailAmount / 10e5) / 100
-          data.currentIncome = Math.round(data.currentIncome / 10e5) / 100
-          data.currentProfit = Math.round(data.currentProfit / 10e5) / 100
-          data.currentMonthIncome = Math.round(data.currentMonthIncome / 10e5) / 100
-          data.currentMonthProfit = Math.round(data.currentMonthProfit / 10e5) / 100
-          data.groupIncomeIndex = Math.round(data.groupIncomeIndex / 10e1) / 100
-          data.groupProfitIndex = Math.round(data.groupProfitIndex / 10e1) / 100
-          data.syIncome = Math.round(data.syIncome / 10e5) / 100
-          data.syProfit = Math.round(data.syProfit / 10e5) / 100
+          if(data.totalAssetsAmount !== null ){
+            data.totalAssetsAmount = Math.round(data.totalAssetsAmount / 10e5) / 100
+          }
+          if(data.salesAmount !== null){
+            data.salesAmount = Math.round(data.salesAmount / 10e5) / 100
+          }
+          if(data.retailAmount !== null){
+            data.retailAmount = Math.round(data.retailAmount / 10e5) / 100
+          }
+          if(data.currentIncome !== null){
+            data.currentIncome = Math.round(data.currentIncome / 10e5) / 100
+          }
+          if(data.currentProfit !== null){
+            data.currentProfit = Math.round(data.currentProfit / 10e5) / 100
+          }
+          if(data.currentMonthIncome !==null){
+            data.currentMonthIncome = Math.round(data.currentMonthIncome / 10e5) / 100
+          }
+          if(data.currentMonthProfit !== null){
+            data.currentMonthProfit = Math.round(data.currentMonthProfit / 10e5) / 100
+          }
+          if(data.groupIncomeIndex !== null){
+            data.groupIncomeIndex = Math.round(data.groupIncomeIndex / 10e1) / 100
+          }
+          if(data.groupProfitIndex !== null){
+            data.groupProfitIndex = Math.round(data.groupProfitIndex / 10e1) / 100
+          }
+          if(data.syIncome !== null){
+            data.syIncome = Math.round(data.syIncome / 10e5) / 100
+          }
+          if(data.syProfit !== null){
+            data.syProfit = Math.round(data.syProfit / 10e5) / 100
+          }
         } else {
           this.unit = '万'
-          data.totalAssetsAmount = Math.round(data.totalAssetsAmount / 100) / 100
-          data.salesAmount = Math.round(data.salesAmount / 100) / 100
-          data.retailAmount = Math.round(data.retailAmount / 100) / 100
-          data.currentIncome = Math.round(data.currentIncome / 100) / 100
-          data.currentProfit = Math.round(data.currentProfit / 100) / 100
-          data.currentMonthIncome = Math.round(data.currentMonthIncome / 100) / 100
-          data.currentMonthProfit = Math.round(data.currentMonthProfit / 100) / 100
-          data.groupIncomeIndex = data.groupIncomeIndex
-          data.groupProfitIndex = data.groupProfitIndex
-          data.syIncome = Math.round(data.syIncome / 100) / 100
-          data.syProfit = Math.round(data.syProfit / 100) / 100
+          if(data.totalAssetsAmount !== null ){
+            data.totalAssetsAmount = Math.round(data.totalAssetsAmount / 100) / 100
+  }
+          if(data.salesAmount !== null){
+            data.salesAmount = Math.round(data.salesAmount / 100) / 100
+          }else{
+            data.salesAmount = "—"
+          }
+          if(data.retailAmount !== null){
+            data.retailAmount = Math.round(data.retailAmount / 100) / 100
+          }else{
+            data.retailAmount = "—"
+          }
+          if(data.currentIncome !== null){
+            data.currentIncome = Math.round(data.currentIncome / 100) / 100
+          }
+          if(data.currentProfit !== null){
+            data.currentProfit = Math.round(data.currentProfit / 100) / 100
+          }
+          if(data.currentMonthIncome !==null){
+            data.currentMonthIncome = Math.round(data.currentMonthIncome / 100) / 100
+          }
+          if(data.currentMonthProfit !== null){
+            data.currentMonthProfit = Math.round(data.currentMonthProfit / 100) / 100
+          }
+          if(data.groupIncomeIndex !== null){
+            data.groupIncomeIndex = data.groupIncomeIndex
+          }
+          if(data.groupProfitIndex !== null){
+            data.groupProfitIndex = data.groupProfitIndex
+          }
+          if(data.syIncome !== null){
+            data.syIncome = Math.round(data.syIncome / 100) / 100
+          }
+          if(data.syProfit !== null){
+            data.syProfit = Math.round(data.syProfit / 100) / 100
+          }
         }
         return data
       },

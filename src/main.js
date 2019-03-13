@@ -5,6 +5,10 @@ import App from './App'
 import router from './router'
 import VueResource from 'vue-resource'
 import bus from '@/common/base/bus'
+
+import fastClick from 'fastclick'
+
+fastClick.attach(document.body)
 Vue.config.productionTip = false
 Vue.use(VueResource);
 Vue.http.options.emulateJSON = true;
@@ -14,6 +18,7 @@ Vue.http.interceptors.push((request, next) => {
     bus.$emit('loading',false)
   })
 })
+
 //解决四舍五入toFixed问题
 Number.prototype.toFixed=function (d) {
   var s=this+"";

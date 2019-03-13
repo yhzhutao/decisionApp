@@ -20,7 +20,7 @@
          </div>
        </div>
        <div class="charts">
-         <monthsCharts :options="wholesaleSale" :styles="stylesYear"></monthsCharts>
+         <monthsCharts :options="wholesaleSale" :styles="stylesYear" :selectDate="selectDate"></monthsCharts>
        </div>
        <div class="ratio">
          <div>
@@ -56,7 +56,7 @@
          </div>
        </div>
        <div class="charts">
-         <monthsCharts :options="retail" :styles="stylesYear"></monthsCharts>
+         <monthsCharts :options="retail" :styles="stylesYear" :selectDate="selectDate"></monthsCharts>
        </div>
        <div class="ratio">
          <div>
@@ -116,10 +116,10 @@
                 rotation:0,
               },
               crosshair:{
-                color:"#FFFFFF",
+                color:"#30C2AE",
                 dashStyle:'solid',
                 width:1,
-                zIndex:1
+                zIndex:3
               },
               enableMouseTracking:false,
               type:'line',

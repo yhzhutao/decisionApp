@@ -20,7 +20,7 @@
             </div>
           </div>
           <div class="container">
-            <v-highchart :options="defectiveRateOptions" :styles="styles"></v-highchart>
+            <v-highchart :options="defectiveRateOptions" :styles="styles" :selectDate="selectDate"></v-highchart>
           </div>
           <div class="content-bottom">
             <div class="left">
@@ -50,7 +50,7 @@
             </div>
           </div>
           <div class="container">
-            <v-highchart :options="marketShareOptions" :styles="styles"></v-highchart>
+            <v-highchart :options="marketShareOptions" :styles="styles" :selectDate="selectDate"></v-highchart>
           </div>
           <div class="content-bottom">
             <ul>
@@ -135,10 +135,11 @@
               '01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'
             ],
             crosshair: {
-              color: 'rgb(110,90,200)',
+              color: 'rgb(48,194,174)',
               width: '2px',
               zIndex: 5
             },
+            enableMouseTracking: false,
             tickPosition: 'inside',
             tickmarkPlacement: 'on',
             gridLineWidth: '1px',
@@ -155,7 +156,7 @@
             backgroundColor: 'rgb(58,195,177)',
             headerFormat: '{point.y}%',
             pointFormat: '',
-            shared: true
+            enabled: true,
           },
           legend: {
             enabled: false
@@ -170,31 +171,19 @@
             data: [null, null, null, null, null, null, null, null, null, null, null, null],
             color: 'rgb(238,238,238)',
             marker: {
-              enabled: false,
-              states: {
-                hover: {
-                  enabled: false
-                }
-              }
+              enabled: false
             },
             pointStart: 0,
             type: 'area'
           },
             {
               allowPointSelect: false,
-
               data: [null, null, null, null, null, null, null, null, null, null, null, null],
               color: 'rgb(48,194,174)',
               marker: {
-                enabled: false,
                 symbol: 'circle',
-                fillColor: 'rgb(110,90,200)',
-                states: {
-                  hover: {
-                    enabled: true
-                  }
-                }
-              }
+                enabled: true
+              },
             }]
         },
         marketShareOptions: {
@@ -213,7 +202,7 @@
               '01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'
             ],
             crosshair: {
-              color: 'rgb(110,90,200)',
+              color: 'rgb(48,194,174)',
               width: '2px',
               zIndex: 5
             },
@@ -233,7 +222,7 @@
             backgroundColor: 'rgb(58,195,177)',
             headerFormat: '{point.y}%',
             pointFormat: '',
-            shared: true
+            enabled: true,
           },
           legend: {
             enabled: false
@@ -261,15 +250,9 @@
               data: [null, null, null, null, null, null, null, null, null, null, null, null],
               color: 'rgb(48,194,174)',
               marker: {
-                enabled: false,
                 symbol: 'circle',
-                fillColor: 'rgb(110,90,200)',
-                states: {
-                  hover: {
-                    enabled: true
-                  }
-                }
-              }
+                enabled: true
+              },
             }]
         },
         styles: {
@@ -310,7 +293,6 @@
           let data =JSON.parse(response.bodyText).result
           let code = JSON.parse(response.bodyText).code
           if(code==0){
-            console.log(data)
             if(data.contactDate){
               this.contactDate = data.contactDate.substr(0,4)+'年'+data.contactDate.substr(4,2)+'月'
             }else{

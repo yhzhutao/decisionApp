@@ -75,12 +75,12 @@
             <div>当月累计</div>
           </div>
           <div class="rlborder">
-            <div>{{chainSales}}</div>
-            <div>当月同期</div>
+            <div>{{lysMonthSales}}</div>
+            <div>去年同期</div>
           </div>
           <div>
             <div class="ratio" :style='{color:salesRatio>0?"#d0021b":"#30aa2d"}'>{{salesRatio>0?'+':''}}{{salesRatio}}{{salesRatio=='—'?'':'%'}}</div>
-            <div>环比</div>
+            <div>同比</div>
           </div>
         </div>
       </div>
@@ -101,7 +101,7 @@
           </div>
         </div>
         <div class="reportModule" ref="monthCharts1">
-          <monthsCharts :options="optionsMonthSales" :styles="stylesMonth"></monthsCharts>
+          <monthsCharts :options="optionsMonthSales" :styles="stylesMonth" :selectDate="selectDate"></monthsCharts>
         </div>
         <div class="situation ">
           <div>
@@ -110,11 +110,11 @@
           </div>
           <div class="rlborder">
             <div>{{applyChain}}</div>
-            <div>当月同期</div>
+            <div>去年同期</div>
           </div>
           <div>
             <div class="ratio" :style='{color:applyRatio>0?"#d0021b":"#30aa2d"}'>{{applyRatio>0?'+':''}}{{applyRatio}}{{applyRatio=='—'?'':'%'}}</div>
-            <div>环比</div>
+            <div>同比</div>
           </div>
         </div>
       </div>
@@ -135,7 +135,7 @@
           </div>
         </div>
         <div class="reportModule" ref="monthCharts2">
-          <monthsCharts :options="optionsMonthLoan" :styles="stylesMonth"></monthsCharts>
+          <monthsCharts :options="optionsMonthLoan" :styles="stylesMonth" :selectDate="selectDate"></monthsCharts>
         </div>
         <div class="situation ">
           <div>
@@ -144,11 +144,11 @@
           </div>
           <div class="rlborder">
             <div>{{loanChain}}</div>
-            <div>当月同期</div>
+            <div>去年同期</div>
           </div>
           <div>
             <div class="ratio" :style='{color:loanRatio>0?"#d0021b":"#30aa2d"}'>{{loanRatio>0?'+':''}}{{loanRatio}}{{loanRatio=='—'?'':'%'}}</div>
-            <div>环比</div>
+            <div>同比</div>
           </div>
         </div>
       </div>
@@ -361,10 +361,10 @@
               }
             },
             crosshair: {
-              color: "#FFFFFF",
+              color: "#30C2AE",
               dashStyle: 'solid',
               width: 1,
-              zIndex: 5
+              zIndex: 3
             },
             enableMouseTracking: false,
             type: 'line',
@@ -393,7 +393,7 @@
             }
           },
           tooltip: {
-            enabled: true,
+            // enabled: true,
             backgroundColor: '#3AC3B1',
             borderRadius: 10,
             headerFormat: '',
@@ -473,7 +473,7 @@
               type: 'line',
               marker: {
                 symbol: 'circle',
-                enabled: true
+                enabled: true,
               },
               dataLabels: {
                 enabled: false,
@@ -502,7 +502,7 @@
               }
             },
             crosshair: {
-              color: "#FFFFFF",
+              color: "#30C2AE",
               dashStyle: 'solid',
               width: 1,
               zIndex: 5
@@ -534,7 +534,7 @@
             }
           },
           tooltip: {
-            enabled: true,
+            // enabled: true,
             backgroundColor: '#3AC3B1',
             borderRadius: 10,
             headerFormat: '',
@@ -627,7 +627,8 @@
         mProgress:0,
         monthSales:0,
         chainSales:0,
-        salesRatio:0,
+        lysMonthSales:0, //当月同期
+        salesRatio:0, //
         applyCurrentMonth:0,
         applyChain:0,
         applyRatio:0,
@@ -749,51 +750,58 @@
             this.monthlyRatio = Number((data.currentMonthReach/data.currentMonthTarget*100).toFixed(2))||'—'
             this.currentMonthTarget=osc.formatterCount(data.currentMonthTarget)||'—'
             this.currentMonthReach=osc.formatterCount(data.currentMonthReach)||'—'
+            this.lysMonthSales = osc.formatterCount(data.lysMonthSales)||'—'
             if(data.yearRegions !=null && data.yearRegions.length>1){
               this.optionsYear=JSON.parse(JSON.stringify(this.optionsYear))
               let yearRegionValue = []
               data.yearRegions.map(function(item){
                 categories.push(item.region)
-                let maxValueObj = {max:0,index:0}
                 yearRegionValue.push({y:parseFloat((item.regionalReach/item.regionalGoals*100).toFixed(2))})
-                yearRegionValue.forEach(function(item,index){
-                  if(item.y==0||item.y==Infinity||isNaN(item.y)){
-                    item.y = null
-                  }
-                  if(maxValueObj.max < item.y){
-                    maxValueObj.max = item.y
-                    maxValueObj.index = index
-                  }
-                })
-                yearRegionValue[maxValueObj.index].color = "#F19938"
               })
+              let maxValueObj = {max:0,index:0}
+              yearRegionValue.forEach(function(item,index){
+                if(item.y==0||item.y==Infinity||isNaN(item.y)){
+                  item.y = null
+                }
+                if(maxValueObj.max < item.y){
+                  maxValueObj.max = item.y
+                  maxValueObj.index = index
+                }
+              })
+              yearRegionValue[maxValueObj.index].color = "#F19938"
               this.optionsYear.xAxis.categories = categories
               this.optionsYear.series[0].data = yearRegionValue
             }
             if(data.monthRegions!=null && data.monthRegions.length>1){
               this.optionsMonth=JSON.parse(JSON.stringify(this.optionsMonth))
               let monthRegionValue = []
-              data.yearRegions.map(function(item){
-                let maxValueObj = {max:0,index:0}
+              data.monthRegions.map(function(item){
                 monthRegionValue.push({y:parseFloat((item.regionalReach/item.regionalGoals*100).toFixed(2))})
-                monthRegionValue.forEach(function(item,index){
-                  if(item.y==0||item.y==Infinity||isNaN(item.y)){
-                    item.y = null
-                  }
-                  if(maxValueObj.max < item.y){
-                    maxValueObj.max = item.y
-                    maxValueObj.index = index
-                  }
-                })
-                monthRegionValue[maxValueObj.index].color = "#F19938"
               })
+              let maxValueObj = {max:0,index:0}
+              monthRegionValue.forEach(function(item,index){
+                if(item.y==0||item.y==Infinity||isNaN(item.y)){
+                  item.y = null
+                }
+                if(maxValueObj.max < item.y){
+                  maxValueObj.max = item.y
+                  maxValueObj.index = index
+                }
+              })
+              monthRegionValue[maxValueObj.index].color = "#F19938"
               this.optionsMonth.xAxis.categories = categories
               this.optionsMonth.series[0].data = monthRegionValue
             }
             this.monthSales = osc.formatterCount(data.monthSales)
-            this.chainSales = osc.formatterCount(data.chainSales)
             //判断是否是Infinity和NaN
-            let salesRatio = Math.round((data.monthSales-data.chainSales)/data.chainSales*100)
+            // let salesRatio = Math.round((data.monthSales-data.chainSales)/data.chainSales*100)
+            // if(salesRatio==Infinity||salesRatio==-Infinity||isNaN(salesRatio)){
+            //   this.salesRatio = '—'
+            // }else{
+            //   this.salesRatio = salesRatio
+            // }
+            // 判断是否是Infinity和NaN 计算同比
+            let salesRatio = ((data.monthSales-data.lysMonthSales)/data.lysMonthSales*100).toFixed(2)
             if(salesRatio==Infinity||salesRatio==-Infinity||isNaN(salesRatio)){
               this.salesRatio = '—'
             }else{
@@ -803,7 +811,7 @@
               if(item.salesWay === 'apply'){
                 that.applyCurrentMonth = osc.formatterCount(item.cumulativeMonth)||'—'
                 that.applyChain = osc.formatterCount(item.currentSy)||'—'
-                let applyRatio = Math.round((item.cumulativeMonth-item.chainSales)/item.chainSales*100)
+                let applyRatio = ((item.cumulativeMonth-item.currentSy)/item.currentSy*100).toFixed(2)
                 if(applyRatio==Infinity||applyRatio==-Infinity||isNaN(applyRatio)){
                   that.applyRatio = '—'
                 }else{
@@ -816,7 +824,7 @@
               if(item.salesWay === 'loan'){
                 that.loanCurrentMonth = osc.formatterCount(item.cumulativeMonth)||'—'
                 that.loanChain = osc.formatterCount(item.currentSy)||'—'
-                let loanRatio = Math.round((item.cumulativeMonth-item.chainSales)/item.chainSales*100)
+                let loanRatio = ((item.cumulativeMonth-item.currentSy)/item.currentSy*100).toFixed(2)
                 if(loanRatio==Infinity||loanRatio==-Infinity||isNaN(loanRatio)){
                   that.loanRatio = '—'
                 }else{
@@ -915,7 +923,6 @@
     },
     mounted(){
       this._initScorll();
-
     },
   }
 </script>

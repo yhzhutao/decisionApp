@@ -159,7 +159,6 @@
       position: relative;
       width: 30%;
       font-size: 32px;
-      overflow: hidden;
       input {
         width: 100%;
         height: 100%;
@@ -213,6 +212,7 @@
       position: relative;
       width: 30%;
       font-size: 32px;
+      overflow: hidden;
       input {
         width: 100%;
         height: 100%;

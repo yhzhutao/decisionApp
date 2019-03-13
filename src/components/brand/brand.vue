@@ -351,12 +351,12 @@
               if(item.yearTarget == 0||item.yearTarget == null){
                 yearlyReachRatio.push(null)
               }else{
-                yearlyReachRatio.push(Math.round(item.yearReached/item.yearTarget*100));
+                yearlyReachRatio.push(Math.round(item.yearReached/item.yearTarget*10000)/100);
               }
               if(item.monthTarget == 0||item.monthTarget == null){
                 monthlyReachRatio.push(null)
               }else{
-                monthlyReachRatio.push(Math.round(item.monthReached/item.monthTarget*100));
+                monthlyReachRatio.push(Math.round(item.monthReached/item.monthTarget*10000)/100);
               }
               categories.push(item.brandName)
               monthlyApplication.push(item.monthlyApplication);

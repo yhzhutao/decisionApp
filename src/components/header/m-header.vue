@@ -8,8 +8,8 @@
       </div>
       <div @click="openPicker" class="date"><span >{{ selectDate }}</span>
         <img src="../../image/date_choose_icon.svg" alt=""></div>
-      <div class="my-icon"> <div @click="slecetNextMonth" class="nextMonth" v-show="backFlag === false">下一月</div>
-        <div class="gotoPerson"><img @click="gotoPersonal" src="../../image/my_icon@2x.png" alt=""></div></div>
+      <div class="my-icon"> <div @click ="slecetNextMonth" class="nextMonth" v-show="backFlag === false">下一月</div>
+        <div class="gotoPerson"><img @click ="gotoPersonal" src="../../image/my_icon@2x.png" alt=""></div></div>
     </div>
       <mt-datetime-picker
         ref="picker"
@@ -52,7 +52,6 @@
       }else{
         this.isIos = false
       }
-
     },
     mounted() {
       let data = this.formatDate(new Date()).replace(/\//g,'')
@@ -191,6 +190,7 @@
     height: 80px
     width: 100%
     line-height: 80px
+    pointer-events: auto!important
     .leftContan
       display: inline-block
     .login_logo
@@ -211,10 +211,9 @@
       border-radius: 20px
     .nextMonth
       display: inline-block
-      margin-right: 50px
+      margin-right: 30px
       color: #EF9E02
       font-size: 24px
-      margin-left: 100px
       width: 100px
       text-align: center
 

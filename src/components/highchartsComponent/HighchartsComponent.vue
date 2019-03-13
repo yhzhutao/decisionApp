@@ -13,7 +13,7 @@
   Highcharts3D(Highcharts);
 
   export default {
-    props: ['options','styles'],
+    props: ['options','styles','selectDate'],
     name: 'highcharts',
     data() {
       return {
@@ -32,9 +32,19 @@
             style.height = this.styles.height
             this.chart.update({chart:style,xAxis:{categories:this.options.xAxis.categories},series:newQuestion})
           }else{
-            this.chart.update({series:newQuestion})
+            this.chart.update({xAxis:{categories:this.options.xAxis.categories},series:newQuestion})
+            if(newQuestion[1].data.length>12){
+              let index = Number(this.selectDate.substr(6))-1
+              if(this.chart.series[1].data[index].options.y !== null){
+                this.chart.tooltip.refresh(this.chart.series[1].data[index])
+              }
+            }else{
+              let index = Number(this.selectDate.substr(4,2))-1
+             if(this.chart.series[1].data[index].options.y !== null){
+               this.chart.tooltip.refresh(this.chart.series[1].data[index])
+             }
+            }
           }
-
         },0)
       }
     },

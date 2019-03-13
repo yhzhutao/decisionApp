@@ -20,26 +20,26 @@
           </div>
         </div>
         <div class="charts">
-          <monthsCharts :options="item.options" :styles="stylesYear"></monthsCharts>
+          <monthsCharts :options="item.options" :styles="stylesYear" :selectDate="selectDate"></monthsCharts>
         </div>
         <div class="ratio">
           <div>
             <div>
-              <div class="itemColor1">{{item.currentMonthMarketRate}}%</div>
+              <div class="itemColor1">{{item.currentMonthMarketRate}}{{ item.currentMonthMarketRate == '—'?'':'%' }}</div>
               <div>当月市占率</div>
             </div>
             <div>
-              <div class="itemColor1">{{item.currentYearMarketShare}}%</div>
+              <div class="itemColor1">{{item.currentYearMarketShare}}{{ item.currentYearMarketShare == '—'?'':'%' }}</div>
               <div>当年累计市占率</div>
             </div>
           </div>
           <div>
             <div class="lborder itemColor2">
-              <div :style='{color:item.currentMonthChainRatio>0?"#d0021b":"#30aa2d"}'>{{item.currentMonthChainRatio>0?"+":""}}{{item.currentMonthChainRatio}}%</div>
+              <div :style='{color:item.currentMonthChainRatio>0?"#d0021b":"#30aa2d"}'>{{item.currentMonthChainRatio>0?"+":""}}{{item.currentMonthChainRatio}}{{ item.currentMonthChainRatio == '—'?'':'%' }}</div>
               <div>当月环比变化</div>
             </div>
             <div class="lborder">
-              <div class="itemColor3" :style='{color:item.currentYearChainRatio>0?"#d0021b":"#30aa2d"}'>{{item.currentYearChainRatio>0?"+":""}}{{item.currentYearChainRatio}}%</div>
+              <div class="itemColor3" :style='{color:item.currentYearChainRatio>0?"#d0021b":"#30aa2d"}'>{{item.currentYearChainRatio>0?"+":""}}{{item.currentYearChainRatio}}{{ item.currentYearChainRatio == '—'?'':'%' }}</div>
               <div>当年同比变化</div>
             </div>
           </div>
@@ -94,12 +94,11 @@
               rotation: 0,
             },
             crosshair: {
-              color: "#FFFFFF",
+              color: "#30C2AE",
               dashStyle: 'solid',
               width: 1,
-              zIndex: 999
+              zIndex:3
             },
-            enableMouseTracking: false,
             type: 'line',
             tickPosition: 'inside',
             tickmarkPlacement: 'on',
@@ -131,10 +130,10 @@
             borderRadius: 10,
             headerFormat: '',
             pointFormat: '<b>{point.y:.1f}%</b>',
-            shared: true
           },
           series: [{
             allowPointSelect: false,
+            enableMouseTracking:false,
             data: [{'y': null},
               {'y': null},
               {'y': null},
@@ -182,7 +181,7 @@
               type: 'line',
               marker: {
                 symbol: 'circle',
-                enabled: true
+                enabled: true,
               },
               dataLabels: {
                 enabled: false,
@@ -221,7 +220,7 @@
           if(pos.y<this.scroll.maxScrollY-50){
             if(flag!==true){
               flag = true
-              this.showNumber = 6
+              this.showNumber = Infinity
               setTimeout(function(){
                 that.scroll.refresh()
               },0)
@@ -242,7 +241,12 @@
       },
       formatterAreaDate(lastMonthsRatio){
         return lastMonthsRatio.map(function(item,index){
-          return {'color':'rgb(218,223,236)',y:Number((item*100).toFixed(2))}
+          if(item !== null){
+            return {'color':'rgb(218,223,236)',y:Number((item*100).toFixed(2))}
+          }else{
+            return null
+          }
+
         })
       },
       createHttp(date){
@@ -267,16 +271,37 @@
             }
             let optionsSelect = []
             that.marketData =data.map(function (item, index) {
-              let currentMonthChainRatio = Number((item.currentMonthChainRatio*100).toFixed(2))
-              let currentYearChainRatio = Number((item.currentYearChainRatio*100).toFixed(2))
-              let currentYearMarketShare = Number((item.currentYearMarketShare*100).toFixed(2))
+              let currentMonthChainRatio  //当月环比
+              let currentYearChainRatio   //当年同比
+              let currentMonthMarketRate //当月市占率
+              let currentYearMarketShare //当年累计市占率
+              if(item.currentMonthChainRatio === null ){
+                currentMonthChainRatio = '—'
+              }else{
+                 currentMonthChainRatio = Number((item.currentMonthChainRatio*100).toFixed(2))
+              }
+              if(item.currentYearChainRatio === null ){
+                currentYearChainRatio = '—'
+              }else{
+                currentYearChainRatio = Number((item.currentYearChainRatio*100).toFixed(2))
+              }
+              if(item.monthsRatio[month-1] === null ){
+                currentMonthMarketRate = '—'
+              }else{
+                currentMonthMarketRate = Number((item.monthsRatio[month-1]*100).toFixed(2))
+              }
+              if(item.currentYearMarketShare === null){
+                currentYearMarketShare = '—'
+              }else{
+                currentYearMarketShare = Number((item.currentYearMarketShare*100).toFixed(2))
+              }
               let options = JSON.parse(JSON.stringify(that.options))
-              let currentMonthMarketRate = Number((item.monthsRatio[month-1]*100).toFixed(2))
+
               options.chart.backgroundColor = index % 2 === 0 ?'#2f3543':'#353d51'
               options.series[0].data = that.formatterAreaDate(item.lastMonthsRatio)
               options.series[1].data = that.formatterLineDate(item.monthsRatio)
               return {
-                brandName:that.brandNameFomatter(item.brandName),
+                brandName:item.brandName,
                 currentMonthMarketRate:currentMonthMarketRate,
                 currentMonthChainRatio:currentMonthChainRatio,
                 currentYearChainRatio:currentYearChainRatio,
@@ -295,61 +320,12 @@
           }
         })
       },
-      brandNameFomatter(brandName){
-        switch (brandName) {
-          case 'BRAND20180093':
-            return '长安欧尚汽车'
-            break
-          case 'carBrand9876':
-            return '长安福特'
-            break
-          case 'carBrand9877':
-            return '长安马自达'
-            break
-          case 'carSeries0029':
-            return '长安DS'
-            break
-          case 'carBrand9879':
-            return '长安轿车'
-            break
-          case 'carBrand9878':
-            return '长安铃木'
-            break
-        }
-      },
       getProgress(date){
         let year = date.substr(0,4)
         let month = date.substr(4,2)
         let day = date.substr(6,2)
         this.getYearProgress(year,month,day)
         this.getMonthProgress(year,month,day)
-      },
-      sortArr(data){
-        let arr = []
-        data.forEach(function(item){
-          switch (item.brandName) {
-            case 'carBrand9879':
-              arr.splice(0,0,item)
-              break
-            case 'carBrand9876':
-              arr.splice(1,0,item)
-              break
-            case 'BRAND20180093':
-              arr.splice(2,0,item)
-              break
-            case 'carBrand9877':
-              arr.splice(3,0,item)
-              break
-            case 'carSeries0029':
-              arr.splice(4,0,item)
-              break
-            case 'carBrand9878':
-              arr.splice(5,0,item)
-              break
-
-          }
-        })
-        return arr
       }
     },
     components: {
